@@ -36,14 +36,14 @@
 
 ### 鸣谢名单
 当前合并节点总数: `795`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `260`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `261`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `188`
 - [15mfbpn/proxy-minging](https://github.com/mfbpn/proxy-minging), 节点数量: `48`
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `20`
 - [22jkchen3](https://github.com/jkchen3), 节点数量: `53`
 - [24ts-sf/fly](https://github.com/ts-sf/fly), 节点数量: `26`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `16`
-- [36Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `0`
+- [36Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `18`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
