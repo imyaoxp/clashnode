@@ -505,7 +505,7 @@ class sub_convert():
                     server_part_list = server_part.split(':', 1) # 使用多个分隔符 https://blog.csdn.net/shidamowang/article/details/80254476 https://zhuanlan.zhihu.com/p/92287240
                     method_part = server_part_list[0]
                     server_part_list = server_part_list[1].rsplit('@', 1)
-                    password_part = server_part_list[0]
+                    password_part = server_part_list[0].replace('2022-blake3-', '')
                     server_part_list = server_part_list[1].split(':', 1)
 
                     yaml_url.setdefault('server', server_part_list[0])
@@ -532,7 +532,7 @@ class sub_convert():
                     else:
                         server_part = sub_convert.base64_decode(part_list[0])
                     server_part_list = server_part.split(':', 1)  #使用多个分隔符 https://blog.csdn.net/shidamowang/article/details/80254476 https://zhuanlan.zhihu.com/p/92287240
-                    method_part = server_part_list[0]
+                    method_part = server_part_list[0].replace('2022-blake3-', '')
                     server_part_list = server_part_list[1].rsplit('@', 1)
                     password_part = server_part_list[0]
                     password_part = password_part.replace('"', '')
