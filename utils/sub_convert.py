@@ -503,7 +503,7 @@ class sub_convert():
                         server_part = sub_convert.base64_decode(part_list[0])
 
                     server_part_list = server_part.split(':', 1) # 使用多个分隔符 https://blog.csdn.net/shidamowang/article/details/80254476 https://zhuanlan.zhihu.com/p/92287240
-                    method_part = server_part_list[0].replace('2022-blake3-', '').replace('chacha20-poly1305', 'chacha20-ietf-poly1305')
+                    method_part = server_part_list[0]
                     server_part_list = server_part_list[1].rsplit('@', 1)
                     password_part = server_part_list[0]
                     server_part_list = server_part_list[1].split(':', 1)
@@ -513,8 +513,8 @@ class sub_convert():
                     yaml_url.setdefault('type', 'ss')
                     yaml_url.setdefault('cipher', method_part)
                     yaml_url.setdefault('password', password_part)
-                    
-                    url_list.append(yaml_url)
+                    if '2022-blake3' not in method_part:
+                        url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误1: {err}')
                     pass
@@ -585,7 +585,8 @@ class sub_convert():
                     #yaml_url=str(yaml_url)
                     #yaml_url=yaml_url.replace('"',''')
                     #yaml_rul=eval(yaml_url)
-                    url_list.append(yaml_url)
+                    if '2022-blake3' not in method_part:
+                        url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
                     #print(line)
