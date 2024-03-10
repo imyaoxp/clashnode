@@ -36,7 +36,7 @@
 
 ### 鸣谢名单
 当前合并节点总数: `1009`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `558`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `559`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `127`
 - [15mfbpn/proxy-minging](https://github.com/mfbpn/proxy-minging), 节点数量: `48`
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `22`
