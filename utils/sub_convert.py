@@ -458,7 +458,7 @@ class sub_convert():
                     else:
                         yaml_url.setdefault('name', urllib.parse.unquote(str(vmess_config['ps'])))
                         yaml_url.setdefault('server', vmess_config['add'])
-                        yaml_url.setdefault('port', vmess_config['port'].replace('/', ''))
+                        yaml_url.setdefault('port', vmess_config['port'])
                         yaml_url.setdefault('type', 'vmess')
                         yaml_url.setdefault('uuid', vmess_config['id'])
                         yaml_url.setdefault('alterId', vmess_config['aid'])
