@@ -458,7 +458,7 @@ class sub_convert():
                     else:
                         yaml_url.setdefault('name', urllib.parse.unquote(str(vmess_config['ps'])))
                         yaml_url.setdefault('server', vmess_config['add'])
-                        yaml_url.setdefault('port', vmess_config['port'])
+                        yaml_url.setdefault('port', vmess_config['port'].replace('/', ''))
                         yaml_url.setdefault('type', 'vmess')
                         yaml_url.setdefault('uuid', vmess_config['id'])
                         yaml_url.setdefault('alterId', vmess_config['aid'])
@@ -539,7 +539,7 @@ class sub_convert():
                     server_part_list = server_part_list[1].split(':', 1)  # server:port/?plugin=v2ray-plugin%3Bmode%3Dwebs       
                     yaml_url.setdefault('server', server_part_list[0])
                     server_part_list = server_part_list[1].split('/', 1) # port/?plugin=v2ray-plugin%3Bmode%3Dwebs 
-                    yaml_url.setdefault('port', server_part_list[0])
+                    yaml_url.setdefault('port', server_part_list[0].replace('/', ''))
                     #print(server_part_list[0])
                     yaml_url.setdefault('type', 'ss')
                     yaml_url.setdefault('cipher', method_part)
@@ -623,7 +623,7 @@ class sub_convert():
                 
                     yaml_url.setdefault('name', remarks)
                     yaml_url.setdefault('server', parts[0])
-                    yaml_url.setdefault('port', parts[1])
+                    yaml_url.setdefault('port', parts[1].replace('/', ''))
                     yaml_url.setdefault('type', 'ssr')
                     yaml_url.setdefault('cipher', parts[3])
                     yaml_url.setdefault('password', sub_convert.base64_decode(password_encode_str))
@@ -672,7 +672,7 @@ class sub_convert():
                     server_part = part_list[0].replace('trojan://', '')
                     server_part_list = re.split(':|@|\?|&', server_part) # 使用多个分隔符 https://blog.csdn.net/shidamowang/article/details/80254476 https://zhuanlan.zhihu.com/p/92287240
                     yaml_url.setdefault('server', server_part_list[1])
-                    yaml_url.setdefault('port', server_part_list[2])
+                    yaml_url.setdefault('port', server_part_list[2].replace('/', ''))
                     yaml_url.setdefault('type', 'trojan')
                     yaml_url.setdefault('password', server_part_list[0])
                     server_part_list = server_part_list[3:]
