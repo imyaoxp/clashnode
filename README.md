@@ -40,7 +40,7 @@
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `264`
 - [15mfbpn/proxy-minging](https://github.com/mfbpn/proxy-minging), 节点数量: `48`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `58`
-- [36Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `40`
+- [36Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `37`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
