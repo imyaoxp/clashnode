@@ -674,8 +674,9 @@ class sub_convert():
                     yaml_url.setdefault('server', server_part_list[1])
                     yaml_url.setdefault('port', server_part_list[2].replace('/', ''))
                     yaml_url.setdefault('type', 'trojan')
-                    yaml_url.setdefault('password', server_part_list[0])
-                    server_part_list = server_part_list[3:]
+                    password_part = server_part_list[0]
+                    yaml_url.setdefault('password', password_part)
+                    server_part_list = server_part_list[3]
 
                     for config in server_part_list:
                         if 'sni=' in config:
@@ -697,7 +698,7 @@ class sub_convert():
                     #yaml_url=str(yaml_url)
                     #yaml_url=yaml_url.replace('"',''')
                     #yaml_rul=eval(yaml_url)
-                    if len(password)==36:
+                    if len(password_part)==36:
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
