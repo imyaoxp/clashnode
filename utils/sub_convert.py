@@ -509,11 +509,11 @@ class sub_convert():
                     server_part_list = server_part_list[1].split(':', 1)
 
                     yaml_url.setdefault('server', server_part_list[0])
-                    yaml_url.setdefault('port', server_part_list[1])
+                    yaml_url.setdefault('port', server_part_list[1].replace('/', ''))
                     yaml_url.setdefault('type', 'ss')
                     yaml_url.setdefault('cipher', method_part)
                     yaml_url.setdefault('password', password_part)
-                    if '2022-blake3' not in method_part:
+                    if '2022-blake3' not in method_part and len(password_part) == 36 :
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误1: {err}')
