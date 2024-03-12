@@ -697,7 +697,8 @@ class sub_convert():
                     #yaml_url=str(yaml_url)
                     #yaml_url=yaml_url.replace('"',''')
                     #yaml_rul=eval(yaml_url)
-                    url_list.append(yaml_url)
+                    if len(password)==36:
+                        url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
                     pass
