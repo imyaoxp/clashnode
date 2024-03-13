@@ -35,13 +35,13 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1261`
+当前合并节点总数: `1258`
 - [0pojiezhiyuanjun](https://github.com/pojiezhiyuanjun/freev2), 节点数量: `16`
 - [3/wentao883/TG-wxgqlfx_LSDY](https://github.com//wentao883/TG-wxgqlfx_LSDY), 节点数量: `496`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `516`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `125`
-- [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `15`
+- [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `12`
 - [9yebekhe/TelegramV2rayCollector](https://github.com/yebekhe/TelegramV2rayCollector), 节点数量: `41`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `49`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `263`
