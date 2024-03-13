@@ -464,7 +464,7 @@ class sub_convert():
                     if vmess_config['id'] == '' or len(vmess_config['id']) != 36 or vmess_config['id'] is None :
                         print('节点格式错误')
                     else:
-                        server_port=vmess_config['port'].replace('/', '')
+                        server_port=str(vmess_config['port']).replace('/', '')
                         yaml_url.setdefault('name', urllib.parse.unquote(str(vmess_config['ps'])))
                         yaml_url.setdefault('server', vmess_config['add'])
                         yaml_url.setdefault('port', server_port)
