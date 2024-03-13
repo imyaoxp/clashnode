@@ -149,6 +149,8 @@ class sub_convert():
                             url_splited = url_to_split.replace('trojan://', '\ntuic://', 1)
                         elif 'hy2://' in url_to_split:
                             url_splited = url_to_split.replace('vless://', '\nhy2://', 1)
+                        elif '#' in url_to_split:
+                            url_splited = url_to_split.replace('#', '\n#', 1)
 
                         
                         url_split = url_splited.split('\n')
