@@ -461,12 +461,13 @@ class sub_convert():
                     #yaml_config_str = ['name', 'server', 'port', 'type', 'uuid', 'alterId', 'cipher', 'tls', 'skip-cert-verify', 'network', 'ws-path', 'ws-headers']
                     #vmess_config_str = ['ps', 'add', 'port', 'id', 'aid', 'scy', 'tls', 'net', 'host', 'path']
                     # 生成 yaml 节点字典
-                    if vmess_config['id'] == '' or vmess_config['id'] is None:
+                    if vmess_config['id'] == '' or len(vmess_config['id']) != 36 or vmess_config['id'] is None :
                         print('节点格式错误')
                     else:
+                        server_port=vmess_config['port'].replace('/', '')
                         yaml_url.setdefault('name', urllib.parse.unquote(str(vmess_config['ps'])))
                         yaml_url.setdefault('server', vmess_config['add'])
-                        yaml_url.setdefault('port', vmess_config['port'])
+                        yaml_url.setdefault('port', server_port)
                         yaml_url.setdefault('type', 'vmess')
                         yaml_url.setdefault('uuid', vmess_config['id'])
                         yaml_url.setdefault('alterId', vmess_config['aid'])
