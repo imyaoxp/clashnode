@@ -133,7 +133,7 @@ class sub_convert():
                 raw_url_list = re.split(r'\n+', sub_content)
 
                 for url in raw_url_list:
-                    while len(re.split('ss://|ssr://|vmess://|trojan://|vless://', url)) > 2:
+                    while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy2:', url)) > 2:
                         url_to_split = url[8:]
                         if 'ss://' in url_to_split and 'vmess://' not in url_to_split and 'vless://' not in url_to_split:
                             url_splited = url_to_split.replace('ss://', '\nss://', 1) # https://www.runoob.com/python/att-string-replace.html
@@ -145,6 +145,12 @@ class sub_convert():
                             url_splited = url_to_split.replace('trojan://', '\ntrojan://', 1)
                         elif 'vless://' in url_to_split:
                             url_splited = url_to_split.replace('vless://', '\nvless://', 1)
+                        elif 'tuic://' in url_to_split:
+                            url_splited = url_to_split.replace('trojan://', '\ntuic://', 1)
+                        elif 'hy2://' in url_to_split:
+                            url_splited = url_to_split.replace('vless://', '\nhy2://', 1)
+
+                        
                         url_split = url_splited.split('\n')
 
                         front_url = url[:8] + url_split[0]
@@ -676,7 +682,7 @@ class sub_convert():
                     yaml_url.setdefault('type', 'trojan')
                     password_part = server_part_list[0]
                     yaml_url.setdefault('password', password_part)
-                    server_part_list = server_part_list[3]
+                    server_part_list = server_part_list[3:]
 
                     for config in server_part_list:
                         if 'sni=' in config:
