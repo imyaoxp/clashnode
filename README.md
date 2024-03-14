@@ -35,21 +35,21 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1658`
+当前合并节点总数: `1673`
 - [3/wentao883/TG-wxgqlfx_LSDY](https://github.com//wentao883/TG-wxgqlfx_LSDY), 节点数量: `248`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `517`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `439`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `125`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `13`
-- [9yebekhe/TelegramV2rayCollector](https://github.com/yebekhe/TelegramV2rayCollector), 节点数量: `40`
+- [9yebekhe/TelegramV2rayCollector](https://github.com/yebekhe/TelegramV2rayCollector), 节点数量: `43`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `49`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `248`
-- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `12`
+- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `13`
 - [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `44`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `44`
 - [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `28`
-- [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `20`
+- [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `19`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `21`
