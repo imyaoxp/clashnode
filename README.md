@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1675`
+当前合并节点总数: `1685`
 - [3/wentao883/TG-wxgqlfx_LSDY](https://github.com//wentao883/TG-wxgqlfx_LSDY), 节点数量: `248`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `517`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -48,7 +48,7 @@
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `13`
 - [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `44`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `44`
-- [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `28`
+- [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `35`
 - [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `19`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
