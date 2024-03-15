@@ -469,7 +469,7 @@ class sub_convert():
                         yaml_url.setdefault('server', vmess_config['add'])
                         yaml_url.setdefault('port', server_port)
                         yaml_url.setdefault('type', 'vmess')
-                        yaml_url.setdefault('uuid', vmess_config['id'])
+                        yaml_url.setdefault('uuid', vmess_config['id'].lower())
                         yaml_url.setdefault('alterId', vmess_config['aid'])
                         yaml_url.setdefault('cipher', vmess_config['scy'])
                         yaml_url.setdefault('skip-cert-vertify', True)
@@ -514,7 +514,7 @@ class sub_convert():
                     server_part_list = server_part.split(':', 1) # 使用多个分隔符 https://blog.csdn.net/shidamowang/article/details/80254476 https://zhuanlan.zhihu.com/p/92287240
                     method_part = server_part_list[0]
                     server_part_list = server_part_list[1].rsplit('@', 1)
-                    password_part = server_part_list[0]
+                    password_part = server_part_list[0].lower()
                     server_part_list = server_part_list[1].split(':', 1)
 
                     yaml_url.setdefault('server', server_part_list[0])
@@ -683,7 +683,7 @@ class sub_convert():
                     yaml_url.setdefault('server', server_part_list[1])
                     yaml_url.setdefault('port', server_part_list[2].replace('/', ''))
                     yaml_url.setdefault('type', 'trojan')
-                    password_part = server_part_list[0]
+                    password_part = server_part_list[0].lower()
                     yaml_url.setdefault('password', password_part)
                     server_part_list = server_part_list[3:]
 
