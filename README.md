@@ -35,8 +35,8 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `844`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `513`
+当前合并节点总数: `845`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `514`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `25`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `87`
