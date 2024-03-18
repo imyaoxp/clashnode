@@ -452,7 +452,7 @@ class sub_convert():
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
                     vmess_default_config = {
                         'v': 'Vmess Node', 'ps': 'Vmess Node', 'add': '0.0.0.0', 'port': 0, 'id': '',
-                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vmess_json_config['add'], 'path': '/', 'tls': ''
+                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vmess_json_config['host'], 'path': '/', 'tls': ''
                     }
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
@@ -483,8 +483,10 @@ class sub_convert():
                             yaml_url.setdefault('tls', True)
                         else:
                             yaml_url.setdefault('tls', False)
-
-                        yaml_url.setdefault('ws-opts',{'path':vmess_config['path'], 'headers': {'host': vmess_config['host']}})
+                        if vmess_config['host'] == '' or vmess_config['host'] is None:
+                            yaml_url.setdefault('ws-opts',{'path':vmess_config['path'], 'headers': {'host': vmess_config['add']}})
+                        else:    
+                            yaml_url.setdefault('ws-opts',{'path':vmess_config['path'], 'headers': {'host': vmess_config['host']}})
                         yaml_url.setdefault('udp', True)
                         #yaml_url=str(yaml_url)
                         #yaml_url=yaml_url.replace('"',''')
