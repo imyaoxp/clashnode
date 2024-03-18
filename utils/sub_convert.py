@@ -452,7 +452,7 @@ class sub_convert():
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
                     vmess_default_config = {
                         'v': 'Vmess Node', 'ps': 'Vmess Node', 'add': '0.0.0.0', 'port': 0, 'id': '',
-                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vmess_json_config['host'], 'path': '/', 'tls': ''
+                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vmess_json_config['add'], 'path': '/', 'tls': ''
                     }
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
@@ -495,8 +495,9 @@ class sub_convert():
                         url_list.append(yaml_url)
                         
                 except Exception as err:
-                    print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
                     print(vmess_config)
+                    print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
+                    
                     pass
 
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
