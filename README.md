@@ -38,7 +38,7 @@
 当前合并节点总数: `690`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `451`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
-- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `59`
+- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `68`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `52`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `40`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
