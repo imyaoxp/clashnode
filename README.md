@@ -35,8 +35,8 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `673`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `452`
+当前合并节点总数: `670`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `451`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `68`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `53`
