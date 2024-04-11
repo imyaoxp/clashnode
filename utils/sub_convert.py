@@ -525,7 +525,7 @@ class sub_convert():
                     yaml_url.setdefault('type', 'ss')
                     yaml_url.setdefault('cipher', method_part)
                     yaml_url.setdefault('password', password_part)
-                    if '2022-blake3' not in method_part and len(password_part) == 36 :
+                    if '2022-blake3' not in method_part and len(password_part) == 36 and 'one' not in method_part:
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误1: {err}')
@@ -597,7 +597,7 @@ class sub_convert():
                     #yaml_url=str(yaml_url)
                     #yaml_url=yaml_url.replace('"',''')
                     #yaml_rul=eval(yaml_url)
-                    if '2022-blake3' not in method_part:
+                    if '2022-blake3' not in method_part and 'one' not in method_part :
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
