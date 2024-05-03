@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `651`
+当前合并节点总数: `643`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `465`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -48,7 +48,7 @@
 - [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `3`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
-- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `9`
+- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `3`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
