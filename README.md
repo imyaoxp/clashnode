@@ -35,11 +35,11 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `934`
+当前合并节点总数: `784`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `465`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
-- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `307`
+- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `152`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `8`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `16`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
