@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `822`
+当前合并节点总数: `826`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `454`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -44,8 +44,8 @@
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `16`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `10`
-- [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `4`
-- [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `3`
+- [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `7`
+- [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `4`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `3`
