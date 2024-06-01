@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `624`
+当前合并节点总数: `622`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `449`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -43,7 +43,7 @@
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `19`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `6`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
-- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `9`
+- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `7`
 - [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `8`
 - [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `6`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
