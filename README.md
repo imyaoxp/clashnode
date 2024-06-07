@@ -35,18 +35,18 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `598`
+当前合并节点总数: `600`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `237`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `56`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `50`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `12`
-- [9/MrMohebi/xray-proxy-grabber-telegram](https://github.com//MrMohebi/xray-proxy-grabber-telegram), 节点数量: `17`
+- [9/MrMohebi/xray-proxy-grabber-telegram](https://github.com//MrMohebi/xray-proxy-grabber-telegram), 节点数量: `19`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `6`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
 - [13xbuffer/ClashData](https://github.com/xbuffer/ClashData), 节点数量: `42`
-- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `13`
+- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `14`
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `9`
 - [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `8`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `4`
