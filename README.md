@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `769`
+当前合并节点总数: `768`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `237`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -55,7 +55,7 @@
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [34anaer/Sub](https://github.com/anaer/Sub), 节点数量: `161`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
-- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `8`
+- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `10`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
