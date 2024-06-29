@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `904`
+当前合并节点总数: `902`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `417`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `237`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -46,16 +46,16 @@
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `13`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
 - [13xbuffer/ClashData](https://github.com/xbuffer/ClashData), 节点数量: `41`
-- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `28`
+- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `27`
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `9`
 - [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `4`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `0`
-- [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `11`
+- [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `15`
 - [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `0`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [34anaer/Sub](https://github.com/anaer/Sub), 节点数量: `73`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
-- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `0`
+- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
