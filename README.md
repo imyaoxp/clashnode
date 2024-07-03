@@ -35,11 +35,11 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `812`
+当前合并节点总数: `806`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `410`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `236`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
-- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `30`
+- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `26`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `60`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `1`
 - [9/MrMohebi/xray-proxy-grabber-telegram](https://github.com//MrMohebi/xray-proxy-grabber-telegram), 节点数量: `0`
@@ -55,7 +55,7 @@
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [34anaer/Sub](https://github.com/anaer/Sub), 节点数量: `85`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
-- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1`
+- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `0`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
