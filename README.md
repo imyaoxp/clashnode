@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `802`
+当前合并节点总数: `786`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `562`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `236`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
@@ -45,9 +45,9 @@
 - [9/MrMohebi/xray-proxy-grabber-telegram](https://github.com//MrMohebi/xray-proxy-grabber-telegram), 节点数量: `19`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `13`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
-- [13xbuffer/ClashData](https://github.com/xbuffer/ClashData), 节点数量: `41`
-- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `26`
-- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `6`
+- [13xbuffer/ClashData](https://github.com/xbuffer/ClashData), 节点数量: `52`
+- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `25`
+- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `8`
 - [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `4`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `0`
 - [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `0`
