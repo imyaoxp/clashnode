@@ -35,14 +35,14 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `869`
+当前合并节点总数: `865`
 - [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `564`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `248`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `45`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `34`
 - [8Kwinshadow/TelegramV2rayCollector](https://github.com/Kwinshadow/TelegramV2rayCollector), 节点数量: `5`
-- [9/MrMohebi/xray-proxy-grabber-telegram](https://github.com//MrMohebi/xray-proxy-grabber-telegram), 节点数量: `27`
+- [9/MrMohebi/xray-proxy-grabber-telegram](https://github.com//MrMohebi/xray-proxy-grabber-telegram), 节点数量: `29`
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `13`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
 - [13xbuffer/ClashData](https://github.com/xbuffer/ClashData), 节点数量: `43`
@@ -53,7 +53,7 @@
 - [31hsb4657/v2ray](https://github.com/hsb4657/v2ray), 节点数量: `0`
 - [32itxve/fetch-clash-node](https://github.com/itxve/fetch-clash-node), 节点数量: `0`
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
-- [34anaer/Sub](https://github.com/anaer/Sub), 节点数量: `135`
+- [34anaer/Sub](https://github.com/anaer/Sub), 节点数量: `128`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
