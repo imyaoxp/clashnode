@@ -46,7 +46,7 @@
 - [10sharje63/v2ray_collection](https://github.com/sharje63/v2ray_collection), 节点数量: `13`
 - [11rxsweet/proxies](https://github.com/rxsweet/proxies), 节点数量: `0`
 - [13xbuffer/ClashData](https://github.com/xbuffer/ClashData), 节点数量: `54`
-- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `30`
+- [14vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `31`
 - [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `9`
 - [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `4`
 - [27imohammadkhalili](https://github.com/imohammadkhalili/V2RAY), 节点数量: `0`
@@ -55,7 +55,7 @@
 - [33hebe061103/clash](https://github.com/hebe061103/clash), 节点数量: `0`
 - [34anaer/Sub](https://github.com/anaer/Sub), 节点数量: `128`
 - [38mgit0001/test_clash](https://github.com//mgit0001/test_clash), 节点数量: `0`
-- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1`
+- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `4`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
