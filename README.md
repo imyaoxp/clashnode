@@ -35,8 +35,8 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `677`
-- [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `223`
+当前合并节点总数: `687`
+- [3Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `300`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `248`
 - [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
 - [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `2`
