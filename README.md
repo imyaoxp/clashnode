@@ -35,14 +35,12 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `880`
+当前合并节点总数: `933`
+- [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `33`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `488`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `266`
-- [5vxiaov/free_proxy_ss](https://github.com/vxiaov/free_proxy_ss), 节点数量: `0`
-- [6sangowd/free_doom](https://github.com/sangowd/free_doom), 节点数量: `80`
+- [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `93`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `54`
-- [16ripaojiedian/freenode](https://github.com/ripaojiedian/freenode), 节点数量: `12`
-- [17zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `33`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
