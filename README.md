@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2388`
+当前合并节点总数: `2253`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `33`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `535`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `266`
@@ -47,8 +47,8 @@
 - [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `110`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `119`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `90`
-- [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `330`
-- [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `429`
+- [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `242`
+- [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `382`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 ## 客户端选择
