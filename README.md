@@ -35,16 +35,16 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2003`
+当前合并节点总数: `1906`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `2`
-- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `388`
+- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `401`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `266`
-- [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `168`
-- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `153`
+- [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `110`
+- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `126`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `79`
 - [8jieyou-io/aggregator](https://github.com/jieyou-io/aggregator), 节点数量: `178`
 - [9fangyuan99/aggregator](https://github.com/fangyuan99/aggregator), 节点数量: `0`
-- [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `91`
+- [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `66`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `107`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `112`
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `140`
