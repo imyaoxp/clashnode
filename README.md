@@ -35,7 +35,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1862`
+当前合并节点总数: `1697`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `0`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `378`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `266`
@@ -45,7 +45,7 @@
 - [8jieyou-io/aggregator](https://github.com/jieyou-io/aggregator), 节点数量: `92`
 - [9fangyuan99/aggregator](https://github.com/fangyuan99/aggregator), 节点数量: `0`
 - [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `43`
-- [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `163`
+- [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `92`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `157`
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `171`
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `240`
