@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2916`
+当前合并节点总数: `2918`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `90`
-- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `339`
+- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `344`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `266`
 - [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `74`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `78`
@@ -23,12 +23,12 @@
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `78`
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `134`
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `190`
-- [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `342`
+- [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `343`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `117`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `216`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `239`
 - [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `252`
-- [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `204`
+- [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `200`
 - [25LightL99/aggregator](https://github.com/LightL99/aggregator), 节点数量: `193`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
