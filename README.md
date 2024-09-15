@@ -10,24 +10,24 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2310`
+当前合并节点总数: `2391`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `111`
-- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `315`
+- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `314`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `266`
-- [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `35`
-- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `35`
+- [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `31`
+- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `31`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `109`
 - [8jieyou-io/aggregator](https://github.com/jieyou-io/aggregator), 节点数量: `59`
-- [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `29`
+- [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `1`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `31`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `29`
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `145`
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `191`
-- [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `315`
+- [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `314`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `66`
-- [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `220`
-- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `156`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `122`
+- [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `217`
+- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `210`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `186`
 - [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `133`
 - [25LightL99/aggregator](https://github.com/LightL99/aggregator), 节点数量: `100`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
