@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2950`
+当前合并节点总数: `2962`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `30`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `369`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `259`
@@ -27,7 +27,7 @@
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `69`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `213`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `224`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `258`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `270`
 - [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `138`
 - [25LightL99/aggregator](https://github.com/LightL99/aggregator), 节点数量: `207`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
