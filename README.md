@@ -10,12 +10,12 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `3540`
+当前合并节点总数: `3579`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `6`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `443`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `262`
 - [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `124`
-- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `143`
+- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `182`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `28`
 - [8jieyou-io/aggregator](https://github.com/jieyou-io/aggregator), 节点数量: `123`
 - [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `95`
