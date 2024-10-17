@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2492`
+当前合并节点总数: `2483`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `5`
-- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `233`
+- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `234`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `262`
 - [5fighter2011/aggregator](https://github.com/fighter2011/aggregator), 节点数量: `38`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `38`
@@ -27,7 +27,7 @@
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `63`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `200`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `392`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `446`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `437`
 - [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `152`
 - [25LightL99/aggregator](https://github.com/LightL99/aggregator), 节点数量: `0`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
