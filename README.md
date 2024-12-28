@@ -24,11 +24,11 @@
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `188`
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `110`
 - [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `0`
-- [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `39`
+- [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `36`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `0`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `336`
 - [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `458`
-- [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `95`
+- [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `98`
 - [25LightL99/aggregator](https://github.com/LightL99/aggregator), 节点数量: `0`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
