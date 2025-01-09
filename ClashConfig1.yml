@@ -1,0 +1,54 @@
+secret: 0
+port: 7890
+socks-port: 7891
+allow-lan: true
+ipv6: false
+mode: rule
+log-level: silent
+external-controller: 192.168.123.1:9090
+redir-port: 7892
+external-ui: /opt/app/clash/clash_webs/
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:8053
+  default-nameserver:
+    - 8.8.8.8
+  enhanced-mode: fake-ip
+  use-hosts: true
+  fake-ip-filter:
+    - '+.*'
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+    - 119.29.29.29
+  fallback:
+
+    - https://doh.opendns.com/dns-query
+    - https://dns.google/dns-query
+    - https://1.1.1.1/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+    domain:
+      - '+.google.com'
+      - '+.googleapis.com'
+      - '+.youtube.com'
+      - '+.appspot.com'
+      - '+.telegram.com'
+      - '+.facebook.com'
+      - '+.twitter.com'
+      - '+.blogger.com'
+      - '+.gmail.com'
+      - '+.gvt1.com'
+sniffer:
+  enable: false
+  override-destination: false
+  sniff:
+    http: {ports: [80, 8080]}
+    tls: {ports: [443, 8443]}
+  skip-domain:
+    - 'courier.push.apple.com'
+    - 'Mijia Cloud'
