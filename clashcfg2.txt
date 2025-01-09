@@ -12,6 +12,16 @@
 ;增强国外GFW：支持
 
 ;设置规则标志位
+
+ruleset=全球直连,https://raw.githubusercontent.com/imyaoxp/clashnode/main/DIRECT.txt
+ruleset=广告拦截,https://raw.githubusercontent.com/imyaoxp/clashnode/main/REJECT.txt
+ruleset=节点选择,https://raw.githubusercontent.com/imyaoxp/clashnode/main/PROXY.txt
+ruleset=广告拦截,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+ruleset=应用净化,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+
+ruleset=节点选择,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
+ruleset=节点选择,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list
+
 ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
 ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
 ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaIp.list
@@ -20,43 +30,38 @@ ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Cl
 ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list
 ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list
 ruleset=全球直连,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list
-ruleset=全球直连,http://ys-i.ysepan.com/560401635/217603078/lTfpRvq34663H5H7SMO840/go.txt
-ruleset=广告拦截,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
-ruleset=应用净化,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
 
-ruleset=节点选择,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
-ruleset=节点选择,https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list
 
 ruleset=全球直连,[]GEOIP,CN
 ruleset=漏网之鱼,[]FINAL
 ;设置规则标志位
 
 ;设置分组标志位
-custom_proxy_group=节点选择`select`[]自动选择`[]故障转移`[]负载均衡`[]Google1`[]Google2`[]Google3`[]v2ex1`[]v2ex2`[]v2ex3`.*
-custom_proxy_group=自动选择`url-test`[]Google1`[]Google2`[]Google3`[]v2ex1`[]v2ex2`[]v2ex3`https://www.pornhub.com`180,,
-custom_proxy_group=故障转移`fallback`[]Google1`[]Google2`[]Google3`[]v2ex1`[]v2ex2`[]v2ex3`https://www.pornhub.com`180,,
-custom_proxy_group=负载均衡`load-balance`[]Google1`[]Google2`[]Google3`[]v2ex1`[]v2ex2`[]v2ex3`https://www.pornhub.com`180,,
+custom_proxy_group=节点选择`select`[]自动选择`[]负载均衡`[]测速1分组`[]测速2分组`[]测速3分组`[]测速4分组`[]测速5分组`.*
+
+
+custom_proxy_group=自动选择`url-test`[]测速1分组`[]测速2分组`[]测速3分组`[]测速4分组`[]测速5分组`https://ei.phncdn.com`60,50,
+custom_proxy_group=负载均衡`load-balance`[]测速1分组`[]测速2分组`[]测速3分组`[]测速4分组`[]测速5分组`https://ei.phncdn.com`60,50,
+custom_proxy_group=测速1分组`url-test`(\d{2}1-|\d{2}6-)`https://www.google.com/generate_204`120,50,
+custom_proxy_group=测速2分组`url-test`(\d{2}2-|\d{2}7-)`https://www.google.com/generate_204`120,50,
+custom_proxy_group=测速3分组`url-test`(\d{2}3-|\d{2}8-)`https://www.google.com/generate_204`120,50,
+custom_proxy_group=测速4分组`url-test`(\d{2}4-|\d{2}9-)`https://www.google.com/generate_204`120,50,
+custom_proxy_group=测速5分组`url-test`(\d{2}5-|\d{2}0-)`https://www.google.com/generate_204`120,50,
 
 
 
-custom_proxy_group=Google1`url-test`(\d{2}1-|\d{2}5-|\d{2}9-)`https://www.google.com/generate_204`180,,
-custom_proxy_group=Google2`url-test`(\d{2}2-|\d{2}4-|\d{2}7-)`https://www.google.com/generate_204`180,,
-custom_proxy_group=Google3`url-test`(\d{2}0-|\d{2}3-|\d{2}6-|\d{2}8-)`https://www.google.com/generate_204`180,,
-custom_proxy_group=v2ex1`url-test`(\d{2}1-|\d{2}5-|\d{2}9-)`https://www.v2ex.com/generate_204`180,,
-custom_proxy_group=v2ex2`url-test`(\d{2}2-|\d{2}4-|\d{2}7-)`https://www.v2ex.com/generate_204`180,,
-custom_proxy_group=v2ex3`url-test`(\d{2}0-|\d{2}3-|\d{2}6-|\d{2}8-)`https://www.v2ex.com/generate_204`180,,
-custom_proxy_group=广告拦截`select`[]REJECT`[]DIRECT
-custom_proxy_group=应用净化`select`[]REJECT`[]DIRECT
+
+
+custom_proxy_group=广告拦截`select`[]REJECT`[]节点选择`[]DIRECT
+custom_proxy_group=应用净化`select`[]REJECT`[]节点选择`[]DIRECT
 custom_proxy_group=漏网之鱼`select`[]节点选择`[]DIRECT
 custom_proxy_group=全球直连`select`[]DIRECT`[]节点选择
-
-;设置分组标志位
 
 ;设置分组标志位
 
 enable_rule_generator=true
 overwrite_original_rules=true
 
-clash_rule_base=https://raw.githubusercontent.com/imyaoxp/clashnode/main/ClashConfig.yml
+clash_rule_base=https://raw.githubusercontent.com/imyaoxp/clashnode/main/ClashConfig1.yml
 
 ;luck
