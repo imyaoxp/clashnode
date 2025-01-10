@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2339`
+当前合并节点总数: `2324`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `10`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `58`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `229`
@@ -22,13 +22,13 @@
 - [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `12`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `18`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `0`
-- [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `180`
-- [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `111`
+- [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `181`
+- [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `92`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `473`
 - [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `350`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `60`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `68`
-- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `526`
+- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `529`
 - [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `111`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
