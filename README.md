@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2601`
+当前合并节点总数: `2509`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `5`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `67`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `229`
@@ -25,8 +25,8 @@
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `179`
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `82`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `533`
-- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `430`
-- [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `62`
+- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `372`
+- [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `39`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `45`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `565`
 - [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `130`
