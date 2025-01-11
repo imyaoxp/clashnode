@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2457`
+当前合并节点总数: `2514`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `3`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `54`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `229`
@@ -23,12 +23,12 @@
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `36`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `0`
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `181`
-- [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `81`
+- [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `92`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `515`
 - [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `372`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `73`
-- [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `81`
-- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `554`
+- [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `69`
+- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `584`
 - [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `111`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
