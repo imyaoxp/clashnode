@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2125`
+当前合并节点总数: `2105`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `5`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `68`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `229`
@@ -26,10 +26,10 @@
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `107`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `382`
 - [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `136`
-- [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `37`
+- [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `49`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `54`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `570`
-- [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `128`
+- [24payne0502/aggregator-](https://github.com/payne0502/aggregator-), 节点数量: `121`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
