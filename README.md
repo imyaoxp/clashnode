@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `2095`
+当前合并节点总数: `2110`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `5`
 - [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `68`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `229`
@@ -25,7 +25,7 @@
 - [14dslz666/dslz666_dslz666_ok](https://github.com/dslz666/dslz666_dslz666_ok), 节点数量: `180`
 - [15nggezi/aggregator](https://github.com/nggezi/aggregator), 节点数量: `107`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `382`
-- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `136`
+- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `151`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `49`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `54`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `570`
