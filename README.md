@@ -17,8 +17,8 @@
 - [8jieyou-io/aggregator](https://github.com/jieyou-io/aggregator), 节点数量: `139`
 - [10/xnic888/aggregator](https://github.com/xnic888/aggregator), 节点数量: `12`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `164`
-- [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `644`
-- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `528`
+- [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `627`
+- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `545`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `34`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
