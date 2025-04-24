@@ -15,8 +15,8 @@
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `171`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `62`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
-- [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `314`
-- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `846`
+- [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `313`
+- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `847`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
