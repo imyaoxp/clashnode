@@ -16,7 +16,7 @@
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `62`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `313`
-- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `848`
+- [17PangTouY00/aggregator](https://github.com/PangTouY00/aggregator), 节点数量: `849`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
