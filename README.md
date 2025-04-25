@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1452`
+当前合并节点总数: `1451`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `6`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `185`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `9`
