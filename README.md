@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1361`
+当前合并节点总数: `1363`
 - [2zhangkaiitugithub/passcro](https://github.com/zhangkaiitugithub/passcro), 节点数量: `6`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `185`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `187`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `9`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `314`
