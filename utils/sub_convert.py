@@ -246,7 +246,7 @@ class sub_convert():
                     try:
                         if item['type'] == 'vmess' and 'Host' in item['ws-opts']['headers']:
                             item['ws-opts']['headers']['host'] = item['ws-opts']['headers'].pop("Host")
-                        if item['type'] == 'vmess' and 'HOST' in item['ws-opts']['headers']:
+                        if item['type'] == 'vless' and 'HOST' in item['ws-opts']['headers']:
                             item['ws-opts']['headers']['host'] = item['ws-opts']['headers'].pop("HOST")   
                         if item['type'] == 'ss' and 'HOST' in item['plugin-opts']:
                             item['plugin-opts']['host'] = item['plugin-opts'].pop("HOST")
@@ -500,6 +500,61 @@ class sub_convert():
                     
                     pass
 
+            if 'vless://' in line:
+                try:
+                    vless_json_config = json.loads(sub_convert.base64_decode(line.replace('vless://', '')))
+                    vless_default_config = {
+                        'v': 'Vless Node', 'ps': 'Vless Node', 'add': '0.0.0.0', 'port': 0, 'id': '',
+                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vless_json_config['add'], 'path': '/', 'tls': ''
+                    }
+                    vless_default_config.update(vless_json_config)
+                    vless_config = vless_default_config
+
+                    yaml_url = {}
+                    #yaml_config_str = ['name', 'server', 'port', 'type', 'uuid', 'alterId', 'cipher', 'tls', 'skip-cert-verify', 'network', 'ws-path', 'ws-headers']
+                    #vless_config_str = ['ps', 'add', 'port', 'id', 'aid', 'scy', 'tls', 'net', 'host', 'path']
+                    # 生成 yaml 节点字典
+                    if vless_config['id'] == '' or len(vless_config['id']) != 36 or vless_config['id'] is None :
+                        print('节点格式错误')
+                    else:
+                        server_port=str(vless_config['port']).replace('/', '')
+                        yaml_url.setdefault('name', urllib.parse.unquote(str(vless_config['ps'])))
+                        yaml_url.setdefault('server', vless_config['add'])
+                        yaml_url.setdefault('port', server_port)
+                        yaml_url.setdefault('type', 'vless')
+                        yaml_url.setdefault('uuid', vless_config['id'].lower())
+                        yaml_url.setdefault('alterId', vless_config['aid'])
+                        yaml_url.setdefault('cipher', vless_config['scy'])
+                        yaml_url.setdefault('skip-cert-vertify', True)
+                        if vless_config['net'] == '' or vless_config['net'] is False or vless_config['net'] is None:
+                            yaml_url.setdefault('network', 'ws')
+                        else:
+                            yaml_url.setdefault('network', vless_config['net'])
+
+                        if vless_config['tls'] is True or vless_config['net'] == 'h2' or vless_config['net'] == 'grpc' or vless_config['net'] == 'http':
+                            yaml_url.setdefault('network', 'ws')
+                            yaml_url.setdefault('tls', True)
+                        else:
+                            yaml_url.setdefault('tls', False)
+                        if vless_config['host'] == '' or vless_config['host'] is None:
+                            yaml_url.setdefault('ws-opts',{'path':vless_config['path'], 'headers': {'host': vless_config['add']}})
+                        else:    
+                            yaml_url.setdefault('ws-opts',{'path':vless_config['path'], 'headers': {'host': vless_config['host']}})
+                        yaml_url.setdefault('udp', True)
+                        #yaml_url=str(yaml_url)
+                        #yaml_url=yaml_url.replace('"',''')
+                        #yaml_rul=eval(yaml_url)
+
+                        url_list.append(yaml_url)
+                        
+                except Exception as err:
+                    print(vless_config)
+                    print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
+                    
+                    pass
+
+
+            
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
                 if '#' not in line:
                     line = line + '#SS%20Node'
@@ -775,6 +830,37 @@ class sub_convert():
                     vmess_proxy = str('vmess://' + sub_convert.base64_encode(vmess_raw_proxy) + '\n')
                     protocol_url.append(vmess_proxy)
 
+                elif proxy['type'] == 'vless' and 'ws-opts' in proxy and 'headers' in proxy['ws-opts'] and 'host' in proxy['ws-opts']['headers'] and 'path' in proxy['ws-opts']: # Vless 节点提取, 由 Vless 所有参数 dump JSON 后 base64 得来。
+
+                    yaml_default_config = {
+                        'name': 'Vless Node', 'server': '0.0.0.0', 'port': 0, 'uuid': '', 'alterId': 0,
+                        'cipher': 'auto', 'network': '', 'tls':'False',
+                        'sni': ''
+                    }
+
+                    yaml_default_config.update(proxy)
+                    proxy_config = yaml_default_config
+                    if  proxy['network'] != 'grpc' and proxy['network'] != 'h2' :
+                        vless_value = {
+                            'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
+                            'port': proxy_config['port'], 'id': proxy_config['uuid'], 'aid': proxy_config['alterId'],
+                            'scy': proxy_config['cipher'], 'net': proxy_config['network'], 'type': None, 'host': proxy['ws-opts']['headers']['host'],
+                            'path': proxy['ws-opts']['path'], 'tls': proxy_config['tls'], 'sni': proxy_config['sni']
+                            }
+                    else:
+                        vless_value = {
+                            'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
+                            'port': proxy_config['port'], 'id': proxy_config['uuid'], 'aid': proxy_config['alterId'],
+                            'scy': proxy_config['cipher'], 'net': 'ws', 'type': None, 'host': proxy['ws-opts']['headers']['host'],
+                            'path': proxy['ws-opts']['path'], 'tls': proxy_config['tls'], 'sni': proxy_config['sni']
+                             }
+
+                    vless_raw_proxy = json.dumps(vless_value, sort_keys=False, indent=2, ensure_ascii=False)
+                    vless_proxy = str('vless://' + sub_convert.base64_encode(vless_raw_proxy) + '\n')
+                    protocol_url.append(vless_proxy)
+
+
+                
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
                     if 'plugin' not in proxy :
                         ss_base64_decoded = str(proxy['cipher']) + ':' + str(proxy['password']) + '@' + str(proxy['server']) + ':' + str(proxy['port'])
