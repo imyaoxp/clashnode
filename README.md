@@ -10,9 +10,8 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1860`
+当前合并节点总数: `234`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
-- [3qjlxg/aggregator](https://github.com/qjlxg/aggregator), 节点数量: `1767`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `188`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `27`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
