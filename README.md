@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `232`
+当前合并节点总数: `233`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `188`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `27`
