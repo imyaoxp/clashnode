@@ -7,7 +7,11 @@ mode: rule
 log-level: silent
 external-controller: 192.168.1.1:9090
 redir-port: 7892
-external-ui: "/usr/share/openclash/ui"
+SAFE_PATHS:
+  - /etc/openclash
+  - /usr/share/openclash  # 添加此行
+
+external-ui: "/usr/share/openclash"
 dns:
   enable: true
   ipv6: false
