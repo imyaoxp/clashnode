@@ -10,12 +10,12 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `368`
-- [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
+当前合并节点总数: `356`
+- [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `18`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `188`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `1`
-- [7go4sharing](https://github.com/go4sharing), 节点数量: `27`
-- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `0`
+- [7go4sharing](https://github.com/go4sharing), 节点数量: `0`
+- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `9`
 - [9vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `4`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `30`
