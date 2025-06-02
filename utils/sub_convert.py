@@ -505,55 +505,55 @@ class sub_convert():
                     vless_json_config = json.loads(sub_convert.base64_decode(line.replace('vless://', '')))
                     vless_default_config = {
                         'v': 'Vless Node', 'ps': 'Vless Node', 'add': '0.0.0.0', 'port': 0, 'id': '',
-                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vless_json_config['add'], 'path': '/', 'tls': ''
+                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': '', 'path': '/', 'tls': ''
                     }
                     vless_default_config.update(vless_json_config)
                     vless_config = vless_default_config
 
                     yaml_url = {}
-                    #yaml_config_str = ['name', 'server', 'port', 'type', 'uuid', 'alterId', 'cipher', 'tls', 'skip-cert-verify', 'network', 'ws-path', 'ws-headers']
-                    #vless_config_str = ['ps', 'add', 'port', 'id', 'aid', 'scy', 'tls', 'net', 'host', 'path']
-                    # 生成 yaml 节点字典
-                    if vless_config['id'] == '' or len(vless_config['id']) != 36 or vless_config['id'] is None :
+                    if vless_config['id'] == '' or len(vless_config['id']) != 36 or vless_config['id'] is None:
                         print('节点格式错误')
                     else:
-                        server_port=str(vless_config['port']).replace('/', '')
+                        server_port = str(vless_config['port']).replace('/', '')
                         yaml_url.setdefault('name', urllib.parse.unquote(str(vless_config['ps'])))
                         yaml_url.setdefault('server', vless_config['add'])
                         yaml_url.setdefault('port', server_port)
                         yaml_url.setdefault('type', 'vless')
                         yaml_url.setdefault('uuid', vless_config['id'].lower())
-                        yaml_url.setdefault('alterId', vless_config['aid'])
                         yaml_url.setdefault('cipher', vless_config['scy'])
-                        yaml_url.setdefault('skip-cert-vertify', True)
-                        if vless_config['net'] == '' or vless_config['net'] is False or vless_config['net'] is None:
-                            yaml_url.setdefault('network', 'ws')
-                        else:
-                            yaml_url.setdefault('network', vless_config['net'])
-
-                        if vless_config['tls'] is True or vless_config['net'] == 'h2' or vless_config['net'] == 'grpc' or vless_config['net'] == 'http':
-                            yaml_url.setdefault('network', 'ws')
+            
+                        # 处理网络类型和传输设置
+                        network = vless_config.get('net', 'tcp')
+                        yaml_url.setdefault('network', network)
+            
+                        # 处理TLS设置
+                        tls = vless_config.get('tls', '')
+                        if tls == 'tls' or tls is True:
                             yaml_url.setdefault('tls', True)
+                            if 'sni' in vless_config:
+                                yaml_url.setdefault('sni', vless_config['sni'])
                         else:
                             yaml_url.setdefault('tls', False)
-                        if vless_config['host'] == '' or vless_config['host'] is None:
-                            yaml_url.setdefault('ws-opts',{'path':vless_config['path'], 'headers': {'host': vless_config['add']}})
-                        else:    
-                            yaml_url.setdefault('ws-opts',{'path':vless_config['path'], 'headers': {'host': vless_config['host']}})
+                
+                        # 处理不同传输类型的选项
+                        if network == 'ws':
+                            ws_opts = {'path': vless_config.get('path', '/')}
+                            headers = {'host': vless_config.get('host', vless_config['add'])}
+                            ws_opts['headers'] = headers
+                            yaml_url.setdefault('ws-opts', ws_opts)
+                        elif network == 'grpc':
+                            yaml_url.setdefault('grpc-opts', {
+                                'grpc-service-name': vless_config.get('path', '').lstrip('/')
+                            })
+                
+                        yaml_url.setdefault('skip-cert-verify', True)
                         yaml_url.setdefault('udp', True)
-                        #yaml_url=str(yaml_url)
-                        #yaml_url=yaml_url.replace('"',''')
-                        #yaml_rul=eval(yaml_url)
-
+            
                         url_list.append(yaml_url)
-                        
+            
                 except Exception as err:
-                    print(vless_config)
-                    print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
-                    
+                    print(f'yaml_encode 解析 vless 节点发生错误: {err}')
                     pass
-
-
             
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
                 if '#' not in line:
