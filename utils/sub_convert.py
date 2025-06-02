@@ -830,35 +830,43 @@ class sub_convert():
                     vmess_proxy = str('vmess://' + sub_convert.base64_encode(vmess_raw_proxy) + '\n')
                     protocol_url.append(vmess_proxy)
 
-                elif proxy['type'] == 'vless' and 'ws-opts' in proxy and 'headers' in proxy['ws-opts'] and 'host' in proxy['ws-opts']['headers'] and 'path' in proxy['ws-opts']: # Vless 节点提取, 由 Vless 所有参数 dump JSON 后 base64 得来。
-
-                    yaml_default_config = {
-                        'name': 'Vless Node', 'server': '0.0.0.0', 'port': 0, 'uuid': '', 'alterId': 0,
-                        'cipher': 'auto', 'network': '', 'tls':'False',
-                        'sni': ''
-                    }
-
-                    yaml_default_config.update(proxy)
-                    proxy_config = yaml_default_config
-                    if  proxy['network'] != 'grpc' and proxy['network'] != 'h2' :
-                        vless_value = {
-                            'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
-                            'port': proxy_config['port'], 'id': proxy_config['uuid'], 'aid': proxy_config['alterId'],
-                            'scy': proxy_config['cipher'], 'net': proxy_config['network'], 'type': None, 'host': proxy['ws-opts']['headers']['host'],
-                            'path': proxy['ws-opts']['path'], 'tls': proxy_config['tls'], 'sni': proxy_config['sni']
-                            }
-                    else:
-                        vless_value = {
-                            'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
-                            'port': proxy_config['port'], 'id': proxy_config['uuid'], 'aid': proxy_config['alterId'],
-                            'scy': proxy_config['cipher'], 'net': 'ws', 'type': None, 'host': proxy['ws-opts']['headers']['host'],
-                            'path': proxy['ws-opts']['path'], 'tls': proxy_config['tls'], 'sni': proxy_config['sni']
-                             }
-
-                    vless_raw_proxy = json.dumps(vless_value, sort_keys=False, indent=2, ensure_ascii=False)
-                    vless_proxy = str('vless://' + sub_convert.base64_encode(vless_raw_proxy) + '\n')
-                    protocol_url.append(vless_proxy)
-
+                elif proxy['type'] == 'vless':  # Vless 节点提取
+                      yaml_default_config = {
+                          'name': 'Vless Node', 'server': '0.0.0.0', 'port': 0, 'uuid': '',
+                          'cipher': 'auto', 'network': 'tcp', 'tls': False,
+                          'sni': '', 'path': '/', 'host': ''
+                      }
+                      yaml_default_config.update(proxy)
+                      proxy_config = yaml_default_config
+    
+                      vless_value = {
+                          'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
+                          'port': proxy_config['port'], 'id': proxy_config['uuid'],
+                          'scy': proxy_config['cipher'], 'net': proxy_config['network'],
+                          'type': '', 'tls': proxy_config['tls']
+                      }
+    
+                      # 添加SNI(如果存在)
+                      if 'sni' in proxy_config and proxy_config['sni']:
+                          vless_value['sni'] = proxy_config['sni']
+        
+                      # 处理不同传输类型的参数
+                      if proxy_config['network'] == 'ws':
+                          if 'ws-opts' in proxy_config:
+                              ws_opts = proxy_config['ws-opts']
+                              if 'path' in ws_opts:
+                                  vless_value['path'] = ws_opts['path']
+                              if 'headers' in ws_opts and 'host' in ws_opts['headers']:
+                                  vless_value['host'] = ws_opts['headers']['host']
+                      elif proxy_config['network'] == 'grpc':
+                          if 'grpc-opts' in proxy_config:
+                              grpc_opts = proxy_config['grpc-opts']
+                              if 'grpc-service-name' in grpc_opts:
+                                  vless_value['path'] = '/' + grpc_opts['grpc-service-name']
+                
+                      vless_raw_proxy = json.dumps(vless_value, sort_keys=False, indent=2, ensure_ascii=False)
+                      vless_proxy = str('vless://' + sub_convert.base64_encode(vless_raw_proxy) + '\n')
+                      protocol_url.append(vless_proxy)
 
                 
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
