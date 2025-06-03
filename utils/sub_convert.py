@@ -503,8 +503,8 @@ class sub_convert():
             if 'vless://' in line:
                 try:
                     vless_data = line.replace('vless://', '')
-                    vless_json = json.loads(base64_decode(vless_data.split('#')[0]))  # 直接调用函数
-            
+                    vless_json = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
+                    
                     host = vless_json.get('host', vless_json.get('servername', ''))
                     sni = vless_json.get('sni', host)
             
