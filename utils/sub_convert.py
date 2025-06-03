@@ -522,9 +522,9 @@ class sub_convert():
                     if '@' not in server_part:
                         continue
                 
-                uuid, server_info = server_part.split('@', 1)
-                if ':' not in server_info:
-                    continue
+                    uuid, server_info = server_part.split('@', 1)
+                    if ':' not in server_info:
+                        continue
                 
                     server, port = server_info.split(':', 1)
                     port = port.split('/')[0]  # 去除路径部分
