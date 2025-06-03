@@ -503,15 +503,14 @@ class sub_convert():
             if 'vless://' in line:
                 try:
                     vless_data = line.replace('vless://', '')
-                    vless_json = json.loads(self.base64_decode(vless_data.split('#')[0]))
+                    vless_json = json.loads(base64_decode(vless_data.split('#')[0]))  # 直接调用函数
             
-                    # 提取可能的 servername（兼容上游配置差异）
                     host = vless_json.get('host', vless_json.get('servername', ''))
                     sni = vless_json.get('sni', host)
             
                     yaml_url = {
                         'name': urllib.parse.unquote(vless_json.get('ps', 'Vless Node')),
-                        'server': vless_json['add'],  # 保留 IP
+                        'server': vless_json['add'],
                         'port': vless_json['port'],
                         'type': 'vless',
                         'uuid': vless_json['id'],
@@ -520,16 +519,12 @@ class sub_convert():
                         'tls': vless_json.get('tls', False),
                         'network': vless_json.get('net', 'tcp'),
                         'ws-opts': {
-                            'headers': {
-                                'host': host,          # 优先存储 host
-                                'servername': host     # 兼容存储 servername（如有需要）
-                            },
+                            'headers': {'host': host, 'servername': host},  # 兼容双字段
                             'path': vless_json.get('path', '/')
                         },
                         'sni': sni,
-                        'servername': host or sni  # 新增字段兼容
+                        'servername': host or sni
                     }
-            
                     url_list.append(yaml_url)
             
                 except Exception as err:
@@ -814,27 +809,23 @@ class sub_convert():
 
                 elif proxy['type'] == 'vless':
                     try:
-                        # 优先从 ws-opts.headers 提取 host（兼容不同命名）
+                        # 优先获取 ws-opts 中的 host（兼容 servername）
                         ws_headers = proxy.get('ws-opts', {}).get('headers', {})
-                        host = ws_headers.get('host', ws_headers.get('servername', ''))  # 新增 servername 兼容
-            
-                        # 提取 sni（兼容 servername 作为备用）
-                        sni = proxy.get('sni', proxy.get('servername', ''))  # 新增 servername 兼容
+                        host = ws_headers.get('host', ws_headers.get('servername', ''))
+                        sni = proxy.get('sni', proxy.get('servername', ''))
             
                         vless_config = {
                             'v': 2,
                             'ps': proxy.get('name', 'Vless Node'),
-                            'add': proxy['server'],  # 保留 IP
+                            'add': proxy['server'],
                             'port': str(proxy['port']),
                             'id': proxy['uuid'],
                             'scy': proxy.get('cipher', 'auto'),
                             'net': proxy.get('network', 'tcp'),
                             'tls': proxy.get('tls', False),
-                            'host': host or sni or proxy['server'],  # 兜底逻辑
+                            'host': host or sni or proxy['server'],
                             'path': proxy.get('ws-opts', {}).get('path', '/'),
                         }
-            
-                        # 传递最终的 sni（优先使用明确的 sni 字段）
                         vless_config['sni'] = proxy.get('sni', host or proxy.get('servername', proxy['server']))
             
                         vless_url = json.dumps(vless_config, ensure_ascii=False).encode()
