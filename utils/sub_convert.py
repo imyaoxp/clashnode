@@ -592,8 +592,7 @@ class sub_convert():
                 except Exception as err:
                     print(f'yaml_encode 解析 vless 节点发生错误: {err}')
                     print(f'问题行: {line}')
-                    continue
-                        pass
+                    pass
                 
             
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
