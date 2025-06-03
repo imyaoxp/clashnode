@@ -20,7 +20,7 @@
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `30`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `1`
-- [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `79`
+- [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `98`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
