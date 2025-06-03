@@ -863,10 +863,11 @@ class sub_convert():
                                 params.append(f"host={host}")
 
                         # 构建标准VLESS链接
-                        param_str = '&'.join(params)
-                        name = urllib.parse.quote(proxy['name'])
-                        return f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name}"
-        
+                    param_str = '&'.join(params)
+                    name = urllib.parse.quote(proxy['name'])
+
+                    vless_proxy = str('vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name})
+                    protocol_url.append(vmlss_proxy)        
                     except Exception as e:
                         print(f'VLESS 解码错误: {e} | 节点: {proxy.get("name")}')
                         continue  
