@@ -833,7 +833,7 @@ class sub_convert():
 
                 
                 elif proxy['type'] == 'vless':
-                    elif proxy['type'] == 'vless':
+                    
                     try:
                         # 基础参数
                         params = [
