@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1`
+当前合并节点总数: `429`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `18`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `188`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `1`
@@ -21,7 +21,7 @@
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `30`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `1`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `98`
-- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1`
+- [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `21`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
