@@ -862,9 +862,9 @@ class sub_convert():
                             if host:
                                 params.append(f"host={host}")
 
-                        # 构建标准VLESS链接
-                    param_str = '&'.join(params)
-                    name = urllib.parse.quote(proxy['name'])
+                             # 构建标准VLESS链接
+                        param_str = '&'.join(params)
+                        name = urllib.parse.quote(proxy['name'])
 
                     vless_proxy = str('vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name}')
                     protocol_url.append(vmlss_proxy)        
