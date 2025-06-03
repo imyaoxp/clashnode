@@ -532,26 +532,26 @@ class sub_convert():
                         if yaml_url['tls']:
                             if vless_config['sni']:
                                 yaml_url.setdefault('sni', str(vless_config['sni']))
-                            elif vless_config['host']:
+                            elif vless_config['host']:  # 如果没有sni但有host，使用host作为sni
                                 yaml_url.setdefault('sni', str(vless_config['host']))
             
                         # 网络类型处理
                         network = str(vless_config['net']).lower() if vless_config['net'] else 'tcp'
                         yaml_url.setdefault('network', network)
             
-                        # WebSocket特殊处理
+                        # WebSocket特殊处理 - 确保host正确保留
                         if network == 'ws':
                             ws_opts = {}
-                            # 确保path存在
                             ws_opts['path'] = str(vless_config.get('path', '/')).strip()
                 
-                            # 保持原始host值，不替换为server IP
+                            # 关键修改：优先使用原始host，其次使用sni，最后才使用server
                             headers = {}
-                            if vless_config['host']:
+                            if vless_config['host']:  # 原始配置有host
                                 headers['host'] = str(vless_config['host']).strip()
-                            else:
-                                # 如果没有host，则使用sni或server
-                                headers['host'] = str(vless_config.get('sni', vless_config['add'])).strip()
+                            elif vless_config['sni']:  # 没有host但有sni
+                                headers['host'] = str(vless_config['sni']).strip()
+                            else:  # 都没有则使用server
+                                headers['host'] = str(vless_config['add']).strip()
                 
                             ws_opts['headers'] = headers
                             yaml_url.setdefault('ws-opts', ws_opts)
@@ -567,7 +567,9 @@ class sub_convert():
                 except Exception as err:
                     print(f'yaml_encode 解析 vless 节点发生错误: {err}')
                     continue
-            
+
+
+        
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
                 if '#' not in line:
                     line = line + '#SS%20Node'
@@ -857,15 +859,16 @@ class sub_convert():
                             'sni': str(proxy.get('sni', '')),
                             'path': str(proxy.get('path', '/') if 'path' in proxy 
                                    else proxy.get('ws-opts', {}).get('path', '/')),
-                            'host': ''
+                            'host': ''  # 初始化为空
                         }
 
-                        # 从ws-opts中获取host（如果存在）
-                        if 'ws-opts' in proxy and 'headers' in proxy['ws-opts'] and 'host' in proxy['ws-opts']['headers']:
-                            proxy_config['host'] = proxy['ws-opts']['headers']['host']
-                        # 如果没有host，则使用sni
-                        elif 'sni' in proxy:
-                            proxy_config['host'] = proxy['sni']
+                        # 关键修改：正确获取host值
+                        if 'ws-opts' in proxy and 'headers' in proxy['ws-opts']:
+                            proxy_config['host'] = proxy['ws-opts']['headers'].get('host', '')
+        
+                        # 如果没有从ws-opts获取到host，尝试从sni获取
+                        if not proxy_config['host'] and proxy_config['sni']:
+                            proxy_config['host'] = proxy_config['sni']
 
                         # 构建基础VLESS配置
                         vless_value = {
@@ -878,26 +881,21 @@ class sub_convert():
                             'net': proxy_config['network'],
                             'type': '',
                             'tls': 'tls' if proxy_config['tls'] else '',
-                            'host': proxy_config['host']  # 保持原始host值
+                            'host': proxy_config['host'],  # 确保host值正确
+                            'path': proxy_config['path']
                         }
 
                         # 处理TLS相关参数
-                        if proxy_config['tls']:
-                            if proxy_config['sni']:
-                                vless_value['sni'] = proxy_config['sni']
-                            elif proxy_config['host']:
-                                vless_value['sni'] = proxy_config['host']
+                        if proxy_config['tls'] and proxy_config['sni']:
+                            vless_value['sni'] = proxy_config['sni']
 
                         # 处理WebSocket配置
-                        if proxy_config['network'] == 'ws':
-                            if 'path' in proxy.get('ws-opts', {}):
-                                vless_value['path'] = str(proxy['ws-opts']['path']).strip()
+                        if proxy_config['network'] == 'ws' and proxy_config['path']:
+                            vless_value['path'] = str(proxy_config['path']).strip()
 
                         # 处理gRPC配置
-                        elif proxy_config['network'] == 'grpc':
-                            grpc_opts = proxy.get('grpc-opts', {})
-                            if 'grpc-service-name' in grpc_opts:
-                                vless_value['path'] = str(grpc_opts['grpc-service-name']).lstrip('/')
+                        elif proxy_config['network'] == 'grpc' and proxy_config['path']:
+                            vless_value['path'] = str(proxy_config['path']).lstrip('/')
 
                         # 生成最终URL
                         vless_raw_proxy = json.dumps(vless_value, sort_keys=False, indent=2, ensure_ascii=False)
