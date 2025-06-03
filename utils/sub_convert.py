@@ -550,7 +550,7 @@ class sub_convert():
                             'grpc-service-name': params.get('serviceName', '')
                         }
 
-                    url_list.append(yaml_node)
+                        url_list.append(yaml_node)
 
                 except Exception as e:
                     print(f'VLESS 编码错误: {e}')    
