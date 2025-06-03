@@ -545,12 +545,13 @@ class sub_convert():
                             # 确保path存在
                             ws_opts['path'] = str(vless_config.get('path', '/')).strip()
                 
-                            # 处理headers（保持原始host值）
+                            # 保持原始host值，不替换为server IP
                             headers = {}
                             if vless_config['host']:
                                 headers['host'] = str(vless_config['host']).strip()
                             else:
-                                headers['host'] = str(vless_config['add']).strip()
+                                # 如果没有host，则使用sni或server
+                                headers['host'] = str(vless_config.get('sni', vless_config['add'])).strip()
                 
                             ws_opts['headers'] = headers
                             yaml_url.setdefault('ws-opts', ws_opts)
@@ -856,12 +857,15 @@ class sub_convert():
                             'sni': str(proxy.get('sni', '')),
                             'path': str(proxy.get('path', '/') if 'path' in proxy 
                                    else proxy.get('ws-opts', {}).get('path', '/')),
-                            'host': str(proxy.get('host', ''))
+                            'host': ''
                         }
 
                         # 从ws-opts中获取host（如果存在）
                         if 'ws-opts' in proxy and 'headers' in proxy['ws-opts'] and 'host' in proxy['ws-opts']['headers']:
                             proxy_config['host'] = proxy['ws-opts']['headers']['host']
+                        # 如果没有host，则使用sni
+                        elif 'sni' in proxy:
+                            proxy_config['host'] = proxy['sni']
 
                         # 构建基础VLESS配置
                         vless_value = {
