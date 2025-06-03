@@ -503,32 +503,29 @@ class sub_convert():
             if 'vless://' in line:
                 try:
                     vless_data = line.replace('vless://', '')
-                    vless_json = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
-                    
-                    host = vless_json.get('host', vless_json.get('servername', ''))
-                    sni = vless_json.get('sni', host)
-            
-                    yaml_url = {
+                    # 修复 Base64 填充
+                    vless_data += '=' * (-len(vless_data) % 4)
+                    vless_json = json.loads(base64_decode(vless_data.split('#')[0]))
+                
+                    # 提取 host（优先于 server）
+                    host = vless_json.get('host', vless_json['server'])
+                
+                    yaml_node = {
                         'name': urllib.parse.unquote(vless_json.get('ps', 'Vless Node')),
-                        'server': vless_json['add'],
-                        'port': vless_json['port'],
+                        'server': vless_json['server'],
+                        'port': str(vless_json['port']),
                         'type': 'vless',
                         'uuid': vless_json['id'],
                         'cipher': vless_json.get('scy', 'auto'),
                         'udp': True,
                         'tls': vless_json.get('tls', False),
                         'network': vless_json.get('net', 'tcp'),
-                        'ws-opts': {
-                            'headers': {'host': host, 'servername': host},  # 兼容双字段
-                            'path': vless_json.get('path', '/')
-                        },
-                        'sni': sni,
-                        'servername': host or sni
+                        'ws-opts': {'headers': {'host': host}},  # 固定使用 host
+                        'sni': vless_json.get('sni', host)
                     }
-                    url_list.append(yaml_url)
-            
-                except Exception as err:
-                    print(f'yaml_encode 解析 vless 节点错误: {err}')
+                    url_list.append(yaml_node)
+                except:
+                    print('VLESS 解析错误')
                     continue
 
         
@@ -809,30 +806,27 @@ class sub_convert():
 
                 elif proxy['type'] == 'vless':
                     try:
-                        # 优先获取 ws-opts 中的 host（兼容 servername）
-                        ws_headers = proxy.get('ws-opts', {}).get('headers', {})
-                        host = ws_headers.get('host', ws_headers.get('servername', ''))
-                        sni = proxy.get('sni', proxy.get('servername', ''))
-            
-                        vless_config = {
-                            'v': 2,
-                            'ps': proxy.get('name', 'Vless Node'),
+                        host = proxy['ws-opts']['headers']['host']  # 直接取 host
+                        vless_json = {
+                            'v': '2',
+                            'ps': proxy['name'],
                             'add': proxy['server'],
-                            'port': str(proxy['port']),
+                            'port': proxy['port'],
                             'id': proxy['uuid'],
-                            'scy': proxy.get('cipher', 'auto'),
-                            'net': proxy.get('network', 'tcp'),
-                            'tls': proxy.get('tls', False),
-                            'host': host or sni or proxy['server'],
-                            'path': proxy.get('ws-opts', {}).get('path', '/'),
+                            'scy': proxy['cipher'],
+                            'net': proxy['network'],
+                            'tls': proxy['tls'],
+                            'host': host,  # 固定使用 host
+                            'path': proxy['ws-opts'].get('path', '/'),
+                            'sni': proxy.get('sni', host)
                         }
-                        vless_config['sni'] = proxy.get('sni', host or proxy.get('servername', proxy['server']))
-            
-                        vless_url = json.dumps(vless_config, ensure_ascii=False).encode()
-                        protocol_url.append(f'vless://{base64.b64encode(vless_url).decode()}\n')
-            
-                    except Exception as err:
-                        print(f'解析 VLESS 节点错误: {err}')
+                
+                        # 生成 URL（去除填充符）
+                        json_data = json.dumps(vless_json).encode()
+                        base64_data = base64.b64encode(json_data).decode().rstrip('=')
+                        protocol_url.append(f'vless://{base64_data}#{proxy["name"]}\n')
+                    except:
+                        print('VLESS 生成错误')
                         continue
                 
                 
