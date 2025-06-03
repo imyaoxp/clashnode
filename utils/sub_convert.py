@@ -504,6 +504,7 @@ class sub_convert():
                 
                 try:
                     # 分离基础部分和参数部分
+                    print(line)
                     url_part = line.replace('vless://', '').split('#', 1)
                     base_part = url_part[0].split('?', 1)
         
@@ -836,6 +837,7 @@ class sub_convert():
                     
                     try:
                         # 基础参数
+                        print(proxy)
                         params = [
                             f"security={'tls' if proxy.get('tls') else 'none'}",
                             f"type={proxy.get('network', 'tcp')}"
