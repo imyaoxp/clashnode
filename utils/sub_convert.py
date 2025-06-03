@@ -502,7 +502,7 @@ class sub_convert():
 
             if 'vless://' in line:
                 try:
-            
+                    print(line)
                     # 分离基础部分和参数部分
                     url_part = line.replace('vless://', '').split('#', 1)
                     base_part = url_part[0].split('?', 1)
@@ -550,7 +550,7 @@ class sub_convert():
                             'grpc-service-name': params.get('serviceName', '')
                         }
 
-                        url_list.append(yaml_node)
+                    url_list.append(yaml_node)
 
                 except Exception as e:
                     print(f'VLESS 编码错误: {e}')    
@@ -834,6 +834,7 @@ class sub_convert():
                 
                 elif proxy['type'] == 'vless':
                     try:
+                        print(proxy)
                         # 基础参数
                         params = [
                             f"security={'tls' if proxy.get('tls') else 'none'}",
