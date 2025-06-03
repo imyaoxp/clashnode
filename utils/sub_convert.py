@@ -831,7 +831,7 @@ class sub_convert():
                     vmess_proxy = str('vmess://' + sub_convert.base64_encode(vmess_raw_proxy) + '\n')
                     protocol_url.append(vmess_proxy)
 
-                elif proxy['type'] == 'vless':
+                
                 elif proxy['type'] == 'vless':
                     try:
                         # 基础参数
