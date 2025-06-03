@@ -836,45 +836,45 @@ class sub_convert():
                     try:
                         # 基础参数
                         params = [
-                        f"security={'tls' if proxy.get('tls') else 'none'}",
-                        f"type={proxy.get('network', 'tcp')}"
-                    ]
+                            f"security={'tls' if proxy.get('tls') else 'none'}",
+                            f"type={proxy.get('network', 'tcp')}"
+                        ]
 
-                    # 处理TLS和SNI (优先级: sni > servername)
-                    if proxy.get('tls'):
-                        sni = proxy.get('sni') or proxy.get('servername', '')
-                        if sni:
-                            params.append(f"sni={sni}")
+                        # 处理TLS和SNI (优先级: sni > servername)
+                        if proxy.get('tls'):
+                            sni = proxy.get('sni') or proxy.get('servername', '')
+                            if sni:
+                                params.append(f"sni={sni}")
 
-                    # 处理WebSocket (host优先级: ws-opts.headers.host > sni > servername > server)
-                    if proxy.get('network') == 'ws':
-                        if 'ws-opts' in proxy:
-                            path = proxy['ws-opts'].get('path', '/')
-                            params.append(f"path={urllib.parse.quote(path)}")
+                        # 处理WebSocket (host优先级: ws-opts.headers.host > sni > servername > server)
+                        if proxy.get('network') == 'ws':
+                            if 'ws-opts' in proxy:
+                                path = proxy['ws-opts'].get('path', '/')
+                                params.append(f"path={urllib.parse.quote(path)}")
                 
-                            host = (
-                                proxy['ws-opts'].get('headers', {}).get('host', '')
-                                or proxy.get('sni', '')
-                                or proxy.get('servername', '')
-                                or proxy['server']
-                            )
-                            if host != proxy['server']:
-                                params.append(f"host={host}")
+                                host = (
+                                    proxy['ws-opts'].get('headers', {}).get('host', '')
+                                    or proxy.get('sni', '')
+                                    or proxy.get('servername', '')
+                                    or proxy['server']
+                                )
+                                if host != proxy['server']:
+                                    params.append(f"host={host}")
 
-                    # 处理gRPC
-                    elif proxy.get('network') == 'grpc':
-                        if 'grpc-opts' in proxy:
-                            service = proxy['grpc-opts'].get('grpc-service-name', '')
-                            if service:
-                                params.append(f"serviceName={service}")
+                        # 处理gRPC
+                        elif proxy.get('network') == 'grpc':
+                            if 'grpc-opts' in proxy:
+                                service = proxy['grpc-opts'].get('grpc-service-name', '')
+                                if service:
+                                    params.append(f"serviceName={service}")
 
-                    # 构建标准VLESS链接
-                    param_str = '&'.join(params)
-                    name = urllib.parse.quote(proxy['name'])
-                    return f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name}"
+                        # 构建标准VLESS链接
+                        param_str = '&'.join(params)
+                        name = urllib.parse.quote(proxy['name'])
+                        return f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name}"
 
-                except Exception as e:
-                    print(f'VLESS 解码错误: {e}')  
+                    except Exception as e:
+                        print(f'VLESS 解码错误: {e}')  
                 
                 
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
