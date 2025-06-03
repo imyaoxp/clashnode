@@ -552,6 +552,7 @@ class sub_convert():
                         }
 
                     url_list.append(yaml_node)
+                    print(yaml_node)
         
                 except Exception as e:
                     print(f'VLESS 编码错误: {e}')
