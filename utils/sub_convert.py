@@ -859,8 +859,8 @@ class sub_convert():
                             'sni': proxy.get('sni', proxy.get('server', '0.0.0.0')),
                             'udp': proxy.get('udp', True),
                             'skip-cert-verify': proxy.get('skip-cert-verify', True),
-                            proxy.get('ws-opts', {}),  # 透传WebSocket配置
-                            proxy.get('grpc-opts', {})   # 透传gRPC配置
+                            **proxy.get('ws-opts', {}),  # 透传WebSocket配置
+                            **proxy.get('grpc-opts', {})   # 透传gRPC配置
                         }
 
                         # 构建查询参数
