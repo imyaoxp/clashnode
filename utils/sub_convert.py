@@ -880,7 +880,7 @@ class sub_convert():
                             if 'path' in ws_opts:
                                 vless_value['path'] = ws_opts['path']
                             if 'headers' in ws_opts and 'host' in ws_opts['headers']:
-                                                vless_value['host'] = ws_opts['headers']['host']
+                                vless_value['host'] = ws_opts['headers']['host']
                                 # 如果使用TLS但未设置sni，使用ws的host作为sni
                                 if proxy_config['tls'] and 'sni' not in vless_value:
                                     vless_value['sni'] = ws_opts['headers']['host']
