@@ -502,98 +502,98 @@ class sub_convert():
 
 
             if 'vless://' in line:
-            try:
-                # 提取基础部分
-                url_content = line.replace('vless://', '')
-                part_list = re.split('#', url_content, maxsplit=1)
-                if len(part_list) < 2:
-                    part_list.append('VLESS%20Node')
+                try:
+                    # 提取基础部分
+                    url_content = line.replace('vless://', '')
+                    part_list = re.split('#', url_content, maxsplit=1)
+                    if len(part_list) < 2:
+                        part_list.append('VLESS%20Node')
                 
-                yaml_url['name'] = urllib.parse.unquote(part_list[1])
-                server_part = part_list[0]
+                    yaml_url['name'] = urllib.parse.unquote(part_list[1])
+                    server_part = part_list[0]
                 
-                # 分割服务器和参数部分
-                if '?' in server_part:
-                    server_part, param_part = server_part.split('?', 1)
-                else:
-                    param_part = ''
+                    # 分割服务器和参数部分
+                    if '?' in server_part:
+                        server_part, param_part = server_part.split('?', 1)
+                    else:
+                        param_part = ''
                 
-                # 解析服务器部分 (uuid@server:port)
-                if '@' not in server_part:
-                    continue
+                    # 解析服务器部分 (uuid@server:port)
+                    if '@' not in server_part:
+                        continue
                 
                 uuid, server_info = server_part.split('@', 1)
                 if ':' not in server_info:
                     continue
                 
-                server, port = server_info.split(':', 1)
-                port = port.split('/')[0]  # 去除路径部分
+                    server, port = server_info.split(':', 1)
+                    port = port.split('/')[0]  # 去除路径部分
                 
-                # 设置基础参数
-                yaml_url.update({
-                    'server': server,
-                    'port': int(port),
-                    'type': 'vless',
-                    'uuid': uuid.lower(),
-                    'cipher': 'auto',
-                    'udp': True,
-                    'skip-cert-verify': True
-                })
+                    # 设置基础参数
+                    yaml_url.update({
+                        'server': server,
+                        'port': int(port),
+                        'type': 'vless',
+                        'uuid': uuid.lower(),
+                        'cipher': 'auto',
+                        'udp': True,
+                        'skip-cert-verify': True
+                    })
                 
-                # 解析查询参数
-                params = urllib.parse.parse_qs(param_part)
+                    # 解析查询参数
+                    params = urllib.parse.parse_qs(param_part)
                 
-                # 处理网络类型
-                network = params.get('type', ['tcp'])[0].lower()
-                yaml_url['network'] = network
+                    # 处理网络类型
+                    network = params.get('type', ['tcp'])[0].lower()
+                    yaml_url['network'] = network
                 
-                # 处理TLS
-                security = params.get('security', [''])[0].lower()
-                yaml_url['tls'] = security in ['tls', 'xtls']
+                    # 处理TLS
+                    security = params.get('security', [''])[0].lower()
+                    yaml_url['tls'] = security in ['tls', 'xtls']
                 
-                # 处理流控
-                if 'flow' in params:
-                    yaml_url['flow'] = params['flow'][0]
+                    # 处理流控
+                    if 'flow' in params:
+                        yaml_url['flow'] = params['flow'][0]
                 
-                # 处理SNI/主机名
-                if 'sni' in params:
-                    yaml_url['sni'] = params['sni'][0]
-                elif 'host' in params:
-                    yaml_url['sni'] = params['host'][0]
+                    # 处理SNI/主机名
+                    if 'sni' in params:
+                        yaml_url['sni'] = params['sni'][0]
+                    elif 'host' in params:
+                        yaml_url['sni'] = params['host'][0]
                 
-                # 处理路径 (默认为/)
-                path = params.get('path', ['/'])[0]
+                    # 处理路径 (默认为/)
+                    path = params.get('path', ['/'])[0]
                 
-                # 根据网络类型处理特殊参数
-                if network == 'ws':
-                    ws_opts = {'path': path}
-                    headers = {}
-                    if 'host' in params:
-                        headers['host'] = params['host'][0]
-                    elif 'sni' in yaml_url:
-                        headers['host'] = yaml_url['sni']
-                    else:
-                        headers['host'] = server
-                    ws_opts['headers'] = headers
-                    yaml_url['ws-opts'] = ws_opts
+                    # 根据网络类型处理特殊参数
+                    if network == 'ws':
+                        ws_opts = {'path': path}
+                        headers = {}
+                        if 'host' in params:
+                            headers['host'] = params['host'][0]
+                        elif 'sni' in yaml_url:
+                            headers['host'] = yaml_url['sni']
+                        else:
+                            headers['host'] = server
+                        ws_opts['headers'] = headers
+                        yaml_url['ws-opts'] = ws_opts
                 
-                elif network == 'grpc':
-                    service_name = params.get('serviceName', [path.lstrip('/')])[0]
-                    yaml_url['grpc-opts'] = {'grpc-service-name': service_name}
+                    elif network == 'grpc':
+                        service_name = params.get('serviceName', [path.lstrip('/')])[0]
+                        yaml_url['grpc-opts'] = {'grpc-service-name': service_name}
                 
-                elif network == 'h2':
-                    yaml_url['h2-opts'] = {
-                        'path': path,
-                        'host': [params.get('host', [server])[0]]
-                    }
+                    elif network == 'h2':
+                        yaml_url['h2-opts'] = {
+                            'path': path,
+                            'host': [params.get('host', [server])[0]]
+                        }
                 
-                url_list.append(yaml_url)
+                    url_list.append(yaml_url)
             
-            except Exception as err:
-                print(f'yaml_encode 解析 vless 节点发生错误: {err}')
-                print(f'问题行: {line}')
-                continue
-                    pass
+                except Exception as err:
+                    print(f'yaml_encode 解析 vless 节点发生错误: {err}')
+                    print(f'问题行: {line}')
+                    continue
+                        pass
                 
             
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
@@ -872,63 +872,63 @@ class sub_convert():
                     protocol_url.append(vmess_proxy)
 
                 elif proxy['type'] == 'vless':
-                try:
-                    # 基础信息
-                    vless_value = {
-                        'v': 2,
-                        'ps': proxy['name'],
-                        'add': proxy['server'],
-                        'port': proxy['port'],
-                        'id': proxy['uuid'],
-                        'scy': proxy.get('cipher', 'auto'),
-                        'net': proxy.get('network', 'tcp'),
-                        'type': '',
-                        'tls': 'tls' if proxy.get('tls', False) else ''
-                    }
+                    try:
+                        # 基础信息
+                        vless_value = {
+                            'v': 2,
+                            'ps': proxy['name'],
+                            'add': proxy['server'],
+                            'port': proxy['port'],
+                            'id': proxy['uuid'],
+                            'scy': proxy.get('cipher', 'auto'),
+                            'net': proxy.get('network', 'tcp'),
+                            'type': '',
+                            'tls': 'tls' if proxy.get('tls', False) else ''
+                        }
                     
-                    # 处理流控
-                    if 'flow' in proxy:
-                        vless_value['flow'] = proxy['flow']
+                        # 处理流控
+                        if 'flow' in proxy:
+                            vless_value['flow'] = proxy['flow']
                     
-                    # 处理TLS相关参数
-                    if proxy.get('tls', False):
-                        if 'sni' in proxy:
-                            vless_value['sni'] = proxy['sni']
-                        elif 'host' in proxy.get('ws-opts', {}).get('headers', {}):
-                            vless_value['sni'] = proxy['ws-opts']['headers']['host']
-                        elif 'host' in proxy.get('h2-opts', {}).get('host', []):
-                            vless_value['sni'] = proxy['h2-opts']['host'][0]
+                        # 处理TLS相关参数
+                        if proxy.get('tls', False):
+                            if 'sni' in proxy:
+                                vless_value['sni'] = proxy['sni']
+                            elif 'host' in proxy.get('ws-opts', {}).get('headers', {}):
+                                vless_value['sni'] = proxy['ws-opts']['headers']['host']
+                            elif 'host' in proxy.get('h2-opts', {}).get('host', []):
+                                vless_value['sni'] = proxy['h2-opts']['host'][0]
                     
-                    # 处理WebSocket配置
-                    if proxy.get('network') == 'ws':
-                        ws_opts = proxy.get('ws-opts', {})
-                        if 'path' in ws_opts:
-                            vless_value['path'] = ws_opts['path']
-                        if 'headers' in ws_opts and 'host' in ws_opts['headers']:
-                            vless_value['host'] = ws_opts['headers']['host']
+                        # 处理WebSocket配置
+                        if proxy.get('network') == 'ws':
+                            ws_opts = proxy.get('ws-opts', {})
+                            if 'path' in ws_opts:
+                                vless_value['path'] = ws_opts['path']
+                            if 'headers' in ws_opts and 'host' in ws_opts['headers']:
+                                vless_value['host'] = ws_opts['headers']['host']
                     
-                    # 处理gRPC配置
-                    elif proxy.get('network') == 'grpc':
-                        grpc_opts = proxy.get('grpc-opts', {})
-                        if 'grpc-service-name' in grpc_opts:
-                            vless_value['path'] = '/' + grpc_opts['grpc-service-name'].lstrip('/')
+                        # 处理gRPC配置
+                        elif proxy.get('network') == 'grpc':
+                            grpc_opts = proxy.get('grpc-opts', {})
+                            if 'grpc-service-name' in grpc_opts:
+                                vless_value['path'] = '/' + grpc_opts['grpc-service-name'].lstrip('/')
                     
-                    # 处理HTTP/2配置
-                    elif proxy.get('network') == 'h2':
-                        h2_opts = proxy.get('h2-opts', {})
-                        if 'path' in h2_opts:
-                            vless_value['path'] = h2_opts['path']
-                        if 'host' in h2_opts:
-                            vless_value['host'] = h2_opts['host'][0]
+                        # 处理HTTP/2配置
+                        elif proxy.get('network') == 'h2':
+                            h2_opts = proxy.get('h2-opts', {})
+                            if 'path' in h2_opts:
+                                vless_value['path'] = h2_opts['path']
+                            if 'host' in h2_opts:
+                                vless_value['host'] = h2_opts['host'][0]
                     
-                    # 生成最终URL
-                    vless_raw_proxy = json.dumps(vless_value, sort_keys=False, indent=2, ensure_ascii=False)
-                    vless_proxy = 'vless://' + sub_convert.base64_encode(vless_raw_proxy) + '\n'
-                    protocol_url.append(vless_proxy)
+                        # 生成最终URL
+                        vless_raw_proxy = json.dumps(vless_value, sort_keys=False, indent=2, ensure_ascii=False)
+                        vless_proxy = 'vless://' + sub_convert.base64_encode(vless_raw_proxy) + '\n'
+                        protocol_url.append(vless_proxy)
                 
-                except Exception as err:
-                    print(f'处理VLESS节点时出错: {err}')
-                    print(f'问题节点: {proxy}')
+                    except Exception as err:
+                        print(f'处理VLESS节点时出错: {err}')
+                        print(f'问题节点: {proxy}')
                     continue
                 
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
