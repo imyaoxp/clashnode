@@ -502,31 +502,58 @@ class sub_convert():
 
             if 'vless://' in line:
                 try:
-                    vless_data = line.replace('vless://', '')
-                    # 修复 Base64 填充
-                    vless_data += '=' * (-len(vless_data) % 4)
-                    vless_json = json.loads(base64_decode(vless_data.split('#')[0]))
-                
-                    # 提取 host（优先于 server）
-                    host = vless_json.get('host', vless_json['server'])
-                
+            
+                    # 分离基础部分和参数部分
+                    url_part = line.replace('vless://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
+        
+                    # 提取UUID和服务端信息
+                    uuid, server_port = base_part[0].split('@')
+                    server, port = server_port.replace('/','').split(':')[:2]
+        
+                    # 解析参数
+                    params = {}
+                    if len(base_part) > 1:
+                        for param in base_part[1].split('&'):
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                params[key] = val
+
+                    # 构建YAML节点
                     yaml_node = {
-                        'name': urllib.parse.unquote(vless_json.get('ps', 'Vless Node')),
-                        'server': vless_json['server'],
-                        'port': str(vless_json['port']),
+                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Unnamed',
+                        'server': server,
+                        'port': int(port),
                         'type': 'vless',
-                        'uuid': vless_json['id'],
-                        'cipher': vless_json.get('scy', 'auto'),
+                        'uuid': uuid,
+                        'cipher': 'auto',
                         'udp': True,
-                        'tls': vless_json.get('tls', False),
-                        'network': vless_json.get('net', 'tcp'),
-                        'ws-opts': {'headers': {'host': host}},  # 固定使用 host
-                        'sni': vless_json.get('sni', host)
+                        'network': params.get('type', 'tcp')
                     }
+
+                    # 处理TLS
+                    if params.get('security') == 'tls':
+                        yaml_node['tls'] = True
+                        yaml_node['servername'] = params.get('sni', '')
+
+                    # 处理WebSocket (host优先级: params.host > sni > server)
+                    if yaml_node['network'] == 'ws':
+                        host = params.get('host', '') or params.get('sni', '') or server
+                        yaml_node['ws-opts'] = {
+                            'path': params.get('path', '/'),
+                            'headers': {'host': host}
+                        }
+
+                    # 处理gRPC
+                    elif yaml_node['network'] == 'grpc':
+                        yaml_node['grpc-opts'] = {
+                            'grpc-service-name': params.get('serviceName', '')
+                        }
+
                     url_list.append(yaml_node)
-                except:
-                    print('VLESS 解析错误')
-                    continue
+
+                except Exception as e:
+                    print(f'VLESS 编码错误: {e}')    
 
         
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
@@ -805,29 +832,49 @@ class sub_convert():
                     protocol_url.append(vmess_proxy)
 
                 elif proxy['type'] == 'vless':
+                elif proxy['type'] == 'vless':
                     try:
-                        host = proxy['ws-opts']['headers']['host']  # 直接取 host
-                        vless_json = {
-                            'v': '2',
-                            'ps': proxy['name'],
-                            'add': proxy['server'],
-                            'port': proxy['port'],
-                            'id': proxy['uuid'],
-                            'scy': proxy['cipher'],
-                            'net': proxy['network'],
-                            'tls': proxy['tls'],
-                            'host': host,  # 固定使用 host
-                            'path': proxy['ws-opts'].get('path', '/'),
-                            'sni': proxy.get('sni', host)
-                        }
+                        # 基础参数
+                        params = [
+                        f"security={'tls' if proxy.get('tls') else 'none'}",
+                        f"type={proxy.get('network', 'tcp')}"
+                    ]
+
+                    # 处理TLS和SNI (优先级: sni > servername)
+                    if proxy.get('tls'):
+                        sni = proxy.get('sni') or proxy.get('servername', '')
+                        if sni:
+                            params.append(f"sni={sni}")
+
+                    # 处理WebSocket (host优先级: ws-opts.headers.host > sni > servername > server)
+                    if proxy.get('network') == 'ws':
+                        if 'ws-opts' in proxy:
+                            path = proxy['ws-opts'].get('path', '/')
+                            params.append(f"path={urllib.parse.quote(path)}")
                 
-                        # 生成 URL（去除填充符）
-                        json_data = json.dumps(vless_json).encode()
-                        base64_data = base64.b64encode(json_data).decode().rstrip('=')
-                        protocol_url.append(f'vless://{base64_data}#{proxy["name"]}\n')
-                    except:
-                        print('VLESS 生成错误')
-                        continue
+                            host = (
+                                proxy['ws-opts'].get('headers', {}).get('host', '')
+                                or proxy.get('sni', '')
+                                or proxy.get('servername', '')
+                                or proxy['server']
+                            )
+                            if host != proxy['server']:
+                                params.append(f"host={host}")
+
+                    # 处理gRPC
+                    elif proxy.get('network') == 'grpc':
+                        if 'grpc-opts' in proxy:
+                            service = proxy['grpc-opts'].get('grpc-service-name', '')
+                            if service:
+                                params.append(f"serviceName={service}")
+
+                    # 构建标准VLESS链接
+                    param_str = '&'.join(params)
+                    name = urllib.parse.quote(proxy['name'])
+                    return f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name}"
+
+                except Exception as e:
+                    print(f'VLESS 解码错误: {e}')  
                 
                 
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
