@@ -867,7 +867,7 @@ class sub_convert():
                         name = urllib.parse.quote(proxy['name'])
 
                         vless_proxy = str("vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{param_str}#{name}")
-                        protocol_url.append(vmlss_proxy)        
+                        protocol_url.append(vless_proxy)        
                     except Exception as e:
                         print(f'VLESS 解码错误: {e} | 节点: {proxy.get("name")}')
                         continue  
