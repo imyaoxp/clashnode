@@ -909,7 +909,7 @@ class sub_convert():
 
                         # 构建VMess JSON配置
                         vmess_raw = json.dumps(vmess_config, sort_keys=False, ensure_ascii=False)
-                        vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}#{urllib.parse.quote(proxy['name'])}\n"
+                        vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}\n"
                         protocol_url.append(vmess_proxy)
 
                     except Exception as e:
