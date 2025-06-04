@@ -502,6 +502,7 @@ class sub_convert():
 
             if 'vless://' in line:
                 try:
+                    print(line)
                     line = line.strip()
                     base_part, fragment = line.split('#', 1) if '#' in line else (line, '')
                     url_part = base_part.replace('vless://', '')
@@ -530,6 +531,8 @@ class sub_convert():
                     sni = params.get('sni', params.get('servername', [server]))[0].strip() or server
                 
                     # ------------------- 构建 YAML 节点 -------------------
+                    print(f'host:{host}')
+                    print(f'sni:{sni}')
                     yaml_node = {
                         'name': urllib.parse.unquote(fragment) if fragment else 'Vless Node',
                         'server': server,
