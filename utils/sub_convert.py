@@ -834,7 +834,7 @@ class sub_convert():
 
                 
                 elif proxy['type'] == 'vless':
-                if proxy['type'] == 'vless':
+                
                     try:
                         # 提取基础参数
                         uuid = proxy['uuid']
