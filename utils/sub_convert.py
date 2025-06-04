@@ -502,25 +502,34 @@ class sub_convert():
 
             if 'vless://' in line:
                 try:
-                    # 解析 VLESS 链接
                     line = line.strip()
                     base_part, fragment = line.split('#', 1) if '#' in line else (line, '')
                     url_part = base_part.replace('vless://', '')
                     auth_part, query_str = url_part.split('?', 1) if '?' in url_part else (url_part, '')
                 
-                    # 提取 UUID、服务器和端口
                     uuid, server_port = auth_part.split('@')
                     server, port = server_port.split(':', 1)
-                    port = port.replace('/', '')  # 保留原逻辑
+                    port = port.replace('/', '')
                 
-                    # 解析查询参数（兼容大小写）
-                    params = {}
-                    for param in query_str.split('&'):
-                        if '=' in param:
-                            k, v = param.split('=', 1)
-                            params[k.lower()] = v  # 统一转为小写键
+                    # 解析查询参数（保留原始大小写，用于判断 Host/SNI）
+                    params = urllib.parse.parse_qs(query_str, keep_blank_values=True)  # 保留原始键大小写
                 
-                    # 构建 YAML 节点
+                    # ------------------- 提取 host 和 sni -------------------
+                    # 1. 优先从参数中获取 host（兼容 Host/host）
+                    host = None
+                    for key in ['Host', 'host']:  # 先匹配大写 Host（协议规范）
+                        if key in params and len(params[key]) > 0:
+                            host = params[key][0].strip()
+                            break
+                    # 2. 若无 host，从 sni/servername 获取
+                    if not host:
+                        sni = params.get('sni', params.get('servername', [server]))[0].strip()
+                        host = sni if sni else server  # 最后兜底为 server
+                
+                    # 3. 提取 sni（优先 sni，其次 servername）
+                    sni = params.get('sni', params.get('servername', [server]))[0].strip() or server
+                
+                    # ------------------- 构建 YAML 节点 -------------------
                     yaml_node = {
                         'name': urllib.parse.unquote(fragment) if fragment else 'Vless Node',
                         'server': server,
@@ -529,32 +538,26 @@ class sub_convert():
                         'uuid': uuid,
                         'cipher': 'auto',
                         'udp': True,
-                        'skip-cert-verify': True,  # 新增默认配置
+                        'skip-cert-verify': True,
+                        'sni': sni,  # 显式设置 sni
                     }
                 
-                    # 处理网络类型（tcp/ws/grpc/h2）
-                    network = params.get('type', 'tcp')
+                    network = params.get('type', ['tcp'])[0].lower()
                     yaml_node['network'] = network if network in ['tcp', 'ws', 'grpc', 'h2'] else 'tcp'
+                    yaml_node['tls'] = 'security' in params and params['security'][0].lower() == 'tls'
                 
-                    # 处理 TLS（security=tls 时启用）
-                    yaml_node['tls'] = params.get('security') == 'tls'
-                
-                    # 处理 WebSocket 配置
+                    # 处理 WebSocket 的 headers
                     if network == 'ws':
                         ws_opts = {
-                            'path': params.get('path', '/'),
-                            'headers': {'host': params.get('host', server)}  # 兼容 host/Host
+                            'path': params.get('path', ['/'])[0],
+                            'headers': {'host': host}  # 使用最终确定的 host
                         }
                         yaml_node['ws-opts'] = ws_opts
-                
-                    # 处理 gRPC 配置（示例）
-                    if network == 'grpc':
-                        yaml_node['grpc-opts'] = {'service-name': params.get('serviceName', 'grpc')}
                 
                     url_list.append(yaml_node)
             
                 except Exception as err:
-                    print(f'yaml_encode 解析 VLESS 节点错误: {err} | 原始行: {line}')
+                    print(f'yaml_encode VLESS 错误: {err} | 行: {line}')
                     continue
         
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' not in line:
@@ -834,42 +837,45 @@ class sub_convert():
 
                 
                 elif proxy['type'] == 'vless':
-                
                     try:
-                        # 提取基础参数
                         uuid = proxy['uuid']
                         server = proxy['server']
                         port = proxy['port']
                         name = proxy['name']
                         network = proxy.get('network', 'tcp')
                         tls = proxy.get('tls', False)
+                        sni = proxy.get('sni', server)  # 若无 sni，默认 server
             
-                       # 构建查询参数
                         params = {
                             'type': network,
                             'security': 'tls' if tls else 'none',
+                            'sni': sni,  # 写入 sni 参数
                         }
             
-                        # 添加 WebSocket 参数
+                        # 处理 WebSocket 的 host 和 path
                         if network == 'ws' and 'ws-opts' in proxy:
                             ws_opts = proxy['ws-opts']
                             params['path'] = ws_opts.get('path', '/')
-                            if 'host' in ws_opts:
-                                params['host'] = ws_opts['host']
+                            # host 优先从 ws-opts.headers 获取，否则用 sni/server
+                            host = ws_opts['headers'].get('host', sni or server)
+                            params['host'] = host  # 同时影响 headers 和 query 参数
             
-                        # 添加 gRPC 参数（示例）
+                        # 处理 gRPC 的 service-name
                         if network == 'grpc' and 'grpc-opts' in proxy:
                             params['serviceName'] = proxy['grpc-opts'].get('service-name', 'grpc')
             
-                        # 拼接查询字符串
-                        query_str = '&'.join([f"{k}={v}" for k, v in params.items() if v])
+                        # 拼接查询字符串（保留原始参数顺序）
+                        query_parts = []
+                        for key in ['security', 'type', 'sni', 'host', 'path', 'serviceName']:
+                            if key in params and params[key]:
+                                query_parts.append(f"{key}={params[key]}")
+                        query_str = '&'.join(query_parts)
             
-                        # 生成 VLESS 链接
                         vless_proxy = f"vless://{uuid}@{server}:{port}?{query_str}#{urllib.parse.quote(name)}"
                         protocol_url.append(vless_proxy + '\n')
         
                     except Exception as e:
-                        print(f'VLESS 解码错误: {e} | 节点名称: {proxy.get("name", "未命名")}')
+                        print(f'VLESS 解码错误: {e} | 节点: {name}')
                         continue
                 
                 
