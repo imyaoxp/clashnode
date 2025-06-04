@@ -516,7 +516,7 @@ class sub_convert():
                     print(vmess_config)
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
                     
-                    pass
+                    continue
 
             if 'vless://' in line:
                 try:
@@ -647,7 +647,7 @@ class sub_convert():
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误1: {err}')
-                    pass
+                    continue
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line and 'lugin' in line:
                 if '#' not in line:
                     line = line + 'SS%20Node'
@@ -720,7 +720,7 @@ class sub_convert():
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
                     #print(line)
-                    pass
+                    continue
 
 
 
@@ -787,7 +787,7 @@ class sub_convert():
                 except Exception as err:
                     print(f'yaml_encode 解析 ssr 节点发生错误: {err}')
                     print(yaml_url)
-                    pass
+                    continue
 
 
 
@@ -832,7 +832,7 @@ class sub_convert():
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
-                    pass
+                    continue
 
         yaml_content_dic = {'proxies': url_list}
         yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2)
