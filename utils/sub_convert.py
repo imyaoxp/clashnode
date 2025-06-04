@@ -502,6 +502,14 @@ class sub_convert():
 
             if 'vless://' in line:
                 try:
+                    # 分离基础部分和参数部分
+                    url_part = line.replace('vless://', '').split('#', 1)  # 分割#后的备注部分
+                    base_part = url_part[0].split('?', 1)  # 分割?前的核心部分和参数部分
+
+                    # 提取UUID和服务端信息
+                    uuid, server_port = base_part[0].split('@')
+                    server, port = server_port.replace('/','').split(':')[:2]
+
                     # 参数解析（保留原始大小写）
                     raw_params = {}
                     if len(base_part) > 1:
