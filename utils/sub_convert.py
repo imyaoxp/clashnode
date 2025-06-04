@@ -865,51 +865,52 @@ class sub_convert():
                 #proxy = (proxy)
                 
                 if proxy['type'] == 'vmess' : # Vmess 节点提取, 由 Vmess 所有参数 dump JSON 后 base64 得来。
-    
-                    # 提取基础配置，给 network 设默认值
-                    network_type = proxy.get('network', 'ws').lower()  
-                    vmess_config = {
-                        'v': 2,
-                        'ps': proxy['name'],
-                        'add': proxy['server'],
-                        'port': proxy['port'],
-                        'id': proxy['uuid'],
-                        'aid': proxy['alterId'],
-                        'scy': proxy['cipher'],
-                        'net': network_type,  # 用默认或已有值
-                        'tls': proxy.get('tls', False),
-                        'sni': proxy.get('sni', proxy['server'])
-                    }
+                           
+                    try:
+                        # 提取基础配置，给 network 设默认值
+                        network_type = proxy.get('network', 'ws').lower()  
+                        vmess_config = {
+                            'v': 2,
+                            'ps': proxy['name'],
+                            'add': proxy['server'],
+                            'port': proxy['port'],
+                            'id': proxy['uuid'],
+                            'aid': proxy['alterId'],
+                            'scy': proxy['cipher'],
+                            'net': network_type,  # 用默认或已有值
+                            'tls': proxy.get('tls', False),
+                            'sni': proxy.get('sni', proxy['server'])
+                        }
 
-                    # 处理不同传输方式的参数
-                    if network_type == 'ws':
-                        ws_opts = proxy.get('ws-opts', {})
-                        vmess_config.update({
-                            'host': ws_opts.get('host', proxy['server']),
-                            'path': ws_opts.get('path', '/')
-                        })
-                    elif network_type == 'grpc':
-                        grpc_opts = proxy.get('grpc-opts', {})
-                        vmess_config['type'] = grpc_opts.get('grpc-service-name', '')  # gRPC服务名
-                    elif network_type == 'h2':
-                        h2_opts = proxy.get('h2-opts', {})
-                        vmess_config.update({
-                            'host': h2_opts.get('host', [proxy['server']]),  # 支持多host列表
-                            'path': h2_opts.get('path', '/')
-                        })
-                    elif network_type == 'tcp':
-                        tcp_opts = proxy.get('tcp-opts', {})
-                        if tcp_opts:  # 存在TCP伪装头时
+                        # 处理不同传输方式的参数
+                        if network_type == 'ws':
+                            ws_opts = proxy.get('ws-opts', {})
                             vmess_config.update({
-                                'type': 'http',  # 伪装类型固定为http
-                                'host': tcp_opts.get('headers', {}).get('host', proxy['server']),
-                                'path': tcp_opts.get('path', '/')
+                                'host': ws_opts.get('host', proxy['server']),
+                                'path': ws_opts.get('path', '/')
                             })
+                        elif network_type == 'grpc':
+                            grpc_opts = proxy.get('grpc-opts', {})
+                            vmess_config['type'] = grpc_opts.get('grpc-service-name', '')  # gRPC服务名
+                        elif network_type == 'h2':
+                            h2_opts = proxy.get('h2-opts', {})
+                            vmess_config.update({
+                                'host': h2_opts.get('host', [proxy['server']]),  # 支持多host列表
+                                'path': h2_opts.get('path', '/')
+                            })
+                        elif network_type == 'tcp':
+                            tcp_opts = proxy.get('tcp-opts', {})
+                            if tcp_opts:  # 存在TCP伪装头时
+                                vmess_config.update({
+                                    'type': 'http',  # 伪装类型固定为http
+                                    'host': tcp_opts.get('headers', {}).get('host', proxy['server']),
+                                    'path': tcp_opts.get('path', '/')
+                                })
 
-                    # 构建VMess JSON配置
-                    vmess_raw = json.dumps(vmess_config, sort_keys=False, ensure_ascii=False)
-                    vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}#{urllib.parse.quote(proxy['name'])}\n"
-                    protocol_url.append(vmess_proxy)
+                        # 构建VMess JSON配置
+                        vmess_raw = json.dumps(vmess_config, sort_keys=False, ensure_ascii=False)
+                        vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}#{urllib.parse.quote(proxy['name'])}\n"
+                        protocol_url.append(vmess_proxy)
 
                     except Exception as e:
                         print(f'VMess解码错误: {e} | 节点: {proxy.get("name", "未知")}')
