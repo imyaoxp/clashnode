@@ -911,9 +911,9 @@ class sub_convert():
                     vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}#{urllib.parse.quote(proxy['name'])}\n"
                     protocol_url.append(vmess_proxy)
 
-                except Exception as e:
-                    print(f'VMess解码错误: {e} | 节点: {proxy.get("name", "未知")}')
-                    continue
+                    except Exception as e:
+                        print(f'VMess解码错误: {e} | 节点: {proxy.get("name", "未知")}')
+                        continue
 
 
 
