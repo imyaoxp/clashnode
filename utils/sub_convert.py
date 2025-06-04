@@ -524,11 +524,11 @@ class sub_convert():
                             break
                     # 2. 若无 host，从 sni/servername 获取
                     if not host:
-                        sni = params.get('sni', params.get('servername', [server]))[0].strip()
-                        host = sni if sni else server  # 最后兜底为 server
+                        servername = params.get('sni', params.get('servername', [server]))[0].strip()
+                        host = servername if servername else server  # 最后兜底为 server
                 
                     # 3. 提取 sni（优先 sni，其次 servername）
-                    sni = params.get('sni', params.get('servername', [server]))[0].strip() or server
+                    servername = params.get('sni', params.get('servername', [server]))[0].strip() or server
                 
                     # ------------------- 构建 YAML 节点 -------------------
                     print(f'host:{host}')
@@ -542,7 +542,7 @@ class sub_convert():
                         'cipher': 'auto',
                         'udp': True,
                         'skip-cert-verify': True,
-                        'sni': sni,  # 显式设置 sni
+                        'servername': servername,  # 显式设置 servername
                     }
                 
                     network = params.get('type', ['tcp'])[0].lower()
