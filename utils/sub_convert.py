@@ -452,47 +452,58 @@ class sub_convert():
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
                     vmess_default_config = {
                         'v': 'Vmess Node', 'ps': 'Vmess Node', 'add': '0.0.0.0', 'port': 0, 'id': '',
-                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vmess_json_config['add'], 'path': '/', 'tls': ''
+                        'aid': 0, 'scy': 'auto', 'net': '', 'type': '', 'host': vmess_json_config.get('add', ''), 
+                        'path': '/', 'tls': False, 'network': 'ws',  # 新增默认传输方式
+                        'grpc-opts': {}, 'h2-opts': {}, 'tcp-opts': {}  # 新增传输方式配置
                     }
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
 
-                    yaml_url = {}
-                    #yaml_config_str = ['name', 'server', 'port', 'type', 'uuid', 'alterId', 'cipher', 'tls', 'skip-cert-verify', 'network', 'ws-path', 'ws-headers']
-                    #vmess_config_str = ['ps', 'add', 'port', 'id', 'aid', 'scy', 'tls', 'net', 'host', 'path']
-                    # 生成 yaml 节点字典
-                    if vmess_config['id'] == '' or len(vmess_config['id']) != 36 or vmess_config['id'] is None :
+                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
                         print('节点格式错误')
-                    else:
-                        server_port=str(vmess_config['port']).replace('/', '')
-                        yaml_url.setdefault('name', urllib.parse.unquote(str(vmess_config['ps'])))
-                        yaml_url.setdefault('server', vmess_config['add'])
-                        yaml_url.setdefault('port', server_port)
-                        yaml_url.setdefault('type', 'vmess')
-                        yaml_url.setdefault('uuid', vmess_config['id'].lower())
-                        yaml_url.setdefault('alterId', vmess_config['aid'])
-                        yaml_url.setdefault('cipher', vmess_config['scy'])
-                        yaml_url.setdefault('skip-cert-vertify', True)
-                        if vmess_config['net'] == '' or vmess_config['net'] is False or vmess_config['net'] is None:
-                            yaml_url.setdefault('network', 'ws')
-                        else:
-                            yaml_url.setdefault('network', vmess_config['net'])
+                        continue
 
-                        if vmess_config['tls'] is True or vmess_config['net'] == 'h2' or vmess_config['net'] == 'grpc' or vmess_config['net'] == 'http':
-                            yaml_url.setdefault('network', 'ws')
-                            yaml_url.setdefault('tls', True)
-                        else:
-                            yaml_url.setdefault('tls', False)
-                        if vmess_config['host'] == '' or vmess_config['host'] is None:
-                            yaml_url.setdefault('ws-opts',{'path':vmess_config['path'], 'headers': {'host': vmess_config['add']}})
-                        else:    
-                            yaml_url.setdefault('ws-opts',{'path':vmess_config['path'], 'headers': {'host': vmess_config['host']}})
-                        yaml_url.setdefault('udp', True)
-                        #yaml_url=str(yaml_url)
-                        #yaml_url=yaml_url.replace('"',''')
-                        #yaml_rul=eval(yaml_url)
+                    server_port = str(vmess_config['port']).replace('/', '')
+                    yaml_url = {  # 构建节点字典
+                        'name': urllib.parse.unquote(str(vmess_config.get('ps', ''))),
+                        'server': vmess_config['add'],
+                        'port': server_port,
+                        'type': 'vmess',
+                        'uuid': vmess_config['id'].lower(),
+                        'alterId': vmess_config['aid'],
+                        'cipher': vmess_config['scy'],
+                        'skip-cert-verify': True,
+                        'udp': True
+                    }
 
-                        url_list.append(yaml_url)
+                    # 处理不同传输方式
+                    network_type = vmess_config.get('net', 'ws').lower()
+                    if network_type == 'ws':
+                        yaml_url['network'] = 'ws'
+                        headers = {'host': vmess_config.get('host', vmess_config['add'])}
+                        if 'path' in vmess_config:
+                            headers['path'] = vmess_config['path']
+                        yaml_url['ws-opts'] = headers
+                    elif network_type == 'grpc':
+                        yaml_url['network'] = 'grpc'
+                        yaml_url['grpc-opts'] = {'grpc-service-name': vmess_config.get('type', '')}
+                    elif network_type == 'h2':
+                        yaml_url['network'] = 'h2'
+                        yaml_url['h2-opts'] = {
+                            'host': vmess_config.get('host', [vmess_config['add']]),
+                            'path': vmess_config.get('path', '/')
+                        }
+                    elif network_type == 'tcp':
+                        yaml_url['network'] = 'tcp'
+                        if 'type' in vmess_config:  # 处理TCP伪装
+                            yaml_url['tcp-opts'] = {
+                                'headers': {'host': vmess_config.get('host', vmess_config['add'])},
+                                'path': vmess_config.get('path', '/')
+                            }
+
+                    # 处理TLS配置
+                    yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
+                    url_list.append(yaml_url)  # 正确添加 yaml_url 到列表
                         
                 except Exception as err:
                     print(vmess_config)
@@ -846,34 +857,58 @@ class sub_convert():
                 #proxy = proxy.replace('"',''')
                 #proxy = (proxy)
                 
-                if proxy['type'] == 'vmess' and 'ws-opts' in proxy and 'headers' in proxy['ws-opts'] and 'host' in proxy['ws-opts']['headers'] and 'path' in proxy['ws-opts']: # Vmess 节点提取, 由 Vmess 所有参数 dump JSON 后 base64 得来。
+                if proxy['type'] == 'vmess' : # Vmess 节点提取, 由 Vmess 所有参数 dump JSON 后 base64 得来。
+                    try:
+                        # 提取基础配置
+                        vmess_config = {
+                            'v': 2,
+                            'ps': proxy['name'],
+                            'add': proxy['server'],
+                            'port': proxy['port'],
+                            'id': proxy['uuid'],
+                            'aid': proxy['alterId'],
+                            'scy': proxy['cipher'],
+                            'net': proxy.get('network', 'ws'),  # 优先使用配置中的network
+                            'tls': proxy.get('tls', False),
+                            'sni': proxy.get('sni', proxy['server'])
+                        }
 
-                    yaml_default_config = {
-                        'name': 'Vmess Node', 'server': '0.0.0.0', 'port': 0, 'uuid': '', 'alterId': 0,
-                        'cipher': 'auto', 'network': '', 'tls':'False',
-                        'sni': ''
-                    }
+                        # 处理不同传输方式的参数
+                        if proxy['network'] == 'ws':
+                            ws_opts = proxy['ws-opts']
+                            vmess_config.update({
+                                'net': 'ws',
+                                'host': ws_opts.get('host', proxy['server']),
+                                'path': ws_opts.get('path', '/')
+                            })
+                        elif proxy['network'] == 'grpc':
+                            grpc_opts = proxy.get('grpc-opts', {})
+                            vmess_config.update({
+                                'net': 'grpc',
+                                'type': grpc_opts.get('grpc-service-name', '')  # gRPC服务名
+                            })
+                        elif proxy['network'] == 'h2':
+                            h2_opts = proxy.get('h2-opts', {})
+                            vmess_config.update({
+                                'net': 'h2',
+                                'host': h2_opts.get('host', [proxy['server']]),  # 支持多host列表
+                                'path': h2_opts.get('path', '/')
+                            })
+                        elif proxy['network'] == 'tcp':
+                            tcp_opts = proxy.get('tcp-opts', {})
+                            if tcp_opts:  # 存在TCP伪装头时
+                                vmess_config.update({
+                                    'net': 'tcp',
+                                    'type': 'http',  # 伪装类型固定为http
+                                    'host': tcp_opts.get('headers', {}).get('host', proxy['server']),
+                                    'path': tcp_opts.get('path', '/')
+                                })
 
-                    yaml_default_config.update(proxy)
-                    proxy_config = yaml_default_config
-                    if  proxy['network'] != 'grpc' and proxy['network'] != 'h2' :
-                        vmess_value = {
-                            'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
-                            'port': proxy_config['port'], 'id': proxy_config['uuid'], 'aid': proxy_config['alterId'],
-                            'scy': proxy_config['cipher'], 'net': proxy_config['network'], 'type': None, 'host': proxy['ws-opts']['headers']['host'],
-                            'path': proxy['ws-opts']['path'], 'tls': proxy_config['tls'], 'sni': proxy_config['sni']
-                            }
-                    else:
-                        vmess_value = {
-                            'v': 2, 'ps': proxy_config['name'], 'add': proxy_config['server'],
-                            'port': proxy_config['port'], 'id': proxy_config['uuid'], 'aid': proxy_config['alterId'],
-                            'scy': proxy_config['cipher'], 'net': 'ws', 'type': None, 'host': proxy['ws-opts']['headers']['host'],
-                            'path': proxy['ws-opts']['path'], 'tls': proxy_config['tls'], 'sni': proxy_config['sni']
-                             }
+                        # 构建VMess JSON配置
+                        vmess_raw = json.dumps(vmess_config, sort_keys=False, ensure_ascii=False)
+                        vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}#{urllib.parse.quote(proxy['name'])}\n"
+                        protocol_url.append(vmess_proxy)
 
-                    vmess_raw_proxy = json.dumps(vmess_value, sort_keys=False, indent=2, ensure_ascii=False)
-                    vmess_proxy = str('vmess://' + sub_convert.base64_encode(vmess_raw_proxy) + '\n')
-                    protocol_url.append(vmess_proxy)
 
                 
                 elif proxy['type'] == 'vless':
