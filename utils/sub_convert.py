@@ -847,7 +847,7 @@ class sub_convert():
                         name = proxy['name']
                         network = proxy.get('network', 'tcp')
                         tls = proxy.get('tls', False)
-                        sni = proxy.get('sni', server)  # 若无 sni，默认 server
+                        sni = proxy.get('sni', '') or proxy.get('servername', server)  # 若无 sni，默认 server
             
                         params = {
                             'type': network,
