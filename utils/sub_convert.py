@@ -524,7 +524,7 @@ class sub_convert():
                     yaml_node = {
                         'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Unnamed',
                         'server': server,
-                        'port': port,
+                        'port': str(port),
                         'type': 'vless',
                         'uuid': uuid,
                         'cipher': 'auto',
