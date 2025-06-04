@@ -585,7 +585,7 @@ class sub_convert():
                         )
                         yaml_node['ws-opts'] = {
                             'path': get_param_priority('path', 'Path', 'PATH', default='/'),
-                            'headers': {'host': ws_host}
+                            'headers': {'Host': ws_host}
                         }
         
                     # 2. gRPC处理
@@ -597,7 +597,7 @@ class sub_convert():
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
                         yaml_node['h2-opts'] = {
-                            'host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
+                            'Host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
                             'path': get_param_priority('path', 'Path', 'PATH', default='/')
                         }
         
