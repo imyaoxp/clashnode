@@ -532,7 +532,7 @@ class sub_convert():
                 
                     # ------------------- 构建 YAML 节点 -------------------
                     print(f'host:{host}')
-                    print(f'sni:{sni}')
+                    print(f'servername:{servername}')
                     yaml_node = {
                         'name': urllib.parse.unquote(fragment) if fragment else 'Vless Node',
                         'server': server,
@@ -847,7 +847,7 @@ class sub_convert():
                         name = proxy['name']
                         network = proxy.get('network', 'tcp')
                         tls = proxy.get('tls', False)
-                        sni = proxy.get('sni', '') or proxy.get('servername', server)  # 若无 sni，默认 server
+                        sni = proxy.get('servername', '') or proxy.get('sni', server)  # 若无 sni，默认 server
             
                         params = {
                             'type': network,
@@ -865,7 +865,7 @@ class sub_convert():
             
                         # 处理 gRPC 的 service-name
                         if network == 'grpc' and 'grpc-opts' in proxy:
-                            params['serviceName'] = proxy['grpc-opts'].get('service-name', 'grpc')
+                            params['servicename'] = proxy['grpc-opts'].get('service-name', 'grpc')
             
                         # 拼接查询字符串（保留原始参数顺序）
                         query_parts = []
