@@ -1003,8 +1003,8 @@ class sub_convert():
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
                 
                     try:
-                        # 基础信息
-                        ss_base64 = base64_encode(f"{proxy['cipher']}:{proxy['password']}")
+                        # 使用原有代码中的 base64_encode 方法
+                        ss_base64 = sub_convert.base64_encode(f"{proxy['cipher']}:{proxy['password']}")
                         name_encoded = urllib.parse.quote(proxy['name'])
                     
                         # 无插件的情况
@@ -1031,27 +1031,6 @@ class sub_convert():
                                     plugin_params.append(f"path={plugin_opts['path']}")
                                 if plugin_opts.get('tls'):
                                     plugin_params.append("tls")
-                        
-                            # simple-tls 插件
-                            elif proxy['plugin'] == 'simple-tls':
-                                if plugin_opts.get('sni'):
-                                    plugin_params.append(f"sni={plugin_opts['sni']}")
-                            
-                            # kcptun 插件
-                            elif proxy['plugin'] == 'kcptun':
-                                plugin_params.append(f"mode={plugin_opts.get('mode', 'fast')}")
-                                if plugin_opts.get('key'):
-                                    plugin_params.append(f"key={plugin_opts['key']}")
-                        
-                            # xray-plugin 插件
-                            elif proxy['plugin'] == 'xray-plugin':
-                                plugin_params.append("mode=websocket")
-                                if plugin_opts.get('host'):
-                                    plugin_params.append(f"host={plugin_opts['host']}")
-                                if plugin_opts.get('path'):
-                                    plugin_params.append(f"path={plugin_opts['path']}")
-                                if plugin_opts.get('tls'):
-                                    plugin_params.append("tls")
 
                             # 编码插件参数
                             plugin_str = urllib.parse.quote(';'.join(plugin_params))
@@ -1062,10 +1041,6 @@ class sub_convert():
                     except Exception as err:
                         print(f'SS生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
-
-
-
-
 
 
                 
