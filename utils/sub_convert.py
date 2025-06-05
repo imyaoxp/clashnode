@@ -751,11 +751,11 @@ class sub_convert():
                                     config['obfs'] = val
                                 elif key == 'obfs-password' and val:
                                     config['obfs-password'] = val
-                                elif key == 'insecure' and val == '1':
-                                    config['skip-cert-verify'] = True
+                                
+                                
                                 elif key == 'alpn' and val:
                                     config['alpn'] = val.split(',')
-                
+                                
                     # 添加节点名称
                     config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2'
                 
