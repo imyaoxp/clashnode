@@ -583,10 +583,12 @@ class sub_convert():
                             sni or
                             server
                         )
+
                         yaml_node['ws-opts'] = {
                             'path': get_param_priority('path', 'Path', 'PATH', default='/'),
-                            'headers': {'Host': ws_host}
+                            'headers': f'{{"Host": "{ws_host}"}}'  # 直接构造字符串，避免 PyYAML 处理
                         }
+                        
         
                     # 2. gRPC处理
                     elif network_type == 'grpc':
