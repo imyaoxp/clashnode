@@ -720,53 +720,52 @@ class sub_convert():
 
             if 'hy2://' in line:
                 try:
+                    # 提取基础信息
                     url_part = line.replace('hy2://', '').split('#', 1)
                     base_part = url_part[0].split('?', 1)
                 
-                    # 提取基础信息
-                    auth_server = base_part[0].split('@')
-                    if len(auth_server) == 2:
-                        auth, server_port = auth_server
-                        server, port = server_port.split(':')[:2]
-                    else:
-                        server_port = auth_server[0]
-                        server, port = server_port.split(':')[:2]
-                        auth = ""
+                    # 处理认证信息
+                    auth_server = base_part[0].rsplit('@', 1)
+                    auth = auth_server[0] if len(auth_server) == 2 else ""
+                    server, port = auth_server[-1].split(':')[:2]
 
-                    # 处理参数
-                    params = {}
-                    if len(base_part) > 1:
-                        for param in base_part[1].split('&'):
-                            if '=' in param:
-                                key, val = param.split('=', 1)
-                                params[key.lower()] = val
-
-                    # 构建节点配置
-                    yaml_url.update({
-                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2',
+                    # 初始化配置
+                    config = {
                         'type': 'hysteria2',
                         'server': server,
                         'port': int(port),
                         'password': auth,
-                        'sni': params.get('sni', ''),
-                        'obfs': params.get('obfs', 'none'),
-                        'obfs-password': params.get('obfs-password', ''),
-                        'skip-cert-verify': params.get('insecure', '0') == '1',
-                    })
+                        'skip-cert-verify': True  # 默认值
+                    }
 
-                    # 可选参数处理
-                    if 'alpn' in params:
-                        yaml_url['alpn'] = params['alpn'].split(',')
-                    if 'up' in params:
-                        yaml_url['up'] = params['up']
-                    if 'down' in params:
-                        yaml_url['down'] = params['down']
+                    # 处理参数（只保留有效参数）
+                    if len(base_part) > 1:
+                        for param in base_part[1].split('&'):
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                key = key.lower()
+                            
+                                if key == 'sni' and val:
+                                    config['sni'] = val
+                                elif key == 'obfs' and val:
+                                    config['obfs'] = val
+                                elif key == 'obfs-password' and val:
+                                    config['obfs-password'] = val
+                                elif key == 'insecure' and val == '1':
+                                    config['skip-cert-verify'] = True
+                                elif key == 'alpn' and val:
+                                    config['alpn'] = val.split(',')
                 
-                    url_list.append(yaml_url)
+                    # 添加节点名称
+                    config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2'
                 
+                    url_list.append(config)
+
                 except Exception as err:
-                    print(f'Hysteria2 解析错误: {err}')
+                    print(f'HY2解析错误: {err} | 内容: {line[:50]}...')
                     continue
+
+  
                 
             if 'ssr://' in line:
                 try:
@@ -1150,33 +1149,33 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria2':
                     try:
                         # 基础部分
-                        auth_part = f"{proxy.get('password', '')}@" if proxy.get('password') else ""
+                        auth_part = f"{proxy['password']}@" if proxy.get('password') else ""
                         base_url = f"hy2://{auth_part}{proxy['server']}:{proxy['port']}"
-                
-                        # 参数部分
+                    
+                        # 参数处理（只添加有效参数）
                         params = []
+                    
                         if proxy.get('sni'):
                             params.append(f"sni={proxy['sni']}")
-                        if proxy.get('obfs'):
+                    
+                        if proxy.get('obfs') and proxy.get('obfs-password'):
                             params.append(f"obfs={proxy['obfs']}")
-                            if proxy.get('obfs-password'):
-                                params.append(f"obfs-password={proxy['obfs-password']}")
+                        
+                            params.append(f"obfs-password={proxy['obfs-password']}")
+                    
                         if proxy.get('skip-cert-verify'):
                             params.append("insecure=1")
+                    
                         if proxy.get('alpn'):
-                            params.append(f"alpn={','.join(proxy['alpn'])}")
-                        if proxy.get('up'):
-                            params.append(f"up={proxy['up']}")
-                        if proxy.get('down'):
-                            params.append(f"down={proxy['down']}")
-                
-                        # 组合URL
+                            params.append(f"alpn={','.join(proxy['alpn']) if isinstance(proxy['alpn'], list) else proxy['alpn']}")
+                    
+                        # 组合最终URL
                         param_str = '?' + '&'.join(params) if params else ''
                         hy2_url = f"{base_url}{param_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(hy2_url + '\n')
-                
+
                     except Exception as err:
-                        print(f'Hysteria2 生成错误: {err}')
+                        print(f'HY2生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
 
 
