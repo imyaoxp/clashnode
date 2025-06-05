@@ -584,10 +584,11 @@ class sub_convert():
                             server
                         )
 
-                        yaml_node['ws-opts'] = {
-                            'path': get_param_priority('path', 'Path', 'PATH', default='/'),
-                            'headers': f'{{"Host": "{ws_host}"}}'  # 直接构造字符串，避免 PyYAML 处理
-                        }
+                        #yaml_node['ws-opts'] = {
+                        #    'path': get_param_priority('path', 'Path', 'PATH', default='/'),
+                        #    'headers': f'{{"Host": "{ws_host}"}}'  # 直接构造字符串，避免 PyYAML 处理
+                        #}
+                        yaml_node.setdefault('ws-opts',{'path':get_param_priority('path', 'Path', 'PATH', default='/'), 'headers': {'Host': {ws_host}})
                         
         
                     # 2. gRPC处理
