@@ -820,7 +820,7 @@ class sub_convert():
                             yaml_url['ws-opts'] = {
                                 'path': param_dict.get('path', '/'),
                                 'headers': {'host': param_dict.get('host', param_dict.get('sni', yaml_url['server']))}
-            
+                            }
                         # gRPC 配置
                         elif network_type == 'grpc':
                             yaml_url['grpc-opts'] = {
