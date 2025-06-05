@@ -749,7 +749,7 @@ class sub_convert():
                         'port': int(port),
                         'password': auth,
                         'sni': params.get('sni', ''),
-                        'obfs': params.get('obfs', ''),
+                        'obfs': params.get('obfs', 'none'),
                         'obfs-password': params.get('obfs-password', ''),
                         'skip-cert-verify': params.get('insecure', '0') == '1',
                     })
