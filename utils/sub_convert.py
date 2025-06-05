@@ -718,9 +718,56 @@ class sub_convert():
 
 
 
+            if 'hy2://' in line:
+                try:
+                    url_part = line.replace('hy2://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
+                
+                    # 提取基础信息
+                    auth_server = base_part[0].split('@')
+                    if len(auth_server) == 2:
+                        auth, server_port = auth_server
+                        server, port = server_port.split(':')[:2]
+                    else:
+                        server_port = auth_server[0]
+                        server, port = server_port.split(':')[:2]
+                        auth = ""
 
+                    # 处理参数
+                    params = {}
+                    if len(base_part) > 1:
+                        for param in base_part[1].split('&'):
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                params[key.lower()] = val
 
-            
+                    # 构建节点配置
+                    yaml_url.update({
+                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2',
+                        'type': 'hysteria2',
+                        'server': server,
+                        'port': int(port),
+                        'password': auth,
+                        'sni': params.get('sni', ''),
+                        'obfs': params.get('obfs', ''),
+                        'obfs-password': params.get('obfs-password', ''),
+                        'skip-cert-verify': params.get('insecure', '0') == '1',
+                    })
+
+                    # 可选参数处理
+                    if 'alpn' in params:
+                        yaml_url['alpn'] = params['alpn'].split(',')
+                    if 'up' in params:
+                        yaml_url['up'] = params['up']
+                    if 'down' in params:
+                        yaml_url['down'] = params['down']
+                
+                    url_list.append(yaml_url)
+                
+                except Exception as err:
+                    print(f'Hysteria2 解析错误: {err}')
+                    continue
+                
             if 'ssr://' in line:
                 try:
                     ssr_content = sub_convert.base64_decode(line.replace('ssr://', ''))
@@ -1098,6 +1145,42 @@ class sub_convert():
                         print(f'yaml_decode 生成 trojan 节点发生错误: {err}')
                         continue
                 
+                
+                
+                elif proxy['type'] == 'hysteria2':
+                    try:
+                        # 基础部分
+                        auth_part = f"{proxy.get('password', '')}@" if proxy.get('password') else ""
+                        base_url = f"hy2://{auth_part}{proxy['server']}:{proxy['port']}"
+                
+                        # 参数部分
+                        params = []
+                        if proxy.get('sni'):
+                            params.append(f"sni={proxy['sni']}")
+                        if proxy.get('obfs'):
+                            params.append(f"obfs={proxy['obfs']}")
+                            if proxy.get('obfs-password'):
+                                params.append(f"obfs-password={proxy['obfs-password']}")
+                        if proxy.get('skip-cert-verify'):
+                            params.append("insecure=1")
+                        if proxy.get('alpn'):
+                            params.append(f"alpn={','.join(proxy['alpn'])}")
+                        if proxy.get('up'):
+                            params.append(f"up={proxy['up']}")
+                        if proxy.get('down'):
+                            params.append(f"down={proxy['down']}")
+                
+                        # 组合URL
+                        param_str = '?' + '&'.join(params) if params else ''
+                        hy2_url = f"{base_url}{param_str}#{urllib.parse.quote(proxy['name'])}"
+                        protocol_url.append(hy2_url + '\n')
+                
+                    except Exception as err:
+                        print(f'Hysteria2 生成错误: {err}')
+                        continue
+
+
+        
                 elif proxy['type'] == 'ssr': # ssr 节点提取, 由 ssr_base64_decoded 中所有参数总体 base64 encode
                     #print(proxy)
                     remarks = sub_convert.base64_encode(proxy['name']).replace('+', '-')
