@@ -787,42 +787,54 @@ class sub_convert():
 
 
             
+          
             if 'trojan://' in line:
                 try:
                     url_content = line.replace('trojan://', '')
-                    part_list = re.split('#', url_content, maxsplit=1) # https://www.runoob.com/python/att-string-split.html
+                    part_list = re.split('#', url_content, maxsplit=1)
                     yaml_url.setdefault('name', urllib.parse.unquote(part_list[1]))
 
-                    server_part = part_list[0].replace('trojan://', '')
-                    server_part_list = re.split(':|@|\?|&', server_part) # 使用多个分隔符 https://blog.csdn.net/shidamowang/article/details/80254476 https://zhuanlan.zhihu.com/p/92287240
+                    server_part = part_list[0]
+                    server_part_list = re.split(':|@|\?|&', server_part)
                     yaml_url.setdefault('server', server_part_list[1])
                     yaml_url.setdefault('port', server_part_list[2].replace('/', ''))
                     yaml_url.setdefault('type', 'trojan')
-                    password_part = server_part_list[0].lower()
-                    yaml_url.setdefault('password', password_part)
-                    server_part_list = server_part_list[3:]
+                    yaml_url.setdefault('password', server_part_list[0].lower())
 
-                    for config in server_part_list:
-                        if 'sni=' in config:
-                            yaml_url.setdefault('sni', config[4:])
-                        elif 'allowInsecure=' in config or 'tls=' in config:
-                            if config[-1] == 0:
-                                yaml_url.setdefault('tls', False)
-                        elif 'type=' in config:
-                            if config[5:] != 'tcp':
-                                yaml_url.setdefault('network', config[5:])
-                        elif 'path=' in config:
-                            yaml_url.setdefault('ws-path', config[5:])
-                        elif 'security=' in config:
-                            if config[9:] != 'tls':
-                                yaml_url.setdefault('tls', False)
+                    # 解析 Trojan-Go 特有参数
+                    params = server_part.split('?')[1] if '?' in server_part else ''
+                    param_dict = {}
+                    if params:
+                        for param in params.split('&'):
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                param_dict[key.lower()] = val
 
-                    yaml_url.setdefault('skip-cert-verify', True)
-                    yaml_url.setdefault('udp', True)
-                    #yaml_url=str(yaml_url)
-                    #yaml_url=yaml_url.replace('"',''')
-                    #yaml_rul=eval(yaml_url)
-                    if len(password_part)==36:
+                    # 处理传输协议 (network)
+                    if 'type' in param_dict:
+                        network_type = param_dict['type'].lower()
+                        yaml_url['network'] = network_type
+
+                        # WebSocket 配置
+                        if network_type == 'ws':
+                            yaml_url['ws-opts'] = {
+                                'path': param_dict.get('path', '/'),
+                                'headers': {'host': param_dict.get('host', param_dict.get('sni', yaml_url['server']))}
+            
+                        # gRPC 配置
+                        elif network_type == 'grpc':
+                            yaml_url['grpc-opts'] = {
+                                'grpc-service-name': param_dict.get('servicename', '')}
+
+                    # TLS 配置
+                    yaml_url['tls'] = param_dict.get('security', 'tls').lower() == 'tls'
+                    if 'sni' in param_dict:
+                        yaml_url['sni'] = param_dict['sni']
+
+                    yaml_url['skip-cert-verify'] = True
+                    yaml_url['udp'] = True
+
+                    if len(yaml_url['password']) == 36:
                         url_list.append(yaml_url)
                 except Exception as err:
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
@@ -1045,20 +1057,46 @@ class sub_convert():
 
                 
                 elif proxy['type'] == 'trojan': # Trojan 节点提取, 由 trojan_proxy 中参数再加上 # 加注释(URL_encode) # trojan Go https://p4gefau1t.github.io/trojan-go/developer/url/
-                    if 'tls' in proxy.keys() and 'network' in proxy.keys():
-                        if proxy['tls'] == True and proxy['network'] != 'tcp':
-                            network_type = proxy['network']
-                            trojan_go = f'?security=tls&type={network_type}&headerType=none'
-                        elif proxy['tls'] == False and proxy['network'] != 'tcp':
-                            trojan_go = f'??allowInsecure=0&type={network_type}&headerType=none'
-                        else:
-                            trojan_go = '?allowInsecure=1'
-                    else:
-                        trojan_go = '?allowInsecure=1'
-                    if 'sni' in proxy.keys():
-                        trojan_go = trojan_go+'&sni='+str(proxy['sni'])
-                    trojan_proxy = str('trojan://' + str(proxy['password']) + '@' + str(proxy['server']) + ':' + str(proxy['port']) + trojan_go + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
-                    protocol_url.append(trojan_proxy)
+               
+                    try:
+                        # 基础参数
+                        base_url = f"trojan://{proxy['password']}@{proxy['server']}:{proxy['port']}"
+        
+                        # 查询参数
+                        params = []
+                        params.append(f"security={'tls' if proxy.get('tls', True) else 'none'}")
+        
+                        # 传输协议 (network)
+                        network_type = proxy.get('network', 'tcp')
+                        if network_type != 'tcp':
+                            params.append(f"type={network_type}")
+                            
+                            # WebSocket 配置
+                            if network_type == 'ws':
+                                ws_opts = proxy.get('ws-opts', {})
+                                params.append(f"path={ws_opts.get('path', '/')}")
+                                if 'host' in ws_opts.get('headers', {}):
+                                    params.append(f"host={ws_opts['headers']['host']}")
+                                elif 'sni' in proxy:
+                                    params.append(f"host={proxy['sni']}")
+            
+                            # gRPC 配置
+                            elif network_type == 'grpc':
+                                grpc_opts = proxy.get('grpc-opts', {})
+                                if 'grpc-service-name' in grpc_opts:
+                                    params.append(f"serviceName={grpc_opts['grpc-service-name']}")
+
+                        # SNI 配置
+                        if 'sni' in proxy:
+                            params.append(f"sni={proxy['sni']}")
+
+                       # 拼接完整链接
+                        query_str = '&'.join(params)
+                        trojan_url = f"{base_url}?{query_str}#{urllib.parse.quote(proxy['name'])}"
+                        protocol_url.append(trojan_url + '\n')
+                    except Exception as err:
+                        print(f'yaml_decode 生成 trojan 节点发生错误: {err}')
+                        continue
                 
                 elif proxy['type'] == 'ssr': # ssr 节点提取, 由 ssr_base64_decoded 中所有参数总体 base64 encode
                     #print(proxy)
