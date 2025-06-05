@@ -1001,53 +1001,67 @@ class sub_convert():
                 
                 
                 elif proxy['type'] == 'ss' : # SS 节点提取, 由 ss_base64_decoded 部分(参数: 'cipher', 'password', 'server', 'port') Base64 编码后 加 # 加注释(URL_encode) 
-                    if 'plugin' not in proxy :
-                        ss_base64_decoded = str(proxy['cipher']) + ':' + str(proxy['password']) + '@' + str(proxy['server']) + ':' + str(proxy['port'])
-                        ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                        ss_proxy = str('ss://' + ss_base64 + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
-                        
-                    elif proxy['plugin'] == 'obfs' :
-                        #print(proxy)
-                        if 'mode' not in proxy['plugin-opts']:
-                            proxy['plugin-opts']['mode']='http'
-                        if 'host' not in proxy['plugin-opts']:
-                            proxy['plugin-opts']['host']=proxy['server']
-                        
-                            
-                        ssplugin=str('obfs='+str(proxy['plugin-opts']['mode']) + ';' + 'obfs-host=' + str(proxy['plugin-opts']['host']))
-                        #print(ssplugin)
-                        ssplugin=str(urllib.parse.quote(ssplugin))
-                        ss_base64_decoded = str(str(proxy['cipher']) + ':' + str(proxy['password']))
-                        ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                        ss_base64 = str(ss_base64+ '@' + str(proxy['server']) + ':' + str(proxy['port']))
-                        ss_proxy = str('ss://' + ss_base64 +  '/?plugin=obfs-local%3B'+ ssplugin + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
-                        #print(ss_proxy)
-                    elif proxy['plugin'] == 'v2ray-plugin' :
-                        if 'mode' not in proxy['plugin-opts']:
-                            proxy['plugin-opts']['mode']='websocket'
-                        if 'host' not in proxy['plugin-opts']:
-                            proxy['plugin-opts']['host']=proxy['server']
-                        if 'path' not in proxy['plugin-opts']:
-                            proxy['plugin-opts']['path']='/'
-                        #print(proxy)
-                        ssplugin=str('mode='+str(proxy['plugin-opts']['mode']) + ';' + 'host=' + str(proxy['plugin-opts']['host'])+ ';' + 'path=' + str(proxy['plugin-opts']['path'])+';'+'tls;'+'mux=4;'+'mux=mux=4;')
-                        #print(ssplugin)
-                        ssplugin=str(urllib.parse.quote(ssplugin))
-                        ss_base64_decoded = str(str(proxy['cipher']) + ':' + str(proxy['password']))
-                        ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                        ss_base64 = str(ss_base64+ '@' + str(proxy['server']) + ':' + str(proxy['port']))
-                        ss_proxy = str('ss://' + ss_base64 +  '/?plugin=v2ray-plugin%3B'+ ssplugin + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
-                        #print(ss_proxy)
-
+                
+                    try:
+                        # 基础信息
+                        ss_base64 = base64_encode(f"{proxy['cipher']}:{proxy['password']}")
+                        name_encoded = urllib.parse.quote(proxy['name'])
                     
-                    protocol_url.append(ss_proxy)
-   
+                        # 无插件的情况
+                        if 'plugin' not in proxy:
+                            ss_proxy = f"ss://{ss_base64}@{proxy['server']}:{proxy['port']}#{name_encoded}"
+                    
+                        # 有插件的情况
+                        else:
+                            plugin_opts = proxy.get('plugin-opts', {})
+                            plugin_params = []
+                        
+                            # obfs-local 插件
+                            if proxy['plugin'] == 'obfs-local':
+                                plugin_params.append(f"obfs={plugin_opts.get('mode', 'http')}")
+                                if plugin_opts.get('host'):
+                                    plugin_params.append(f"obfs-host={plugin_opts['host']}")
+                        
+                            # v2ray-plugin 插件
+                            elif proxy['plugin'] == 'v2ray-plugin':
+                                plugin_params.append(f"mode={plugin_opts.get('mode', 'websocket')}")
+                                if plugin_opts.get('host'):
+                                    plugin_params.append(f"host={plugin_opts['host']}")
+                                if plugin_opts.get('path'):
+                                    plugin_params.append(f"path={plugin_opts['path']}")
+                                if plugin_opts.get('tls'):
+                                    plugin_params.append("tls")
+                        
+                            # simple-tls 插件
+                            elif proxy['plugin'] == 'simple-tls':
+                                if plugin_opts.get('sni'):
+                                    plugin_params.append(f"sni={plugin_opts['sni']}")
+                            
+                            # kcptun 插件
+                            elif proxy['plugin'] == 'kcptun':
+                                plugin_params.append(f"mode={plugin_opts.get('mode', 'fast')}")
+                                if plugin_opts.get('key'):
+                                    plugin_params.append(f"key={plugin_opts['key']}")
+                        
+                            # xray-plugin 插件
+                            elif proxy['plugin'] == 'xray-plugin':
+                                plugin_params.append("mode=websocket")
+                                if plugin_opts.get('host'):
+                                    plugin_params.append(f"host={plugin_opts['host']}")
+                                if plugin_opts.get('path'):
+                                    plugin_params.append(f"path={plugin_opts['path']}")
+                                if plugin_opts.get('tls'):
+                                    plugin_params.append("tls")
 
+                            # 编码插件参数
+                            plugin_str = urllib.parse.quote(';'.join(plugin_params))
+                            ss_proxy = f"ss://{ss_base64}@{proxy['server']}:{proxy['port']}/?plugin={proxy['plugin']}%3B{plugin_str}#{name_encoded}"
+                    
+                        protocol_url.append(ss_proxy + '\n')
 
-
-
-
-
+                    except Exception as err:
+                        print(f'SS生成错误: {err} | 节点: {proxy.get("name", "未知")}')
+                        continue
 
 
 
