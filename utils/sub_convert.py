@@ -718,6 +718,55 @@ class sub_convert():
 
 
 
+            if 'hy://' in line:  # 只处理Hysteria1
+                try:
+                    url_part = line.replace('hy://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
+                
+                    # 提取基础信息
+                    auth_server = base_part[0].split('@')
+                    auth = auth_server[0] if len(auth_server) == 2 else ""
+                    server, port = auth_server[-1].split(':')[:2]
+
+                    # 初始化配置（带协议默认值）
+                    config = {
+                        'type': 'hysteria',
+                        'server': server,
+                        'port': int(port),
+                        'auth': auth,
+                        'protocol': 'udp',          # 默认UDP协议
+                        'skip-cert-verify': True   # 默认跳过验证
+                    }
+
+                    # 处理参数（严格跳过空值）
+                    if len(base_part) > 1:
+                        for param in base_part[1].split('&'):
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                key = key.lower()
+                            
+                                if val:  # 关键修改：跳过空值
+                                    if key == 'protocol':
+                                        config['protocol'] = val
+                                    elif key == 'up':
+                                        config['up'] = val
+                                    elif key == 'down':
+                                        config['down'] = val
+                                    elif key == 'sni':
+                                        config['sni'] = val
+                                    elif key == 'insecure':
+                                        config['skip-cert-verify'] = val == '1'
+                                    elif key == 'alpn':
+                                        config['alpn'] = [x for x in val.split(',') if x]  # 过滤空值
+                
+                    # 添加节点名称
+                    config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria'
+                    url_list.append(config)
+
+                except Exception as err:
+                    print(f'HY1解析错误: {err} | 内容: {line[:50]}...')
+                    continue
+            
             if 'hy2://' in line:
                 try:
                     # 提取基础信息
@@ -1145,6 +1194,50 @@ class sub_convert():
                         continue
                 
                 
+                
+                elif proxy['type'] == 'hysteria':
+                    try:
+                        # 基础部分
+                        auth_part = f"{proxy['auth']}@" if proxy.get('auth') else ""
+                        base_url = f"hy://{auth_part}{proxy['server']}:{proxy['port']}"
+                    
+                        # 参数处理（严格规则）
+                        params = []
+                    
+                        # 1. 协议类型（非udp时才输出）
+                        if proxy.get('protocol', 'udp') != 'udp':
+                            params.append(f"protocol={proxy['protocol']}")
+                    
+                        # 2. 速度参数
+                        if proxy.get('up'):
+                            params.append(f"up={proxy['up']}")
+                        if proxy.get('down'):
+                            params.append(f"down={proxy['down']}")
+                    
+                        # 3. TLS参数
+                        if proxy.get('sni'):
+                            params.append(f"sni={proxy['sni']}")
+                    
+                        # 4. 证书验证（默认False，只有True时输出）
+                        if proxy.get('skip-cert-verify', True):
+                            params.append("insecure=1")
+                    
+                        # 5. ALPN（数组/字符串兼容处理）
+                        if proxy.get('alpn'):
+                            alpn_val = proxy['alpn']
+                            if isinstance(alpn_val, list):
+                                alpn_val = ','.join(x for x in alpn_val if x)
+                            if alpn_val:
+                                params.append(f"alpn={alpn_val}")
+                    
+                        # 组合最终URL
+                        param_str = '?' + '&'.join(params) if params else ''
+                        hy_url = f"{base_url}{param_str}#{urllib.parse.quote(proxy['name'])}"
+                        protocol_url.append(hy_url + '\n')
+
+                    except Exception as err:
+                        print(f'HY1生成错误: {err} | 节点: {proxy.get("name", "未知")}')
+                        continue
                 
                 elif proxy['type'] == 'hysteria2':
                     try:
