@@ -133,7 +133,7 @@ class sub_convert():
                 raw_url_list = re.split(r'\n+', sub_content)
 
                 for url in raw_url_list:
-                    while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy2:', url)) > 2:
+                    while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
                         url_to_split = url[8:]
                         if 'ss://' in url_to_split and 'vmess://' not in url_to_split and 'vless://' not in url_to_split:
                             url_splited = url_to_split.replace('ss://', '\nss://', 1) # https://www.runoob.com/python/att-string-replace.html
@@ -146,9 +146,11 @@ class sub_convert():
                         elif 'vless://' in url_to_split:
                             url_splited = url_to_split.replace('vless://', '\nvless://', 1)
                         elif 'tuic://' in url_to_split:
-                            url_splited = url_to_split.replace('trojan://', '\ntuic://', 1)
+                            url_splited = url_to_split.replace('tuic://', '\ntuic://', 1)
                         elif 'hy2://' in url_to_split:
-                            url_splited = url_to_split.replace('vless://', '\nhy2://', 1)
+                            url_splited = url_to_split.replace('hy2://', '\nhy2://', 1)
+                        elif 'hy://' in url_to_split:
+                            url_splited = url_to_split.replace('hy://', '\nhy://', 1)
                         elif '#' in url_to_split:
                             url_splited = url_to_split.replace('#', '\n#', 1)
 
