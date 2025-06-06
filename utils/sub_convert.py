@@ -736,7 +736,7 @@ class sub_convert():
                         'type': 'hysteria',
                         'server': server,
                         'port': int(port),
-                        'auth': auth,
+                        'auth_str': auth,
                         'protocol': 'udp',          # 默认UDP协议
                         'skip-cert-verify': True   # 默认跳过验证
                     }
@@ -1202,7 +1202,7 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria':
                     try:
                         # 基础部分
-                        auth_part = f"{proxy['auth']}@" if proxy.get('auth') else ""
+                        auth_part = f"{proxy['auth_str']}@" if proxy.get('auth_str') else ""
                         base_url = f"hy://{auth_part}{proxy['server']}:{proxy['port']}"
                     
                         # 参数处理（严格规则）
