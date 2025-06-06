@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `766`
+当前合并节点总数: `763`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
-- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `100`
+- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `97`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `15`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `39`
