@@ -637,6 +637,7 @@ class sub_convert():
 
                         # 解析插件参数
                         plugin_name = plugin_part.split('%3B')[0]
+                        plugin_name = plugin_name.replace('obfs-local', 'obfs').replace('simple-obfs', 'obfs')
                         plugin_opts = {}
                         if ';' in plugin_part:
                             opts = urllib.parse.unquote(plugin_part).split(';')[1:]
@@ -647,7 +648,7 @@ class sub_convert():
 
                         # 设置插件配置
                         yaml_url['plugin'] = plugin_name
-                        if plugin_name == 'obfs-local':
+                        if plugin_name == 'obfs':
                             yaml_url['plugin-opts'] = {
                                 'mode': plugin_opts.get('obfs', 'http'),
                                 'host': plugin_opts.get('obfs-host', '')
@@ -1076,7 +1077,7 @@ class sub_convert():
                             plugin_params = []
                         
                             # obfs-local 插件
-                            if proxy['plugin'] == 'obfs-local':
+                            if proxy['plugin'] == 'obfs':
                                 plugin_params.append(f"obfs={plugin_opts.get('mode', 'http')}")
                                 if plugin_opts.get('host'):
                                     plugin_params.append(f"obfs-host={plugin_opts['host']}")
