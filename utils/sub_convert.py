@@ -1202,7 +1202,8 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria':
                     try:
                         # 基础部分
-                        auth_part = f"{proxy['auth_str']}@" if proxy.get('auth_str') else ""
+                        auth = proxy.get('auth_str', '')
+                        auth_part = f"{auth}@" if auth else ""
                         base_url = f"hy://{auth_part}{proxy['server']}:{proxy['port']}"
                     
                         # 参数处理（严格规则）
