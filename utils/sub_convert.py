@@ -1243,7 +1243,7 @@ class sub_convert():
                     except Exception as err:
                         print(f'HY1生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
-                """               
+                        """               
                 elif proxy['type'] == 'hysteria2':
                     try:
                         # 基础部分
