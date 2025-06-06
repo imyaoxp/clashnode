@@ -719,7 +719,7 @@ class sub_convert():
                     continue
 
 
-"""
+            """
             if 'hy://' in line:  # 只处理Hysteria1
                 try:
                     url_part = line.replace('hy://', '').split('#', 1)
@@ -769,7 +769,7 @@ class sub_convert():
                 except Exception as err:
                     print(f'HY1解析错误: {err} | 内容: {line[:50]}...')
                     continue
- """           
+            """           
             if 'hy2://' in line:
                 try:
                     # 提取基础信息
@@ -1198,7 +1198,7 @@ class sub_convert():
                         continue
                 
                 
-"""                
+                """                
                 elif proxy['type'] == 'hysteria':
                     try:
                         # 基础部分
@@ -1243,7 +1243,7 @@ class sub_convert():
                     except Exception as err:
                         print(f'HY1生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
- """               
+                """               
                 elif proxy['type'] == 'hysteria2':
                     try:
                         # 基础部分
