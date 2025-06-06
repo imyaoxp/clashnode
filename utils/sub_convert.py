@@ -732,6 +732,7 @@ class sub_convert():
 
                     # 初始化配置（带协议默认值）
                     config = {
+                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria'
                         'type': 'hysteria',
                         'server': server,
                         'port': int(port),
@@ -762,7 +763,7 @@ class sub_convert():
                                         config['alpn'] = [x for x in val.split(',') if x]  # 过滤空值
                 
                     # 添加节点名称
-                    config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria'
+                    #config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria'
                     url_list.append(config)
 
                 except Exception as err:
@@ -782,6 +783,7 @@ class sub_convert():
 
                     # 初始化配置
                     config = {
+                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2'
                         'type': 'hysteria2',
                         'server': server,
                         'port': int(port),
@@ -808,7 +810,7 @@ class sub_convert():
                                     config['alpn'] = val.split(',')
                                 
                     # 添加节点名称
-                    config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2'
+                    #config['name'] = urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria2'
                 
                     url_list.append(config)
 
