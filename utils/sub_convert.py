@@ -668,7 +668,9 @@ class sub_convert():
                     })
                 
                     # 解析插件配置
+                    
                     if len(base_part) > 1 and 'plugin=' in base_part[1]:
+                        
                         plugin_params = urllib.parse.unquote(base_part[1]).split(';')
                         plugin_info = dict(p.split('=', 1) for p in plugin_params if '=' in p)
                         print(f'plugin_info:{plugin_info}')
@@ -1066,9 +1068,10 @@ class sub_convert():
                         server_str = f"{proxy['server']}:{proxy['port']}"
   
                         # 插件部分处理
-                        print(f'proxy:{proxy}')
+                        
                         plugin_str = ""
                         if 'plugin' in proxy:
+                            print(f'proxy:{proxy}')
                             plugin_opts = []
                     
                             if proxy['plugin'] == 'obfs':
