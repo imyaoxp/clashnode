@@ -513,7 +513,7 @@ class sub_convert():
                     yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
                     url_list.append(yaml_url)
                 
-ccc 
+
                 except Exception as err:
                     print(vmess_config)
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
