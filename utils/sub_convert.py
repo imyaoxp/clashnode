@@ -675,7 +675,7 @@ class sub_convert():
                     if 'v2ray-plugin' in line or 'xray-plugin' in line:
                         plugin_type = 'v2ray-plugin' if 'v2ray-plugin' in line else 'xray-plugin'
                         yaml_url.setdefault('Plugin', plugin_type)
-                        plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';'
+                        plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';')
             
                         plugin_mode = re.compile('mode=(.*?);').findall(plugin_list)[0]
                         plugin_host = re.compile('host=(.*?);').findall(plugin_list)[0]
