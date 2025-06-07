@@ -732,7 +732,7 @@ class sub_convert():
             if 'hy2://' in line:
                 try:
                     # 提取基础信息
-                    url_part = line.replace('hy//', '').split('#', 1)
+                    url_part = line.replace('hy2://', '').split('#', 1)
                     base_part = url_part[0].split('?', 1)
                 
                     # 处理认证信息
