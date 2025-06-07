@@ -642,7 +642,7 @@ class sub_convert():
                     ss_content = line.replace('ss://', '')
                     part_list = ss_content.split('#', 1)
                     base_part = part_list[0].split('/?', 1)
-                
+                    print(f'base_part:{base_part}')
                     # 解析加密方式和密码
                     if '@' in base_part[0]:
                         auth_part, server_part = base_part[0].split('@', 1)
@@ -673,7 +673,7 @@ class sub_convert():
                         
                         plugin_params = urllib.parse.unquote(base_part[1]).split(';')
                         plugin_info = dict(p.split('=', 1) for p in plugin_params if '=' in p)
-                        print(f'plugin_info:{plugin_info}')
+                        
                         if plugin_info.get('plugin') == 'obfs-local':
                             yaml_url.update({
                                 'plugin': 'obfs',
