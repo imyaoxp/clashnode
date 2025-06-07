@@ -663,9 +663,10 @@ class sub_convert():
                     if len(server_part_list) > 1 and 'plugin=' in server_part_list[1]:
                         plugin_part = urllib.parse.unquote(server_part_list[1])
                         plugin_info = dict(param.split('=', 1) for param in plugin_part.split(';') if '=' in param)
-            
+                        print(f'plugin_info:'{plugin_info})
                         if 'plugin' in plugin_info:
                             plugin_type = plugin_info['plugin']
+                            print(f'plugin_type:'{plugin_type})
                             # 只支持特定插件类型
                             supported_plugins = ['obfs-local', 'v2ray-plugin', 'xray-plugin']
                             if plugin_type not in supported_plugins:
