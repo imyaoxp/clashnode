@@ -636,73 +636,70 @@ class sub_convert():
                 if '#' not in line:
                     line = line + '#SS%20Node'
                 try:
+                    yaml_url = {}
+                
+                    # 分割基本部分和插件部分
                     ss_content = line.replace('ss://', '')
                     part_list = ss_content.split('#', 1)
-                    yaml_url.setdefault('name', urllib.parse.unquote(part_list[1]))
-        
-                    if '@' in part_list[0]:
-                        mix_part = part_list[0].split('@', 1)
-                        method_part = sub_convert.base64_decode(mix_part[0])
-                        server_part = f'{method_part}@{mix_part[1]}'
+                    base_part = part_list[0].split('/?', 1)
+                
+                    # 解析加密方式和密码
+                    if '@' in base_part[0]:
+                        auth_part, server_part = base_part[0].split('@', 1)
+                        cipher, password = sub_convert.base64_decode(auth_part).split(':', 1)
                     else:
-                        server_part = sub_convert.base64_decode(part_list[0])
-
-                    server_part_list = server_part.split(':', 1)
-                    method_part = server_part_list[0]
-                    server_part_list = server_part_list[1].rsplit('@', 1)
-                    password_part = server_part_list[0]
-                    server_part_list = server_part_list[1].split(':', 1)
-                    yaml_url.setdefault('server', server_part_list[0])
-                    server_part_list = server_part_list[1].split('/', 1)
-                    yaml_url.setdefault('port', server_part_list[0].replace('/', ''))
-                    yaml_url.setdefault('type', 'ss')
-                    yaml_url.setdefault('cipher', method_part)
-                    yaml_url.setdefault('password', password_part)
-
-                    # 处理插件部分
-                    if len(server_part_list) > 1 and 'plugin=' in server_part_list[1]:
-                        plugin_part = urllib.parse.unquote(server_part_list[1])
-                        plugin_info = dict(param.split('=', 1) for param in plugin_part.split(';') if '=' in param)
+                        server_part = sub_convert.base64_decode(base_part[0])
+                        cipher, password = server_part.split(':', 1)
+                        server_part = server_part[len(cipher)+1+len(password):]
+                
+                    # 解析服务器地址和端口
+                    server, port = server_part.rsplit(':', 1)
+                    port = port.split('/')[0]
+                
+                    # 构建基础配置
+                    yaml_url.update({
+                        'name': urllib.parse.unquote(part_list[1]) if len(part_list) > 1 else 'SS Node',
+                        'server': server,
+                        'port': int(port),
+                        'type': 'ss',
+                        'cipher': cipher,
+                        'password': password,
+                        'udp': True
+                    })
+                
+                    # 解析插件配置
+                    if len(base_part) > 1 and 'plugin=' in base_part[1]:
+                        plugin_params = urllib.parse.unquote(base_part[1]).split(';')
+                        plugin_info = dict(p.split('=', 1) for p in plugin_params if '=' in p)
                         print(f'plugin_info:{plugin_info}')
-                        if 'plugin' in plugin_info:
-                            plugin_type = plugin_info['plugin']
-                            print(f'plugin_type:{plugin_type}')
-                            # 只支持特定插件类型
-                            supported_plugins = ['obfs-local', 'v2ray-plugin', 'xray-plugin']
-                            if plugin_type not in supported_plugins:
-                                continue
-                            
-                            yaml_url['plugin'] = plugin_type.replace('-local', '')
+                        if plugin_info.get('plugin') == 'obfs-local':
+                            yaml_url.update({
+                                'plugin': 'obfs',
+                                'plugin-opts': {
+                                    'mode': plugin_info.get('obfs', 'http'),
+                                    'host': plugin_info.get('obfs-host', server)
+                                }
+                            })
+                    
+                        elif plugin_info.get('plugin') in ['v2ray-plugin', 'xray-plugin']:
+                            plugin_opts = {
+                                'mode': plugin_info.get('mode', 'websocket'),
+                                'host': plugin_info.get('host', server),
+                                'path': plugin_info.get('path', '/'),
+                                'tls': plugin_info.get('tls', 'false').lower() == 'true',
+                                'mux': plugin_info.get('mux', 'false').lower() == 'true',
+                                'skip-cert-verify': plugin_info.get('skip-cert-verify', 'false').lower() == 'true'
+                            }
+                            if 'restls' in plugin_info:
+                                plugin_opts['restls'] = plugin_info['restls'].lower() == 'true'
+                        
+                            yaml_url.update({
+                               'plugin': plugin_info['plugin'].replace('-local', ''),
+                                'plugin-opts': plugin_opts
+                            })
                 
-                            plugin_opts = {}
-                            if plugin_type == 'obfs-local':
-                                if 'obfs' in plugin_info:
-                                    plugin_opts['mode'] = plugin_info['obfs']
-                                if 'obfs-host' in plugin_info:
-                                    plugin_opts['host'] = plugin_info['obfs-host']
-                                plugin_opts['tls'] = True
-                                plugin_opts['skip-cert-verify'] = True
-                
-                            elif plugin_type in ['v2ray-plugin', 'xray-plugin']:
-                                if 'host' in plugin_info:
-                                    plugin_opts['host'] = plugin_info['host']
-                                if 'path' in plugin_info:
-                                    plugin_opts['path'] = plugin_info['path']
-                                if 'tls' in plugin_info:
-                                    plugin_opts['tls'] = plugin_info['tls'] == 'true'
-                                if 'mode' in plugin_info:
-                                    plugin_opts['mode'] = plugin_info['mode']
-                                if 'mux' in plugin_info:
-                                    plugin_opts['mux'] = plugin_info['mux'] == 'true'
-                                if 'skip-cert-verify' in plugin_info:
-                                    plugin_opts['skip-cert-verify'] = plugin_info['skip-cert-verify'] == 'true'
-                                if 'restls' in plugin_info:
-                                    plugin_opts['restls'] = plugin_info['restls'] == 'true'
-                
-                            yaml_url['plugin-opts'] = plugin_opts
-
-                    yaml_url.setdefault('udp', True)
                     url_list.append(yaml_url)
+                
         
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误: {err}')
@@ -1061,50 +1058,53 @@ class sub_convert():
                 
                 elif proxy['type'] == 'ss':
                     try:
-                        if 'plugin' not in proxy:
-                            ss_base64_decoded = f"{proxy['cipher']}:{proxy['password']}@{proxy['server']}:{proxy['port']}"
-                            ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                            ss_proxy = f"ss://{ss_base64}#{urllib.parse.quote(proxy['name'])}\n"
-                        else:
-                            # 处理插件配置
+                        # 基础认证部分
+                        auth_str = f"{proxy['cipher']}:{proxy['password']}"
+                        auth_b64 = sub_convert.base64_encode(auth_str)
+                
+                        # 服务器部分
+                        server_str = f"{proxy['server']}:{proxy['port']}"
+  
+                        # 插件部分处理
+                        print(f'proxy:{proxy}')
+                        plugin_str = ""
+                        if 'plugin' in proxy:
                             plugin_opts = []
-                            print(f'proxy:{proxy}')
+                    
                             if proxy['plugin'] == 'obfs':
                                 plugin_opts.append("plugin=obfs-local")
                                 if 'plugin-opts' in proxy:
                                     opts = proxy['plugin-opts']
-                                    if 'mode' in opts:
-                                        plugin_opts.append(f"obfs={opts['mode']}")
+                                    plugin_opts.append(f"obfs={opts.get('mode', 'http')}")
                                     if 'host' in opts:
                                         plugin_opts.append(f"obfs-host={opts['host']}")
-            
+                    
                             elif proxy['plugin'] in ['v2ray-plugin', 'xray-plugin']:
                                 plugin_opts.append(f"plugin={proxy['plugin']}-local")
                                 if 'plugin-opts' in proxy:
                                     opts = proxy['plugin-opts']
+                                    plugin_opts.append(f"mode={opts.get('mode', 'websocket')}")
                                     if 'host' in opts:
                                         plugin_opts.append(f"host={opts['host']}")
                                     if 'path' in opts:
                                         plugin_opts.append(f"path={opts['path']}")
                                     if opts.get('tls', False):
                                         plugin_opts.append("tls=true")
-                                    if 'mode' in opts:
-                                        plugin_opts.append(f"mode={opts['mode']}")
                                     if opts.get('mux', False):
                                         plugin_opts.append("mux=true")
                                     if opts.get('skip-cert-verify', False):
                                         plugin_opts.append("skip-cert-verify=true")
                                     if opts.get('restls', False):
                                         plugin_opts.append("restls=true")
-            
-                            plugin_str = "%3B".join(plugin_opts)  # URL编码分号
-                            ss_base64_decoded = f"{proxy['cipher']}:{proxy['password']}"
-                            ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                            ss_proxy = f"ss://{ss_base64}@{proxy['server']}:{proxy['port']}/?{plugin_str}#{urllib.parse.quote(proxy['name'])}\n"
-        
-                        
+                    
+                            if plugin_opts:
+                                plugin_str = "/?" + urllib.parse.quote_plus(";".join(plugin_opts))
+                
+                        # 组合完整URL
+                        ss_proxy = f"ss://{auth_b64}@{server_str}{plugin_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(ss_proxy)
-        
+                
+                
                     except Exception as err:
                         print(f'SS生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
