@@ -1084,7 +1084,7 @@ class sub_convert():
 
                         # restls 处理
                         elif plugin == 'restls':
-                           if not opts.get('host'):
+                            if not opts.get('host'):
                                 raise ValueError("restls必须指定host参数")
                             plugin_str.extend([
                                 f"host={opts['host']}",
