@@ -640,25 +640,32 @@ class sub_convert():
                 
                     # 分割基本部分和插件部分
                     ss_content = line.replace('ss://', '')
-                    part_list = ss_content.split('#', 1)
-                    base_part = part_list[0].split('/?', 1)
-                    print(f'base_part:{base_part}')
+                    part_list = re.split('#([^#]*)$', ss_content, maxsplit=1)  # 更安全的分割备注
+                    base_part = re.split('/([?][^#]*)', part_list[0], maxsplit=1)  # 分割插件部分
+                
                     # 解析加密方式和密码
                     if '@' in base_part[0]:
                         auth_part, server_part = base_part[0].split('@', 1)
-                        cipher, password = sub_convert.base64_decode(auth_part).split(':', 1)
+                        cipher_password = sub_convert.base64_decode(auth_part)
+                        if ':' not in cipher_password:
+                            continue  # 无效格式
+                        cipher, password = cipher_password.split(':', 1)
                     else:
-                        server_part = sub_convert.base64_decode(base_part[0])
-                        cipher, password = server_part.split(':', 1)
-                        server_part = server_part[len(cipher)+1+len(password):]
+                        decoded = sub_convert.base64_decode(base_part[0])
+                        if ':' not in decoded:
+                            continue
+                        cipher, password, server_part = decoded.split(':', 2) if decoded.count(':') >= 2 else (*decoded.split(':', 1), '')
                 
                     # 解析服务器地址和端口
-                    server, port = server_part.rsplit(':', 1)
-                    port = port.split('/')[0]
+                    server_port = server_part.rsplit(':', 1)
+                    if len(server_port) != 2:
+                        continue
+                    server, port = server_port
+                    port = re.sub(r'\/.*', '', port)  # 移除路径部分
                 
                     # 构建基础配置
                     yaml_url.update({
-                        'name': urllib.parse.unquote(part_list[1]) if len(part_list) > 1 else 'SS Node',
+                        'name': urllib.parse.unquote(part_list[1]) if len(part_list) > 1 and part_list[1] else 'SS Node',
                         'server': server,
                         'port': int(port),
                         'type': 'ss',
@@ -667,42 +674,43 @@ class sub_convert():
                         'udp': True
                     })
                 
-                    # 解析插件配置
+                    # 解析插件配置（处理URL编码）
                     
-                    if len(base_part) > 1 and 'plugin=' in base_part[1]:
-                        
-                        plugin_params = urllib.parse.unquote(base_part[1]).split(';')
-                        plugin_info = dict(p.split('=', 1) for p in plugin_params if '=' in p)
-                        
-                        if plugin_info.get('plugin') == 'obfs-local':
+                    if len(base_part) > 1 and base_part[1].startswith('?'):
+                        plugin_query = base_part[1][1:]  # 去掉问号
+                        plugin_params = urllib.parse.parse_qs(urllib.parse.unquote(plugin_query))
+                    
+                        # 处理obfs插件
+                        if plugin_params.get('plugin', [''])[0] == 'obfs-local':
                             yaml_url.update({
                                 'plugin': 'obfs',
                                 'plugin-opts': {
-                                    'mode': plugin_info.get('obfs', 'http'),
-                                    'host': plugin_info.get('obfs-host', server)
+                                    'mode': plugin_params.get('obfs', ['http'])[0],
+                                    'host': plugin_params.get('obfs-host', [server])[0]
                                 }
                             })
                     
-                        elif plugin_info.get('plugin') in ['v2ray-plugin', 'xray-plugin']:
+                        # 处理v2ray/xray插件
+                        elif plugin_params.get('plugin', [''])[0] in ['v2ray-plugin', 'xray-plugin']:
                             plugin_opts = {
-                                'mode': plugin_info.get('mode', 'websocket'),
-                                'host': plugin_info.get('host', server),
-                                'path': plugin_info.get('path', '/'),
-                                'tls': plugin_info.get('tls', 'false').lower() == 'true',
-                                'mux': plugin_info.get('mux', 'false').lower() == 'true',
-                                'skip-cert-verify': plugin_info.get('skip-cert-verify', 'false').lower() == 'true'
+                                'mode': plugin_params.get('mode', ['websocket'])[0],
+                                'host': plugin_params.get('host', [server])[0],
+                                'path': plugin_params.get('path', ['/'])[0],
+                                'tls': 'tls' in plugin_params.get('tls', ['false'])[0].lower(),
+                                'mux': 'true' in plugin_params.get('mux', ['false'])[0].lower(),
+                                'skip-cert-verify': 'true' in plugin_params.get('skip-cert-verify', ['false'])[0].lower()
                             }
-                            if 'restls' in plugin_info:
-                                plugin_opts['restls'] = plugin_info['restls'].lower() == 'true'
+                            if 'restls' in plugin_params:
+                                plugin_opts['restls'] = 'true' in plugin_params['restls'][0].lower()
                         
                             yaml_url.update({
-                               'plugin': plugin_info['plugin'].replace('-local', ''),
+                                'plugin': plugin_params['plugin'][0].replace('-local', ''),
                                 'plugin-opts': plugin_opts
                             })
                 
                     url_list.append(yaml_url)
                 
-        
+
                 except Exception as err:
                     print(f'yaml_encode 解析 ss 节点发生错误: {err}')
                     continue
