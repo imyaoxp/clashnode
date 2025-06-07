@@ -1016,15 +1016,24 @@ class sub_convert():
                         )
 
                         # 构建基础参数
+                        security_type = 'reality' if 'reality-opts' in proxy else ('tls' if proxy.get('tls') else 'none')
                         params = {
-                            'security': 'tls' if proxy.get('tls') else 'none',
+                            'security': security_type,
                             'type': proxy.get('network', 'tcp'),
                             'sni': sni
                         }
 
+                        # 处理Reality配置
+                        if security_type == 'reality':
+                            reality_opts = proxy['reality-opts']
+                            params['pbk'] = reality_opts.get('public-key', '')
+                            params['sid'] = reality_opts.get('short-id', '')
+                            if 'flow' in proxy:
+                                params['flow'] = proxy['flow']
+
                         # 根据network类型处理特殊参数
                         network_type = proxy.get('network', 'tcp')
-        
+
                         # 1. WebSocket处理
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
@@ -1035,7 +1044,7 @@ class sub_convert():
                                 headers.get('Host') or
                                 sni
                            )
-        
+
                         # 2. gRPC处理
                         elif network_type == 'grpc':
                             grpc_opts = proxy.get('grpc-opts', {})
@@ -1044,14 +1053,14 @@ class sub_convert():
                                 grpc_opts.get('grpcServiceName') or
                                ''
                             )
-        
+
                         # 3. HTTP/2处理
                         elif network_type == 'h2':
                             h2_opts = proxy.get('h2-opts', {})
                             params['path'] = h2_opts.get('path', '/')
                             if 'host' in h2_opts and h2_opts['host']:
                                 params['host'] = ','.join(h2_opts['host'])
-        
+
                         # 4. TCP处理（HTTP伪装）
                         elif network_type == 'tcp':
                             tcp_opts = proxy.get('tcp-opts', {})
