@@ -1060,7 +1060,7 @@ class sub_convert():
                 
                 elif proxy['type'] == 'ss':
                     try:
-                         if 'plugin' not in proxy:
+                        if 'plugin' not in proxy:
                             ss_base64_decoded = f"{proxy['cipher']}:{proxy['password']}@{proxy['server']}:{proxy['port']}"
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
                             ss_proxy = f"ss://{ss_base64}#{urllib.parse.quote(proxy['name'])}\n"
