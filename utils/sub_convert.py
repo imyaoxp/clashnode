@@ -1060,20 +1060,15 @@ class sub_convert():
                 
                 elif proxy['type'] == 'ss':
                     try:
-                        if 'plugin' not in proxy:
+                         if 'plugin' not in proxy:
                             ss_base64_decoded = f"{proxy['cipher']}:{proxy['password']}@{proxy['server']}:{proxy['port']}"
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
                             ss_proxy = f"ss://{ss_base64}#{urllib.parse.quote(proxy['name'])}\n"
                         else:
-                            # 只处理支持的插件类型
-                            supported_plugins = ['obfs', 'v2ray-plugin', 'xray-plugin']
-                            if proxy['plugin'] not in supported_plugins:
-                                continue
-                
+                            # 处理插件配置
                             plugin_opts = []
-                            plugin_type = proxy['plugin']
             
-                            if plugin_type == 'obfs':
+                            if proxy['plugin'] == 'obfs':
                                 plugin_opts.append("plugin=obfs-local")
                                 if 'plugin-opts' in proxy:
                                     opts = proxy['plugin-opts']
@@ -1082,8 +1077,8 @@ class sub_convert():
                                     if 'host' in opts:
                                         plugin_opts.append(f"obfs-host={opts['host']}")
             
-                            elif plugin_type in ['v2ray-plugin', 'xray-plugin']:
-                                plugin_opts.append(f"plugin={plugin_type}-local")
+                            elif proxy['plugin'] in ['v2ray-plugin', 'xray-plugin']:
+                                plugin_opts.append(f"plugin={proxy['plugin']}-local")
                                 if 'plugin-opts' in proxy:
                                     opts = proxy['plugin-opts']
                                     if 'host' in opts:
@@ -1106,6 +1101,7 @@ class sub_convert():
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
                             ss_proxy = f"ss://{ss_base64}@{proxy['server']}:{proxy['port']}/?{plugin_str}#{urllib.parse.quote(proxy['name'])}\n"
         
+                        
                         protocol_url.append(ss_proxy)
         
                     except Exception as err:
