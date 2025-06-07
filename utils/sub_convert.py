@@ -555,7 +555,7 @@ class sub_convert():
                                 return params_lower[lower_name][1]
                         return default
 
-        # 获取公共参数
+                    # 获取公共参数
                     sni = (
                         get_param_priority('sni', 'SNI', 'Sni') or
                         get_param_priority('servername', 'ServerName', 'serverName', 'Servername') or
@@ -571,14 +571,26 @@ class sub_convert():
                         'type': 'vless',
                         'uuid': uuid,
                         'servername': sni,
-                        'tls': get_param_priority('security', 'Security', default='none').lower() == 'tls',
+                        'tls': get_param_priority('security', 'Security', default='none').lower() in ['tls', 'reality'],
                         'network': get_param_priority('type', 'Type', default='tcp').lower(),
                         'udp': True
                     }
 
+                    # 处理Reality配置
+                    security_type = get_param_priority('security', 'Security', default='none').lower()
+                    if security_type == 'reality':
+                        yaml_node['reality-opts'] = {
+                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='')
+                        }
+                        # 处理flow参数
+                        flow = get_param_priority('flow', 'Flow', default='')
+                        if flow:
+                            yaml_node['flow'] = flow
+
                     # 根据network类型处理特殊参数
                     network_type = yaml_node['network']
-        
+
                     # 1. WebSocket处理（保持原有逻辑）
                     if network_type == 'ws':
                         ws_host = (
@@ -587,26 +599,21 @@ class sub_convert():
                             server
                         )
 
-                        #yaml_node['ws-opts'] = {
-                        #    'path': get_param_priority('path', 'Path', 'PATH', default='/'),
-                        #    'headers': f'{{"Host": "{ws_host}"}}'  # 直接构造字符串，避免 PyYAML 处理
-                        #}
                         yaml_node.setdefault('ws-opts',{'path':get_param_priority('path', 'Path', 'PATH', default='/'), 'headers': {'Host': ws_host}})
-                        
-        
+
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
                             'grpc-service-name': get_param_priority('serviceName', 'servicename', default='')
                         }
-        
+
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
                         yaml_node['h2-opts'] = {
                             'Host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
                             'path': get_param_priority('path', 'Path', 'PATH', default='/')
                         }
-        
+
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype')
