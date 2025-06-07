@@ -1215,9 +1215,9 @@ class sub_convert():
             return yaml_content
         except Exception as err:
             print(f'yaml decode 发生 {err} 错误')
-            print(proxy)
-            #pass
-            return '订阅内容解析错误'
+            
+            continue
+            
     def base64_decode(url_content): # Base64 转换为 URL 链接内容
         if '-' in url_content:
             url_content = url_content.replace('-', '+')
