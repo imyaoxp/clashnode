@@ -581,7 +581,7 @@ class sub_convert():
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
                             'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='')
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default = e54b5ad736ae4c38)
                         }
                         # 处理flow参数
                         flow = get_param_priority('flow', 'Flow', default='')
