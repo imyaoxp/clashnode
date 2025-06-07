@@ -676,7 +676,7 @@ class sub_convert():
                 
                     # 解析插件配置（处理URL编码）
                     print(f'base_part:{base_part}')
-                    if len(base_part) > 1 and base_part[1].rstartswith('?'):
+                    if len(base_part) > 1 and base_part[1].startswith('?'):
                         plugin_query = base_part[1][1:]  # 去掉问号
                         plugin_params = urllib.parse.parse_qs(urllib.parse.unquote(plugin_query))
                         print(f'plugin_params:{plugin_params}')
