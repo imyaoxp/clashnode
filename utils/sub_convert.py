@@ -235,7 +235,7 @@ class sub_convert():
                         else:
                             line_fix_list.append(line)
 
-                    sub_content = '\n'.join(line_fix_list).replace('False', 'false').replace('True', 'true').replace('Host','host').replace('Path','path').replace('HOST','host').replace('PATH','path')
+                    sub_content = '\n'.join(line_fix_list).replace('False', 'false').replace('True', 'true').replace('Path','path').replace('HOST','Host').replace('PATH','path')
 
                     if output == False:
                         sub_content_yaml = yaml.safe_load(sub_content)
