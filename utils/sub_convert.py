@@ -660,7 +660,7 @@ class sub_convert():
             
                     if 'obfs-local' in line:
                         yaml_url.setdefault('Plugin', 'obfs')
-                        plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';'
+                        plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';')
                         plugin_mode = re.compile('obfs=(.*?);').findall(plugin_list)[0]
                         plugin_host = re.compile('obfs-host=(.*?);').findall(plugin_list)[0]
                         yaml_url['plugin'] = yaml_url.pop("Plugin")
