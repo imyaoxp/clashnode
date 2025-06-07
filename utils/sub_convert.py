@@ -1112,9 +1112,9 @@ class sub_convert():
                     
                     protocol_url.append(ss_proxy)
 
-                except Exception as err:
-                    print(f'SS生成错误: {err} | 节点: {proxy.get("name", "未知")}')
-                    continue
+                    except Exception as err:
+                        print(f'SS生成错误: {err} | 节点: {proxy.get("name", "未知")}')
+                        continue
 
 
                 
