@@ -169,6 +169,7 @@ class sub_convert():
             except:
                 print('Sub_content 格式错误1')
                 return ''
+                continue
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
             try:
@@ -243,7 +244,9 @@ class sub_convert():
                         sub_content_yaml = sub_content
                 except:
                     print('Sub_content 格式错误2')
+                    print(sub_content)
                     return '' # 解析 URL 内容错误时返回空字符串
+                    continue
             if output == False:
                 for item in sub_content_yaml['proxies']:# 对转换过程中出现的不标准配置格式转换
                     try:
@@ -1216,7 +1219,7 @@ class sub_convert():
         except Exception as err:
             print(f'yaml decode 发生 {err} 错误')
             
-            continue
+            
             
     def base64_decode(url_content): # Base64 转换为 URL 链接内容
         if '-' in url_content:
