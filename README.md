@@ -10,19 +10,19 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `900`
+当前合并节点总数: `997`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
-- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
+- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `99`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `14`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `39`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `0`
 - [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `43`
-- [9vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `21`
+- [9vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `20`
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `13`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `36`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `74`
-- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `20`
+- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `21`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `36`
 - [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `28`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `200`
