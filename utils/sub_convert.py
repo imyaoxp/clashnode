@@ -1046,7 +1046,7 @@ class sub_convert():
                         query_str = '&'.join(
                             f"{k}={urllib.parse.quote(str(v))}" 
                             for k, v in params.items() 
-                            if v not in (None, '')
+                            #if v not in (None, '')
                         )
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(vless_url + '\n')
