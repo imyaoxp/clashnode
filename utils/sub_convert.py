@@ -582,14 +582,13 @@ class sub_convert():
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
-                        yaml_node['reality-opts'] = {
-                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default='1'),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='2a2d')
-                        }
-                        # 处理flow参数
-                        flow = get_param_priority('flow', 'Flow', default='')
-                        if flow:
-                            yaml_node['flow'] = flow
+                        reality_opts = proxy['reality-opts']
+                        params['pbk'] = reality_opts.get('public-key', '')
+                        short_id = reality_opts.get('short-id', '')
+                        if short_id:  # 仅当 short-id 非空时添加
+                            params['sid'] = short_id
+                        if 'flow' in proxy:
+                            params['flow'] = proxy['flow']
 
                     # 根据network类型处理特殊参数
                     network_type = yaml_node['network']
