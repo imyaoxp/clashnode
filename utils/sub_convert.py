@@ -532,7 +532,7 @@ class sub_convert():
 
                     # 提取UUID和服务端信息
                     uuid, server_port = base_part[0].split('@')
-                    server, port = server_port.replace('/','').split(':')[:2]
+                    server, port = server_port.replace('/', '').split(':')[:2]
 
                     # 参数解析（保留原始大小写）
                     raw_params = {}
@@ -547,11 +547,9 @@ class sub_convert():
 
                     # 优先级获取函数（兼容大小写）
                     def get_param_priority(*possible_names, default=None):
-                        # 1. 精确匹配原始参数名
                         for name in possible_names:
                             if name in raw_params:
                                 return raw_params[name]
-                        # 2. 匹配小写形式
                         for name in possible_names:
                             lower_name = name.lower()
                             if lower_name in params_lower:
@@ -582,26 +580,28 @@ class sub_convert():
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
-                        reality_opts = proxy['reality-opts']
-                        params['pbk'] = reality_opts.get('public-key', '')
-                        short_id = reality_opts.get('short-id', '')
-                        if short_id:  # 仅当 short-id 非空时添加
-                            params['sid'] = short_id
-                        if 'flow' in proxy:
-                            params['flow'] = proxy['flow']
+                        yaml_node['reality-opts'] = {
+                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='')
+                        }
+                        flow = get_param_priority('flow', 'Flow', default='')
+                        if flow:
+                            yaml_node['flow'] = flow
 
                     # 根据network类型处理特殊参数
                     network_type = yaml_node['network']
 
-                    # 1. WebSocket处理（保持原有逻辑）
+                    # 1. WebSocket处理
                     if network_type == 'ws':
                         ws_host = (
                             get_param_priority('host', 'Host', 'HOST') or
                             sni or
                             server
                         )
-
-                        yaml_node.setdefault('ws-opts',{'path':get_param_priority('path', 'Path', 'PATH', default='/'), 'headers': {'Host': ws_host}})
+                        yaml_node['ws-opts'] = {
+                            'path': get_param_priority('path', 'Path', 'PATH', default='/'),
+                            'headers': {'Host': ws_host}
+                        }
 
                     # 2. gRPC处理
                     elif network_type == 'grpc':
@@ -612,7 +612,7 @@ class sub_convert():
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
                         yaml_node['h2-opts'] = {
-                            'Host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
+                            'host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
                             'path': get_param_priority('path', 'Path', 'PATH', default='/')
                         }
 
