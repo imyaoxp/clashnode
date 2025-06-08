@@ -584,7 +584,7 @@ class sub_convert():
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
                             'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default='1'),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='')
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='2a2d')
                         }
                         # 处理flow参数
                         flow = get_param_priority('flow', 'Flow', default='')
@@ -1046,7 +1046,7 @@ class sub_convert():
                         query_str = '&'.join(
                             f"{k}={urllib.parse.quote(str(v))}" 
                             for k, v in params.items() 
-                            #if v not in (None, '')
+                            if v not in (None, '')
                         )
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(vless_url + '\n')
