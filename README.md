@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1038`
+当前合并节点总数: `1081`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `94`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
@@ -29,7 +29,7 @@
 - [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `28`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `200`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `30`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `1`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `99`
 - [24wangyingbo/v2rayse_sub](https://github.com/wangyingbo/v2rayse_sub), 节点数量: `124`
 - [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `59`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `20`
