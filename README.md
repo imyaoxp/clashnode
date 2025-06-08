@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `975`
+当前合并节点总数: `929`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `99`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
@@ -18,7 +18,7 @@
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `39`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `62`
 - [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `43`
-- [9vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `22`
+- [9vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `21`
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `12`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `36`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `74`
@@ -30,7 +30,6 @@
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `200`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `47`
 - [24wangyingbo/v2rayse_sub](https://github.com/wangyingbo/v2rayse_sub), 节点数量: `132`
-- [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `55`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `14`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
