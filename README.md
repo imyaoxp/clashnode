@@ -10,14 +10,14 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1068`
+当前合并节点总数: `880`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
-- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `94`
+- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `14`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
-- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `36`
+- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `30`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `39`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `0`
-- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `58`
+- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `45`
 - [9vxiaov/free_proxies](https://github.com/vxiaov/free_proxies), 节点数量: `18`
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `13`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `36`
@@ -29,9 +29,9 @@
 - [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `28`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `200`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `30`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `99`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `36`
 - [24wangyingbo/v2rayse_sub](https://github.com/wangyingbo/v2rayse_sub), 节点数量: `124`
-- [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `59`
+- [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `45`
 - [40firefoxmmx2/v2rayshare_subcription](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `20`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
