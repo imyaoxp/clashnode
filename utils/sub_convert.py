@@ -169,7 +169,7 @@ class sub_convert():
             except:
                 print('Sub_content 格式错误1')
                 return ''
-                continue
+                
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
             try:
