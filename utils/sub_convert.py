@@ -180,7 +180,9 @@ class sub_convert():
                     sub_content_yaml = sub_content
             except Exception:
                 try:
-                    sub_content = sub_content.replace('\'', '').replace('"', '')
+                    #sub_content = sub_co
+                    sub_content = re.sub(r'(?<!\\)"([^":]+)"(?!\s*:)', r'\1', sub_content)  # 移除值两侧的引号
+                    sub_content = re.sub(r'\'([^\':]+)\'(?!\s*:)', r'\1', sub_content)      # 移除单引号
                     url_list = []
                     il_chars = ['|', '?', '[', ']', '@', '!', '%']
 
