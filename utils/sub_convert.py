@@ -246,7 +246,7 @@ class sub_convert():
                     print('Sub_content 格式错误2')
                     print(sub_content)
                     return '' # 解析 URL 内容错误时返回空字符串
-                    continue
+                    
             if output == False:
                 for item in sub_content_yaml['proxies']:# 对转换过程中出现的不标准配置格式转换
                     try:
