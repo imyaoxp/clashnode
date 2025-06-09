@@ -999,8 +999,8 @@ class sub_convert():
                         params = {
                             'security': security_type,
                             'type': proxy.get('network', 'tcp'),
-                            'sni': sni
-                            'xudp': 'true' 
+                            'sni': sni,
+                            'xudp': 'true' if proxy.get('xudp', True) else 'false' 
                         }
                         # 添加TLS指纹
                         if fingerprint := proxy.get('client-fingerprint'):
