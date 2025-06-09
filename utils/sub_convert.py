@@ -545,16 +545,7 @@ class sub_convert():
                                 raw_params[key] = val
                     # 关键参数校验
                     # 在解析参数后添加：
-                    if (pbk := get_param_priority('pbk', 'publicKey', 'PublicKey')):
-                        try:
-                            # Base64 解码验证（兼容带/不带=填充）
-                            import base64
-                            pad_len = len(pbk) % 4
-                            decoded = base64.b64decode(pbk + ('=' * (4 - pad_len) if pad_len else ''))
-                            if len(decoded) != 32:
-                                raise ValueError("Reality public-key must decode to 32 bytes")
-                        except Exception as e:
-                            raise ValueError(f"Invalid Reality public-key: {str(e)}")
+
 
                     if (sid := get_param_priority('sid', 'shortId', 'ShortId')):
                         if not all(c in '0123456789abcdefABCDEF' for c in sid):
@@ -1016,24 +1007,18 @@ class sub_convert():
                         if fingerprint := proxy.get('client-fingerprint'):
                             params['fp'] = fingerprint
 
-                        # Reality配置校验
-                        # 在 Reality 配置检查部分修改为：
-                        if 'reality-opts' in proxy:
-                            reality_opts = proxy['reality-opts']
-                            try:
-                                import base64
-                                pbk = reality_opts.get('public-key', '')
-                                if pbk:  # 非空时才校验
-                                    pad_len = len(pbk) % 4
-                                    decoded = base64.b64decode(pbk + ('=' * (4 - pad_len) if pad_len else ''))
-                                    if len(decoded) != 32:
-                                        raise ValueError("Reality public-key must decode to 32 bytes")
-                            except Exception as e:
-                                raise ValueError(f"Invalid Reality public-key in YAML: {str(e)}")
-
-                            if (sid := reality_opts.get('short-id', '')) and not all(c in '0123456789abcdefABCDEF' for c in sid):
-                                raise ValueError("Reality short-id must be hexadecimal")
-                            
+                         # Reality配置校验
+                         if security_type == 'reality':
+                             reality_opts = proxy['reality-opts']
+                             
+                             raise ValueError("Reality public-key must be 44 characters long")
+                             if not all(c in '0123456789abcdefABCDEF' for c in reality_opts.get('short-id', '')):
+                                 raise ValueError("Reality short-id must be hexadecimal")
+            
+                             params.update({
+                                 'pbk': reality_opts['public-key'],
+                                 'sid': reality_opts['short-id']
+                             })
                             
                             if 'flow' in proxy:
                                 params['flow'] = proxy['flow']
