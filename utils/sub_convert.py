@@ -591,8 +591,8 @@ class sub_convert():
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
-                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey') or "",
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId') or "" 
+                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey')
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId')
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
