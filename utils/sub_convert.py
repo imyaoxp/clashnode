@@ -1074,6 +1074,7 @@ class sub_convert():
 
                     except Exception as e:
                         print(f'VLESS解码错误: {e} | 节点: {proxy.get("name", "未知")}')
+                        print(f'proxy:{proxy}')
                         continue
                 
                 
@@ -1232,13 +1233,14 @@ class sub_convert():
                     group = 'U1NSUHJvdmlkZXI'
                     ssr_proxy = 'ssr://'+sub_convert.base64_encode(server+':'+port+':'+protocol+':'+cipher+':'+obfs+':'+password+'/?remarks='+remarks+'&obfsparam='+obfsparam+'&protoparam='+protoparam+'&group='+group + '\n')
                     protocol_url.append(ssr_proxy)
-                    print(ssr_proxy)
+                    #print(ssr_proxy)
                     #print(protocol_url)
       
             yaml_content = ''.join(protocol_url)
             return yaml_content
         except Exception as err:
             print(f'yaml decode 发生 {err} 错误')
+            continue
             
             
             
