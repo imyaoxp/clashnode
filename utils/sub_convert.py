@@ -245,7 +245,7 @@ class sub_convert():
                     else: # output 值为 True 时返回修饰过的 YAML 文本
                         sub_content_yaml = sub_content
                 except Exception as err:
-                    print('Sub_content 格式错误2 {err}')
+                    print(f'Sub_content 格式错误2 {err}')
                     #print(sub_content)
                     return '' # 解析 URL 内容错误时返回空字符串
                     
