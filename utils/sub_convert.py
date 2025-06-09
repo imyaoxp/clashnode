@@ -60,8 +60,7 @@ class sub_convert():
                         idid = re.findall(r'\d\d',idid)[0]
                         
                         resp = s.get(url, timeout=5)
-                        resp = resp.content.decode('utf-8').replace('\r', '\n')
-                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp))
+                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp.content.decode('utf-8')))
                         a_content.append(s_content)
                     except Exception as err:
                         print(err)
@@ -132,8 +131,7 @@ class sub_convert():
                 if '://' not in sub_content:
                     sub_content = sub_convert.base64_encode(sub_content)
 
-                
-                raw_url_list = re.split('\n', sub_content)
+                raw_url_list = re.split(r'\n+', sub_content)
 
                 for url in raw_url_list:
                     while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
@@ -171,7 +169,6 @@ class sub_convert():
             except:
                 print('Sub_content 格式错误1')
                 return ''
-                
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
             try:
@@ -182,14 +179,11 @@ class sub_convert():
                     sub_content_yaml = sub_content
             except Exception:
                 try:
-                    #sub_content = sub_co
-                    sub_content = re.sub(r'(?<!\\)"([^":]+)"(?!\s*:)', r'\1', sub_content)  # 移除值两侧的引号
-                    sub_content = re.sub(r'\'([^\':]+)\'(?!\s*:)', r'\1', sub_content)      # 移除单引号
+                    sub_content = sub_content.replace('\'', '').replace('"', '')
                     url_list = []
                     il_chars = ['|', '?', '[', ']', '@', '!', '%']
 
                     lines = re.split(r'\n+', sub_content)
-                    #lines = re.split(r',+', lines)
                     line_fix_list = []
 
                     for line in lines:
@@ -247,11 +241,9 @@ class sub_convert():
                         sub_content_yaml = yaml.safe_load(sub_content)
                     else: # output 值为 True 时返回修饰过的 YAML 文本
                         sub_content_yaml = sub_content
-                except Exception as err:
-                    print(f'Sub_content 格式错误2 {err}')
-                    print(sub_content)
+                except:
+                    print('Sub_content 格式错误2')
                     return '' # 解析 URL 内容错误时返回空字符串
-                    
             if output == False:
                 for item in sub_content_yaml['proxies']:# 对转换过程中出现的不标准配置格式转换
                     try:
