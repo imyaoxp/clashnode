@@ -65,7 +65,7 @@ class sub_convert():
                     except Exception as err:
                         print(err)
                         return 'Url 解析错误'
-                sub_content = sub_convert.transfer(''.join(a_content))
+                sub_content = sub_convert.transfer(''.join(a_content)).replace('\r', '\n')
                 
             else:
                 s = requests.Session()
@@ -131,7 +131,7 @@ class sub_convert():
                 if '://' not in sub_content:
                     sub_content = sub_convert.base64_encode(sub_content)
 
-                sub_content = sub_content.replace('\r', '\n')
+                
                 raw_url_list = re.split('\n', sub_content)
 
                 for url in raw_url_list:
