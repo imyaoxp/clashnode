@@ -1025,7 +1025,8 @@ class sub_convert():
                         protocol_url.append(vless_url)
 
                     except Exception as e:
-                        print(f'VLESS编码错误: {e} | 节点: {proxy.get('name', '未知')}')
+                        print(f'VLESS编码错误: {e} | 节点: {proxy.get("name", "未知")}')
+                        
                         continue
                 
                 
