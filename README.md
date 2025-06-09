@@ -10,14 +10,14 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1037`
+当前合并节点总数: `1028`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `12`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `93`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `6`
 - [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `39`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `62`
-- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `64`
+- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `56`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `31`
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `11`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `34`
