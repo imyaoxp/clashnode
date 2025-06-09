@@ -187,6 +187,7 @@ class sub_convert():
                     il_chars = ['|', '?', '[', ']', '@', '!', '%']
 
                     lines = re.split(r'\n+', sub_content)
+                    lines = re.split(r',+', lines)
                     line_fix_list = []
 
                     for line in lines:
