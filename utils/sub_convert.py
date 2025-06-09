@@ -582,7 +582,7 @@ class sub_convert():
                         'tls': get_param_priority('security', 'Security', default='none').lower() in ['tls', 'reality'],
                         'network': get_param_priority('type', 'Type', default='tcp').lower(),
                         'udp': True,
-                        'xudp': get_param_priority('xudp', 'XUDP', default='true').lower() == 'true'
+                        'xudp': True
                     }
                     # 处理TLS指纹
                     if fingerprint := get_param_priority('fp', 'fingerprint', 'Fingerprint'):
@@ -1000,7 +1000,7 @@ class sub_convert():
                             'security': security_type,
                             'type': proxy.get('network', 'tcp'),
                             'sni': sni
-                            'xudp': 'true' if proxy.get('xudp', True) else 'false'
+                            'xudp': 'true' 
                         }
                         # 添加TLS指纹
                         if fingerprint := proxy.get('client-fingerprint'):
