@@ -976,20 +976,25 @@ class sub_convert():
                             'security': 'none'
                         }
 
-                        # TLS/Reality 配置
-                        if tls := proxy.get('tls', {}):
+                        # 修正点：处理 tls 字段（可能是 bool 或 dict）
+                        tls_config = proxy.get('tls')
+                        if isinstance(tls_config, bool):
+                            if tls_config:  # 如果是 True
+                                params['security'] = 'tls'
+                                params['sni'] = proxy['server']  # 默认使用 server 作为 sni
+                        elif isinstance(tls_config, dict):
                             params['security'] = 'tls'
-                            params['sni'] = tls.get('server-name', proxy['server'])
+                            params['sni'] = tls_config.get('server-name', proxy['server'])
             
-                            if fp := tls.get('fingerprint'):
+                            if fp := tls_config.get('fingerprint'):
                                 params['fp'] = fp
-                
-                            if reality := tls.get('reality', {}):
+
+                            if reality := tls_config.get('reality', {}):
                                 params['security'] = 'reality'
                                 params['pbk'] = reality['public-key']
                                 if sid := reality.get('short-id'):
-                                    params['sid'] = sid
-                
+                                   params['sid'] = sid
+
                         # Flow 控制
                         if flow := proxy.get('flow'):
                             params['flow'] = flow
