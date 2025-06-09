@@ -131,7 +131,8 @@ class sub_convert():
                 if '://' not in sub_content:
                     sub_content = sub_convert.base64_encode(sub_content)
 
-                raw_url_list = re.split(r'[\n\r]+', sub_content)
+                sub_content = sub_content.replace('\r', '\n')
+                raw_url_list = re.split('\n', sub_content)
 
                 for url in raw_url_list:
                     while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
