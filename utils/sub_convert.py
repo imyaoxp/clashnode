@@ -60,12 +60,12 @@ class sub_convert():
                         idid = re.findall(r'\d\d',idid)[0]
                         
                         resp = s.get(url, timeout=5)
-                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp.content.decode('utf-8')))
+                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp.content.decode('utf-8'))).replace('\r', '\n')
                         a_content.append(s_content)
                     except Exception as err:
                         print(err)
                         return 'Url 解析错误'
-                sub_content = sub_convert.transfer(''.join(a_content)).replace('\r', '\n')
+                sub_content = sub_convert.transfer(''.join(a_content))
                 
             else:
                 s = requests.Session()
