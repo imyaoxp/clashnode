@@ -1240,7 +1240,7 @@ class sub_convert():
             return yaml_content
         except Exception as err:
             print(f'yaml decode 发生 {err} 错误')
-            continue
+            
             
             
             
