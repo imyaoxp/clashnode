@@ -132,7 +132,7 @@ class sub_convert():
                     sub_content = sub_convert.base64_encode(sub_content)
 
                 raw_url_list = re.split(r'\n+', sub_content)
-                raw_url_list = re.split(r',+', raw_url_list)
+                
 
                 for url in raw_url_list:
                     while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
@@ -157,7 +157,7 @@ class sub_convert():
                             url_splited = url_to_split.replace('#', '\n#', 1)
 
                         
-                        url_split = url_splited.split('\n')
+                        url_split = url_splited.split('\n').split(',')
 
                         front_url = url[:8] + url_split[0]
                         url_list.append(front_url)
