@@ -60,7 +60,8 @@ class sub_convert():
                         idid = re.findall(r'\d\d',idid)[0]
                         
                         resp = s.get(url, timeout=5)
-                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp.content.decode('utf-8'))).replace('\r', '\n')
+                        resp = resp.content.decode('utf-8').replace('\r', '\n')
+                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp))
                         a_content.append(s_content)
                     except Exception as err:
                         print(err)
