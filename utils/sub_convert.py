@@ -246,7 +246,7 @@ class sub_convert():
                         sub_content_yaml = sub_content
                 except Exception as err:
                     print(f'Sub_content 格式错误2 {err}')
-                    #print(sub_content)
+                    print(sub_content)
                     return '' # 解析 URL 内容错误时返回空字符串
                     
             if output == False:
