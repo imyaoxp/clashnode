@@ -153,11 +153,13 @@ class sub_convert():
                             url_splited = url_to_split.replace('hy2://', '\nhy2://', 1)
                         elif 'hy://' in url_to_split:
                             url_splited = url_to_split.replace('hy://', '\nhy://', 1)
+                        elif ',' in url_to_split:
+                            url_splited = url_to_split.replace(',', '\n', 1)
                         elif '#' in url_to_split:
                             url_splited = url_to_split.replace('#', '\n#', 1)
 
                         
-                        url_split = url_splited.split('\n').split(',')
+                        url_split = url_splited.split('\n')
 
                         front_url = url[:8] + url_split[0]
                         url_list.append(front_url)
