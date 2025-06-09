@@ -543,17 +543,12 @@ class sub_convert():
                             if '=' in param:
                                 key, val = param.split('=', 1)
                                 raw_params[key] = val
-                    # 关键参数校验
-                    # 在解析参数后添加：
 
-
-                    if 'sid' in raw_params and not all(c in '0123456789abcdefABCDEF' for c in raw_params['sid']):
-                        raise ValueError("Reality short-id (sid) must be hexadecimal")
                     # 创建大小写不敏感的参数字典
                     params_lower = {k.lower(): (k, v) for k, v in raw_params.items()}
 
                     # 优先级获取函数（兼容大小写）
-                    def get_param_priority(*possible_names, default= ""):
+                    def get_param_priority(*possible_names, default=None):
                         for name in possible_names:
                             if name in raw_params:
                                 return raw_params[name]
@@ -581,18 +576,15 @@ class sub_convert():
                         'servername': sni,
                         'tls': get_param_priority('security', 'Security', default='none').lower() in ['tls', 'reality'],
                         'network': get_param_priority('type', 'Type', default='tcp').lower(),
-                        'udp': True,
-                        'xudp': True
+                        'udp': True
                     }
-                    # 处理TLS指纹
-                    if fingerprint := get_param_priority('fp', 'fingerprint', 'Fingerprint'):
-                        yaml_node['client-fingerprint'] = fingerprint
+
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
-                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey'),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId')
+                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='') 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
@@ -974,7 +966,7 @@ class sub_convert():
                 elif proxy['type'] == 'vless':
                     try:
                         # 优先级获取函数
-                        def get_priority(*keys, default= ""):
+                        def get_priority(*keys, default=None):
                             for key in keys:
                                 value = proxy.get(key)
                                 if value is not None:
@@ -999,26 +991,14 @@ class sub_convert():
                         params = {
                             'security': security_type,
                             'type': proxy.get('network', 'tcp'),
-                            'sni': sni,
-                            'xudp': 'true' if proxy.get('xudp', True) else 'false' 
+                            'sni': sni
                         }
-                        # 添加TLS指纹
-                        if fingerprint := proxy.get('client-fingerprint'):
-                            params['fp'] = fingerprint
 
-                        # Reality配置校验
+                        # 处理Reality配置
                         if security_type == 'reality':
                             reality_opts = proxy['reality-opts']
-                             
-                            
-                            if not all(c in '0123456789abcdefABCDEF' for c in reality_opts.get('short-id', '')):
-                                raise ValueError("Reality short-id must be hexadecimal")
-            
-                            params.update({
-                                'pbk': reality_opts['public-key'],
-                                'sid': reality_opts['short-id']
-                            })
-                            
+                            params['pbk'] = reality_opts.get('public-key', '')
+                            params['sid'] = reality_opts.get('short-id', '')
                             if 'flow' in proxy:
                                 params['flow'] = proxy['flow']
 
@@ -1074,7 +1054,6 @@ class sub_convert():
 
                     except Exception as e:
                         print(f'VLESS解码错误: {e} | 节点: {proxy.get("name", "未知")}')
-                        print(f'proxy:{proxy}')
                         continue
                 
                 
@@ -1233,14 +1212,13 @@ class sub_convert():
                     group = 'U1NSUHJvdmlkZXI'
                     ssr_proxy = 'ssr://'+sub_convert.base64_encode(server+':'+port+':'+protocol+':'+cipher+':'+obfs+':'+password+'/?remarks='+remarks+'&obfsparam='+obfsparam+'&protoparam='+protoparam+'&group='+group + '\n')
                     protocol_url.append(ssr_proxy)
-                    #print(ssr_proxy)
+                    print(ssr_proxy)
                     #print(protocol_url)
       
             yaml_content = ''.join(protocol_url)
             return yaml_content
         except Exception as err:
             print(f'yaml decode 发生 {err} 错误')
-            
             
             
             
