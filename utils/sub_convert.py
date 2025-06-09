@@ -529,8 +529,8 @@ class sub_convert():
             if 'vless://' in line:
                 try:
                     # 分离基础部分和参数部分
-                    url_part = line.replace('vless://', '').split('#', 1)  # 分割#后的备注部分
-                    base_part = url_part[0].split('?', 1)  # 分割?前的核心部分和参数部分
+                    url_part = line.replace('vless://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
 
                     # 提取UUID和服务端信息
                     uuid, server_port = base_part[0].split('@')
@@ -560,9 +560,9 @@ class sub_convert():
 
                     # 获取公共参数
                     sni = (
-                        get_param_priority('sni', 'SNI', 'Sni') or
-                        get_param_priority('servername', 'ServerName', 'serverName', 'Servername') or
-                        get_param_priority('host', 'Host', 'HOST') or
+                        get_param_priority('sni', 'SNI') or
+                        get_param_priority('servername', 'serverName') or
+                        get_param_priority('host', 'Host') or
                         server
                     )
 
@@ -570,71 +570,76 @@ class sub_convert():
                     yaml_node = {
                         'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Unnamed',
                         'server': server,
-                        'port': port,
+                        'port': int(port),
                         'type': 'vless',
                         'uuid': uuid,
-                        'servername': sni,
-                        'tls': get_param_priority('security', 'Security', default='none').lower() in ['tls', 'reality'],
-                        'network': get_param_priority('type', 'Type', default='tcp').lower(),
-                        'udp': True
+                        'udp': True,
+                        'network': get_param_priority('type', 'Type', default='tcp').lower()
                     }
 
-                    # 处理Reality配置
+                    # TLS/Reality 配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
-                    if security_type == 'reality':
-                        yaml_node['reality-opts'] = {
-                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='') 
+                    if security_type in ['tls', 'reality']:
+                        yaml_node['tls'] = {
+                            'enabled': True,
+                            'server-name': sni,
+                            'fingerprint': get_param_priority('fp', 'fingerprint')
                         }
-                        flow = get_param_priority('flow', 'Flow', default='')
-                        if flow:
-                            yaml_node['flow'] = flow
 
-                    # 根据network类型处理特殊参数
+                        if security_type == 'reality':
+                            # 验证 pbk (44位Base64) 和 short-id (Hex)
+                            pbk = get_param_priority('pbk', 'publicKey')
+                            if not pbk or len(pbk) != 44 or not all(c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=' for c in pbk):
+                                raise ValueError("Invalid reality public-key")
+                
+                            short_id = get_param_priority('sid', 'shortId') or ''
+                            if short_id and not all(c in '0123456789abcdefABCDEF' for c in short_id):
+                                raise ValueError("Invalid reality short-id")
+
+                            yaml_node['tls']['reality'] = {
+                                'enabled': True,
+                                'public-key': pbk,
+                                'short-id': short_id
+                            }
+
+                            if flow := get_param_priority('flow'):
+                                yaml_node['flow'] = flow
+
+                    # Packet Encoding (xudp)
+                    if packet_encoding := get_param_priority('packetEncoding', 'packet-encoding'):
+                        yaml_node['xudp'] = packet_encoding.lower() == 'xudp'
+
+                    # 根据传输类型处理参数
                     network_type = yaml_node['network']
-
-                    # 1. WebSocket处理
                     if network_type == 'ws':
-                        ws_host = (
-                            get_param_priority('host', 'Host', 'HOST') or
-                            sni or
-                            server
-                        )
                         yaml_node['ws-opts'] = {
-                            'path': get_param_priority('path', 'Path', 'PATH', default='/'),
-                            'headers': {'Host': ws_host}
+                            'path': get_param_priority('path', default='/'),
+                            'headers': {
+                                'Host': get_param_priority('host', 'Host') or sni
+                            }
                         }
-
-                    # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
-                            'grpc-service-name': get_param_priority('serviceName', 'servicename', default='')
+                            'grpc-service-name': get_param_priority('serviceName', default='')
                         }
-
-                    # 3. HTTP/2处理
                     elif network_type == 'h2':
                         yaml_node['h2-opts'] = {
-                            'host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
-                            'path': get_param_priority('path', 'Path', 'PATH', default='/')
+                            'path': get_param_priority('path', default='/'),
+                            'host': [h.strip() for h in get_param_priority('host', default='').split(',')]
                         }
-
-                    # 4. TCP处理（含HTTP伪装）
-                    elif network_type == 'tcp':
-                        header_type = get_param_priority('headerType', 'headertype')
-                        if header_type and header_type.lower() == 'http':
-                            yaml_node['tcp-opts'] = {
-                                'headers': {
-                                    'Host': get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                                },
-                                'path': get_param_priority('path', 'Path', 'PATH', default='/')
+                    elif network_type == 'tcp' and get_param_priority('headerType') == 'http':
+                        yaml_node['tcp-opts'] = {
+                            'path': get_param_priority('path', default='/'),
+                            'headers': {
+                                'Host': [h.strip() for h in get_param_priority('host', default='').split(',')]
                             }
+                        }
 
                     url_list.append(yaml_node)
 
                 except Exception as e:
-                    print(f'VLESS编码错误: {e} | 行: {line[:100]}...')
+                    print(f'VLESS解码错误: {e} | 行: {line[:100]}...')
                     continue
-        
    
             if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line:
                 if '#' not in line:
@@ -965,95 +970,62 @@ class sub_convert():
                 
                 elif proxy['type'] == 'vless':
                     try:
-                        # 优先级获取函数
-                        def get_priority(*keys, default=None):
-                            for key in keys:
-                                value = proxy.get(key)
-                                if value is not None:
-                                    return value
-                                # 检查小写变体
-                                lower_key = key.lower()
-                                for k, v in proxy.items():
-                                    if k.lower() == lower_key:
-                                        return v
-                            return default
-
-                        # 获取公共参数
-                        sni = (
-                            get_priority('servername', 'serverName', 'ServerName', 'Servername') or
-                            get_priority('sni', 'SNI', 'Sni') or
-                            get_priority('host', 'Host', 'HOST') or
-                            proxy['server']
-                        )
-
-                        # 构建基础参数
-                        security_type = 'reality' if 'reality-opts' in proxy else ('tls' if proxy.get('tls') else 'none')
+                        # 基础参数
                         params = {
-                            'security': security_type,
                             'type': proxy.get('network', 'tcp'),
-                            'sni': sni
+                            'security': 'none'
                         }
 
-                        # 处理Reality配置
-                        if security_type == 'reality':
-                            reality_opts = proxy['reality-opts']
-                            params['pbk'] = reality_opts.get('public-key', '')
-                            params['sid'] = reality_opts.get('short-id', '')
-                            if 'flow' in proxy:
-                                params['flow'] = proxy['flow']
+                        # TLS/Reality 配置
+                        if tls := proxy.get('tls', {}):
+                            params['security'] = 'tls'
+                            params['sni'] = tls.get('server-name', proxy['server'])
+            
+                            if fp := tls.get('fingerprint'):
+                                params['fp'] = fp
+                
+                            if reality := tls.get('reality', {}):
+                                params['security'] = 'reality'
+                                params['pbk'] = reality['public-key']
+                                if sid := reality.get('short-id'):
+                                    params['sid'] = sid
+                
+                        # Flow 控制
+                        if flow := proxy.get('flow'):
+                            params['flow'] = flow
 
-                        # 根据network类型处理特殊参数
+                        # Packet Encoding
+                        if proxy.get('xudp'):
+                            params['packetEncoding'] = 'xudp'
+
+                        # 传输类型特定参数
                         network_type = proxy.get('network', 'tcp')
-
-                        # 1. WebSocket处理
                         if network_type == 'ws':
-                            ws_opts = proxy.get('ws-opts', {})
-                            params['path'] = ws_opts.get('path', '/')
-                            headers = ws_opts.get('headers', {})
-                            params['host'] = (
-                                headers.get('host') or
-                                headers.get('Host') or
-                                sni
-                           )
-
-                        # 2. gRPC处理
+                            if opts := proxy.get('ws-opts', {}):
+                                params['path'] = opts.get('path', '/')
+                                if host := opts.get('headers', {}).get('Host'):
+                                    params['host'] = host
                         elif network_type == 'grpc':
-                            grpc_opts = proxy.get('grpc-opts', {})
-                            params['serviceName'] = (
-                                grpc_opts.get('grpc-service-name') or
-                                grpc_opts.get('grpcServiceName') or
-                               ''
-                            )
-
-                        # 3. HTTP/2处理
+                            if opts := proxy.get('grpc-opts', {}):
+                                params['serviceName'] = opts.get('grpc-service-name', '')
                         elif network_type == 'h2':
-                            h2_opts = proxy.get('h2-opts', {})
-                            params['path'] = h2_opts.get('path', '/')
-                            if 'host' in h2_opts and h2_opts['host']:
-                                params['host'] = ','.join(h2_opts['host'])
-
-                        # 4. TCP处理（HTTP伪装）
+                            if opts := proxy.get('h2-opts', {}):
+                                params['path'] = opts.get('path', '/')
+                                if hosts := opts.get('host', []):
+                                    params['host'] = ','.join(hosts)
                         elif network_type == 'tcp':
-                            tcp_opts = proxy.get('tcp-opts', {})
-                            if 'headers' in tcp_opts:
-                                headers = tcp_opts['headers']
-                                host = headers.get('Host') or headers.get('host')
-                                if host:
-                                    params['headerType'] = 'http'
-                                    params['host'] = ','.join(host) if isinstance(host, list) else host
-                                    params['path'] = tcp_opts.get('path', '/')
+                            if opts := proxy.get('tcp-opts', {}):
+                                params['path'] = opts.get('path', '/')
+                                if hosts := opts.get('headers', {}).get('Host', []):
+                                    params['host'] = ','.join(hosts) if isinstance(hosts, list) else hosts
 
-                        # 生成标准化URL
-                        query_str = '&'.join(
-                            f"{k}={urllib.parse.quote(str(v))}" 
-                            for k, v in params.items() 
-                            if v not in (None, '')
-                        )
-                        vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
-                        protocol_url.append(vless_url + '\n')
+                        # 生成查询字符串
+                        query = '&'.join(f"{k}={urllib.parse.quote(str(v))}" for k, v in params.items() if v)
+                        vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query}#{urllib.parse.quote(proxy['name'])}"
+                        protocol_url.append(vless_url)
 
                     except Exception as e:
-                        print(f'VLESS解码错误: {e} | 节点: {proxy.get("name", "未知")}')
+                        print(f'VLESS编码错误: {e} | 节点: {proxy.get('name', '未知')}')
                         continue
                 
                 
