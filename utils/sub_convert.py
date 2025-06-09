@@ -553,7 +553,7 @@ class sub_convert():
                     params_lower = {k.lower(): (k, v) for k, v in raw_params.items()}
 
                     # 优先级获取函数（兼容大小写）
-                    def get_param_priority(*possible_names, default=None):
+                    def get_param_priority(*possible_names, default= ""):
                         for name in possible_names:
                             if name in raw_params:
                                 return raw_params[name]
@@ -974,7 +974,7 @@ class sub_convert():
                 elif proxy['type'] == 'vless':
                     try:
                         # 优先级获取函数
-                        def get_priority(*keys, default=None):
+                        def get_priority(*keys, default= ""):
                             for key in keys:
                                 value = proxy.get(key)
                                 if value is not None:
