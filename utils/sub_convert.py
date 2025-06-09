@@ -547,9 +547,8 @@ class sub_convert():
                     # 在解析参数后添加：
 
 
-                    if (sid := get_param_priority('sid', 'shortId', 'ShortId')):
-                        if not all(c in '0123456789abcdefABCDEF' for c in sid):
-                            raise ValueError("Reality short-id must be hexadecimal")
+                    if 'sid' in raw_params and not all(c in '0123456789abcdefABCDEF' for c in raw_params['sid']):
+                        raise ValueError("Reality short-id (sid) must be hexadecimal")
                     # 创建大小写不敏感的参数字典
                     params_lower = {k.lower(): (k, v) for k, v in raw_params.items()}
 
