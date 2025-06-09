@@ -1011,7 +1011,7 @@ class sub_convert():
                         if security_type == 'reality':
                             reality_opts = proxy['reality-opts']
                              
-                            raise ValueError("Reality public-key must be 44 characters long")
+                            
                             if not all(c in '0123456789abcdefABCDEF' for c in reality_opts.get('short-id', '')):
                                 raise ValueError("Reality short-id must be hexadecimal")
             
