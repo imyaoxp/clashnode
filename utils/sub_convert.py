@@ -182,7 +182,7 @@ class sub_convert():
                     sub_content_yaml = sub_content
             except Exception:
                 try:
-                    sub_content = sub_content.replace('\'', '').replace('"', '')
+                    sub_content = sub_content.replace('\'', '')
                     url_list = []
                     il_chars = ['|', '?', '[', ']', '@', '!', '%']
 
@@ -588,7 +588,7 @@ class sub_convert():
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
                             'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='') 
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default="") 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
