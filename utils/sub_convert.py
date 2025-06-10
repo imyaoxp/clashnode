@@ -711,7 +711,7 @@ class sub_convert():
                     url_list.append(yaml_url)
                 except Exception as err:
                     print(yaml_url)
-                    print(lines)
+                    print(line)
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
                     continue
 
