@@ -19,7 +19,7 @@
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `62`
 - [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `41`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `31`
-- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `9`
+- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `11`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `44`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `74`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `23`
@@ -29,7 +29,7 @@
 - [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `31`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `200`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `31`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `96`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `99`
 - [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `55`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
