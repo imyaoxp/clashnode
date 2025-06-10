@@ -235,14 +235,18 @@ class sub_convert():
                         else:
                             line_fix_list.append(line)
 
-                    sub_content = '\n'.join(line_fix_list).replace('False', 'false').replace('True', 'true').replace('Path','path').replace('HOST','Host').replace('PATH','path')
+                    sub_content = '\n'.join(line_fix_list).replace('False', 'false').replace('True', 'true').replace('Path','path').replace('host','Host').replace('PATH','path')
 
                     if output == False:
                         sub_content_yaml = yaml.safe_load(sub_content)
                     else: # output 值为 True 时返回修饰过的 YAML 文本
                         sub_content_yaml = sub_content
-                except:
-                    print('Sub_content 格式错误2')
+                except Exception as err:
+                    print(f'Sub_content 格式错误2:{err}')
+                    print(line)
+                    print(sub_content)
+                    
+                    
                     return '' # 解析 URL 内容错误时返回空字符串
             if output == False:
                 for item in sub_content_yaml['proxies']:# 对转换过程中出现的不标准配置格式转换
@@ -299,7 +303,7 @@ class sub_convert():
                         if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['type'] == proxies_list[begin_2]['type'] and proxy_compared['password'] == proxies_list[begin_2]['password']:
                             proxies_list.pop(begin_2)
                             length -= 1
-                            print(proxy_compared)
+                            #print(proxy_compared)
                     begin_2 += 1
                 begin += 1
 
