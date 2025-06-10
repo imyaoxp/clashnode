@@ -29,7 +29,7 @@
 - [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `31`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `200`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `31`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `99`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `98`
 - [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `55`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
