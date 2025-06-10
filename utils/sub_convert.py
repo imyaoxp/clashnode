@@ -187,7 +187,7 @@ class sub_convert():
                     il_chars = ['|', '?', '[', ']', '@', '!', '%']
 
                     lines = re.split(r'\n+', sub_content)
-                    print(f'lines:{lines}')
+                    #print(f'lines:{lines}')
                     line_fix_list = []
 
                     for line in lines:
@@ -247,7 +247,7 @@ class sub_convert():
                         sub_content_yaml = sub_content
                 except Exception as err:
                     print(f'Sub_content 格式错误2:{err}')
-                    print(line)
+                    print(f'line:{line}')
                     print(sub_content)
                     
                     
@@ -711,7 +711,7 @@ class sub_convert():
                     url_list.append(yaml_url)
                 except Exception as err:
                     print(yaml_url)
-                    print(line)
+                    print(f'line:{line}')
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
                     continue
 
