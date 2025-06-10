@@ -181,7 +181,7 @@ class sub_convert():
                 try:
                     sub_content = sub_content.replace('\'', '').replace('"', '')
                     url_list = []
-                    il_chars = ['|', '?', '[', ']', '@', '!', '%']
+                    il_chars = ['|', '?', '[', ']', '!', '%']
 
                     lines = re.split(r'\n+', sub_content)
                     line_fix_list = []
