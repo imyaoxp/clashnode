@@ -107,7 +107,7 @@ class sub_convert():
             if 'proxies:' in sub_content: # 判断字符串是否在文本中，是，判断为YAML。https://cloud.tencent.com/developer/article/1699719
                 url_content = sub_convert.format(sub_content)
                 return url_content
-                #return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
+                return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
             elif '://'  in sub_content: # 同上，是，判断为 Url 链接内容。
                 url_content = sub_convert.yaml_encode(sub_convert.format(sub_content))
                 return url_content
@@ -181,7 +181,7 @@ class sub_convert():
                 try:
                     sub_content = sub_content.replace('\'', '').replace('"', '')
                     url_list = []
-                    il_chars = ['|', '?', '[', ']', '!', '%']
+                    il_chars = ['|', '?', '[', ']', '@', '!', '%']
 
                     lines = re.split(r'\n+', sub_content)
                     line_fix_list = []
