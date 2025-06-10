@@ -105,14 +105,17 @@ class sub_convert():
     def transfer(sub_content): # 将 URL 内容转换为 YAML 格式
         if '</b>' not in sub_content:
             if 'proxies:' in sub_content: # 判断字符串是否在文本中，是，判断为YAML。https://cloud.tencent.com/developer/article/1699719
+                url_content = sub_convert.replace('\r\n', '\n').raplace('\r', '\n')
                 url_content = sub_convert.format(sub_content)
                 return url_content
-                return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
+                #return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
             elif '://'  in sub_content: # 同上，是，判断为 Url 链接内容。
+                url_content = sub_content.replace('\r\n', '\n').raplace('\r', '\n')
                 url_content = sub_convert.yaml_encode(sub_convert.format(sub_content))
                 return url_content
             else: # 判断 Base64.
                 try:
+                    url_content = sub_content.replace('\r\n', '\n').raplace('\r', '\n')
                     url_content = sub_convert.base64_decode(sub_content)
                     url_content = sub_convert.yaml_encode(sub_convert.format(url_content))
                     return url_content
