@@ -629,7 +629,7 @@ class sub_convert():
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': get_param_priority('path', 'Path', 'PATH', default='/'),
+                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/')),
                             'headers': {'Host': ws_host}
                         }
 
