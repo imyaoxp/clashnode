@@ -10,27 +10,27 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `133`
-- [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `2`
+当前合并节点总数: `0`
+- [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `0`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `6`
-- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `26`
-- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `4`
-- [7go4sharing](https://github.com/go4sharing), 节点数量: `21`
-- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `17`
-- [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `20`
-- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `4`
-- [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `1`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `0`
+- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `0`
+- [6ljsshd/aggregator](https://github.com/ljsshd/aggregator), 节点数量: `0`
+- [7go4sharing](https://github.com/go4sharing), 节点数量: `0`
+- [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `0`
+- [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `0`
+- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `0`
+- [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `0`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `0`
-- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `13`
-- [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `1`
-- [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `1`
+- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `0`
+- [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `0`
+- [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `0`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `0`
-- [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `1`
+- [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `0`
 - [20mahdibland/V2RayAggregator](https://github.com/mahdibland/V2RayAggregator), 节点数量: `0`
-- [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `1`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `31`
-- [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `11`
+- [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `0`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `0`
+- [25LightL99/aggregatocr](https://github.com/mehran1404/Sub_Link/), 节点数量: `0`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
