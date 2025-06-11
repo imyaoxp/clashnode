@@ -174,92 +174,83 @@ class sub_convert():
             proxies = []
             lines = sub_content.split('\n')
         
-            # 所有需要特殊处理的嵌套选项
-            opts_fields = [
-                'ws-opts', 'reality-opts', 'http-opts', 
-                'grpc-opts', 'h2-opts', 'tcp-opts',
-                'plugin-opts', 'http2-opts', 'quic-opts',
-                'tls-opts', 'transport-opts'
-            ]
-        
             for line in lines:
                 line = line.strip()
                 if not line or line.startswith('#') or not line.startswith('- '):
                     continue
             
-                # 提取花括号内的内容
+                # 手动解析行内容
                 if '{' in line and '}' in line:
                     content = line[line.find('{')+1:line.rfind('}')]
-                else:
-                    continue
+                    proxy = {}
+                    current_key = None
+                    current_value = []
+                    in_quotes = False
+                    quote_char = None
+                    nested_level = 0
                 
-                # 分割键值对
-                items = [item.strip() for item in content.split(',') if item.strip()]
-        
-                proxy = {}
-                current_opts = None
-        
-                for item in items:
-                    if ':' not in item:
-                        continue
-                
-                    key, value = item.split(':', 1)
-                    key = key.strip().strip('"\'')
-                    value = value.strip().strip('"\'')
-            
-                    # 处理嵌套选项
-                    if key in opts_fields:
-                        if '{' in value and '}' in value:
-                            opts_content = value[value.find('{')+1:value.rfind('}')]
-                            opts_items = [opt.strip() for opt in opts_content.split(',') if opt.strip()]
+                    i = 0
+                    while i < len(content):
+                        char = content[i]
                     
-                            opts = {}
-                            for opt_item in opts_items:
-                                if ':' not in opt_item:
-                                    continue
-                                opt_key, opt_value = opt_item.split(':', 1)
-                                opt_key = opt_key.strip().strip('"\'')
-                                opt_value = opt_value.strip().strip('"\'')
-                        
-                                # 处理headers等二级嵌套
-                                if opt_key == 'headers' and '{' in opt_value and '}' in opt_value:
-                                    headers_content = opt_value[opt_value.find('{')+1:opt_value.rfind('}')]
-                                    headers_items = [h.strip() for h in headers_content.split(',') if h.strip()]
-                            
-                                    headers = {}
-                                    for header_item in headers_items:
-                                        if ':' not in header_item:
-                                            continue
-                                        h_key, h_value = header_item.split(':', 1)
-                                        headers[h_key.strip()] = h_value.strip().strip('"\'')
-                            
-                                    opts[opt_key] = headers
-                                else:
-                                    opts[opt_key] = opt_value
-                            
-                            proxy[key] = opts
+                        # 处理引号
+                        if char in ('"', "'") and not in_quotes:
+                            in_quotes = True
+                            quote_char = char
+                            current_value.append(char)
+                        elif char == quote_char and in_quotes:
+                            in_quotes = False
+                            current_value.append(char)
+                            quote_char = None
+                        elif in_quotes:
+                            current_value.append(char)
                         else:
-                            proxy[key] = value.strip('"\'')
-                    else:
-                        # 处理普通字段
-                        proxy[key] = value.strip('"\'')
-        
-                if 'type' in proxy:
-                    # 类型特定处理
-                    if proxy['type'] == 'ss':
-                        if 'password' in proxy:
-                            proxy['password'] = proxy['password'].strip('"\'')
-            
-                    elif proxy['type'] in ['vmess', 'vless']:
-                        if 'uuid' in proxy:
-                            proxy['uuid'] = proxy['uuid'].strip('"\'')
-            
-                    elif proxy['type'] == 'trojan':
-                        if 'password' in proxy:
-                           proxy['password'] = proxy['password'].strip('"\'')
-            
+                            # 处理嵌套结构
+                            if char == '{':
+                                nested_level += 1
+                                current_value.append(char)
+                            elif char == '}':
+                                nested_level -= 1
+                                current_value.append(char)
+                            elif char == ':' and nested_level == 0 and not current_key:
+                                # 键结束
+                                current_key = ''.join(current_value).strip()
+                                current_value = []
+                            elif char == ',' and nested_level == 0:
+                                # 值结束
+                                value_str = ''.join(current_value).strip()
+                                if current_key:
+                                    # 处理嵌套值
+                                    if value_str.startswith('{') and value_str.endswith('}'):
+                                        try:
+                                            nested_value = format(f"proxies:\n- {value_str}", False)
+                                            if nested_value and 'proxies' in nested_value and nested_value['proxies']:
+                                                proxy[current_key] = nested_value['proxies'][0]
+                                        except:
+                                            proxy[current_key] = value_str
+                                    else:
+                                        # 去除值的引号
+                                        if (value_str.startswith('"') and value_str.endswith('"')) or \
+                                           (value_str.startswith("'") and value_str.endswith("'")):
+                                            value_str = value_str[1:-1]
+                                        proxy[current_key] = value_str
+                                    current_key = None
+                                current_value = []
+                            else:
+                                current_value.append(char)
+                        i += 1
+                
+                    # 处理最后一个键值对
+                    if current_key and current_value:
+                        value_str = ''.join(current_value).strip()
+                        if (value_str.startswith('"') and value_str.endswith('"')) or \
+                           (value_str.startswith("'") and value_str.endswith("'")):
+                            value_str = value_str[1:-1]
+                        proxy[current_key] = value_str
+                
                     # 添加到代理列表
-                    proxies.append(proxy)
+                    if proxy:
+                        proxies.append(proxy)
     
             if output:
                 return yaml.dump({'proxies': proxies}, default_flow_style=False, sort_keys=False, allow_unicode=True)
