@@ -185,14 +185,14 @@ class sub_convert():
                 sub_content
             )
         
-            # 处理内联字典
+            # 处理内联字典 - 修复括号问题
             sub_content = re.sub(
                 r'\{([^}]*)\}',
                 lambda m: '{' + re.sub(
                     r'([a-zA-Z-]+):\s*([^,}]+)',
                     process_special_chars,
                     m.group(1)
-                + '}',
+                ) + '}',
                 sub_content
             )
             
