@@ -175,7 +175,7 @@ class sub_convert():
                 """递归解析嵌套结构"""
                 result = {}
                 items = []
-               current = []
+                current = []
                 in_quotes = False
                 quote_char = None
                 brace_level = 0
