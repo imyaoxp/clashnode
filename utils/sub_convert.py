@@ -181,7 +181,7 @@ class sub_convert():
             # 处理emoji和特殊符号
             sub_content = re.sub(
                 r'(["\'])(.*?[🇦-🇿@/?].*?)\1',
-                lambda m: f'"{m.group(2).replace(\'"\', \'\\"\')}"',
+                lambda m: fr'"{m.group(2).replace('"', r'\"')}"',
                 sub_content
             )
               
@@ -198,6 +198,7 @@ class sub_convert():
                 return sub_content_yaml
             except yaml.YAMLError as yaml_err:
                 print(f'YAML解析错误: {yaml_err}')
+                              
                 # 如果直接解析失败，尝试逐行处理
                 lines = sub_content.split('\n')
                 fixed_lines = []
