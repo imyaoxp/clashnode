@@ -280,9 +280,9 @@ class sub_convert():
                 return '\n'.join(yaml_lines)
         
             if output:
-            return generate_yaml(proxies)
+                return generate_yaml(proxies)
             else:
-            return {'proxies': proxies}
+                return {'proxies': proxies}
             
 
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
