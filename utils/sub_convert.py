@@ -675,10 +675,10 @@ class sub_convert():
                     yaml_url.setdefault('name', urllib.parse.unquote(part_list[1]))
                     if '@' in part_list[0]:
                         mix_part = part_list[0].split('@', 1)
-                        method_part = sub_convert.base64_decode(mix_part[0])
+                        method_part = sub_convert.base64_decode(mix_part[0]) + '=' * ((4 - len(mix_part[0]) % 4) % 4))
                         server_part = f'{method_part}@{mix_part[1]}'
                     else:
-                        server_part = sub_convert.base64_decode(part_list[0])
+                        server_part = sub_convert.base64_decode(part_list[0] + '=' * ((4 - len(part_list[0]) % 4) % 4))
                     server_part_list = server_part.split(':', 1)
                     method_part = server_part_list[0]
                     server_part_list = server_part_list[1].rsplit('@', 1)
