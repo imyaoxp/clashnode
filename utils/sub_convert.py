@@ -174,84 +174,89 @@ class sub_convert():
             proxies = []
             lines = sub_content.split('\n')
         
+            def parse_nested(content_str):
+                """递归解析嵌套结构"""
+                result = {}
+                current_key = None
+                current_value = []
+                in_quotes = False
+                quote_char = None
+                brace_level = 0
+                bracket_level = 0
+                i = 0
+            
+                while i < len(content_str):
+                    char = content_str[i]
+                
+                    # 处理引号
+                    if char in ('"', "'") and not in_quotes:
+                        in_quotes = True
+                        quote_char = char
+                    elif char == quote_char and in_quotes:
+                        in_quotes = False
+                        quote_char = None
+                
+                    # 处理嵌套层级
+                    if char == '{' and not in_quotes:
+                        brace_level += 1
+                    elif char == '}' and not in_quotes:
+                        brace_level -= 1
+                
+                    # 键值对分隔
+                    if char == ':' and brace_level == 0 and bracket_level == 0 and not in_quotes:
+                        current_key = ''.join(current_value).strip()
+                        current_value = []
+                    elif char == ',' and brace_level == 0 and bracket_level == 0 and not in_quotes:
+                        value_str = ''.join(current_value).strip()
+                        if current_key:
+                            # 处理嵌套值
+                            if value_str.startswith('{') and value_str.endswith('}'):
+                                result[current_key] = parse_nested(value_str[1:-1])
+                            else:
+                                # 去除值的引号
+                                if (value_str.startswith('"') and value_str.endswith('"')) or \
+                                   (value_str.startswith("'") and value_str.endswith("'")):
+                                    value_str = value_str[1:-1]
+                                result[current_key] = value_str
+                        current_value = []
+                        current_key = None
+                    else:
+                        current_value.append(char)
+                    i += 1
+            
+                # 处理最后一个键值对
+                if current_key and current_value:
+                    value_str = ''.join(current_value).strip()
+                    if value_str.startswith('{') and value_str.endswith('}'):
+                        result[current_key] = parse_nested(value_str[1:-1])
+                    else:
+                        if (value_str.startswith('"') and value_str.endswith('"')) or \
+                           (value_str.startswith("'") and value_str.endswith("'")):
+                            value_str = value_str[1:-1]
+                        result[current_key] = value_str
+            
+                return result
+        
             for line in lines:
                 line = line.strip()
                 if not line or line.startswith('#') or not line.startswith('- '):
                     continue
             
-                # 手动解析行内容
+                # 提取大括号内容
                 if '{' in line and '}' in line:
                     content = line[line.find('{')+1:line.rfind('}')]
-                    proxy = {}
-                    current_key = None
-                    current_value = []
-                    in_quotes = False
-                    quote_char = None
-                    nested_level = 0
+                    proxy = parse_nested(content)
                 
-                    i = 0
-                    while i < len(content):
-                        char = content[i]
-                    
-                        # 处理引号
-                        if char in ('"', "'") and not in_quotes:
-                            in_quotes = True
-                            quote_char = char
-                            current_value.append(char)
-                        elif char == quote_char and in_quotes:
-                            in_quotes = False
-                            current_value.append(char)
-                            quote_char = None
-                        elif in_quotes:
-                            current_value.append(char)
-                        else:
-                            # 处理嵌套结构
-                            if char == '{':
-                                nested_level += 1
-                                current_value.append(char)
-                            elif char == '}':
-                                nested_level -= 1
-                                current_value.append(char)
-                            elif char == ':' and nested_level == 0 and not current_key:
-                                # 键结束
-                                current_key = ''.join(current_value).strip()
-                                current_value = []
-                            elif char == ',' and nested_level == 0:
-                                # 值结束
-                                value_str = ''.join(current_value).strip()
-                                if current_key:
-                                    # 处理嵌套值
-                                    if value_str.startswith('{') and value_str.endswith('}'):
-                                        try:
-                                            nested_value = format(f"proxies:\n- {value_str}", False)
-                                            if nested_value and 'proxies' in nested_value and nested_value['proxies']:
-                                                proxy[current_key] = nested_value['proxies'][0]
-                                        except:
-                                            proxy[current_key] = value_str
-                                    else:
-                                        # 去除值的引号
-                                        if (value_str.startswith('"') and value_str.endswith('"')) or \
-                                           (value_str.startswith("'") and value_str.endswith("'")):
-                                            value_str = value_str[1:-1]
-                                        proxy[current_key] = value_str
-                                    current_key = None
-                                current_value = []
-                            else:
-                                current_value.append(char)
-                        i += 1
+                    # 确保所有层级都是字典
+                    for key, value in proxy.items():
+                        if isinstance(value, str) and value.startswith('{') and value.endswith('}'):
+                            try:
+                                proxy[key] = parse_nested(value[1:-1])
+                            except:
+                                pass
                 
-                    # 处理最后一个键值对
-                    if current_key and current_value:
-                        value_str = ''.join(current_value).strip()
-                        if (value_str.startswith('"') and value_str.endswith('"')) or \
-                           (value_str.startswith("'") and value_str.endswith("'")):
-                            value_str = value_str[1:-1]
-                        proxy[current_key] = value_str
-                
-                    # 添加到代理列表
-                    if proxy:
-                        proxies.append(proxy)
-    
+                    proxies.append(proxy)
+        
             if output:
                 return yaml.dump({'proxies': proxies}, default_flow_style=False, sort_keys=False, allow_unicode=True)
             else:
