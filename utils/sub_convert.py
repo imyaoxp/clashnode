@@ -204,8 +204,8 @@ class sub_convert():
                         continue
                 
                     key, value = item.split(':', 1)
-                    key = key.strip()
-                    value = value.strip()
+                    key = key.strip().strip('"\'')
+                    value = value.strip().strip('"\'')
             
                     # 处理嵌套选项
                     if key in opts_fields:
@@ -218,7 +218,7 @@ class sub_convert():
                                 if ':' not in opt_item:
                                     continue
                                 opt_key, opt_value = opt_item.split(':', 1)
-                                opt_key = opt_key.strip()
+                                opt_key = opt_key.strip().strip('"\'')
                                 opt_value = opt_value.strip().strip('"\'')
                         
                                 # 处理headers等二级嵌套
