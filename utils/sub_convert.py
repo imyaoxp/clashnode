@@ -177,14 +177,15 @@ class sub_convert():
             def parse_nested(content_str):
                 """递归解析嵌套结构"""
                 result = {}
-                current_key = None
-                current_value = []
+                items = []
+                current_item = []
                 in_quotes = False
                 quote_char = None
                 brace_level = 0
                 bracket_level = 0
-                i = 0
             
+                # 第一步：先按逗号分割键值对，考虑嵌套结构
+                i = 0
                 while i < len(content_str):
                     char = content_str[i]
                 
@@ -201,39 +202,72 @@ class sub_convert():
                         brace_level += 1
                     elif char == '}' and not in_quotes:
                         brace_level -= 1
+                    elif char == '[' and not in_quotes:
+                        bracket_level += 1
+                    elif char == ']' and not in_quotes:
+                        bracket_level -= 1
                 
-                    # 键值对分隔
-                    if char == ':' and brace_level == 0 and bracket_level == 0 and not in_quotes:
-                        current_key = ''.join(current_value).strip()
-                        current_value = []
-                    elif char == ',' and brace_level == 0 and bracket_level == 0 and not in_quotes:
-                        value_str = ''.join(current_value).strip()
-                        if current_key:
-                            # 处理嵌套值
-                            if value_str.startswith('{') and value_str.endswith('}'):
-                                result[current_key] = parse_nested(value_str[1:-1])
-                            else:
-                                # 去除值的引号
-                                if (value_str.startswith('"') and value_str.endswith('"')) or \
-                                   (value_str.startswith("'") and value_str.endswith("'")):
-                                    value_str = value_str[1:-1]
-                                result[current_key] = value_str
-                        current_value = []
-                        current_key = None
+                    # 键值对分隔（只在最外层分割）
+                    if char == ',' and brace_level == 0 and bracket_level == 0 and not in_quotes:
+                        items.append(''.join(current_item).strip())
+                        current_item = []
                     else:
-                        current_value.append(char)
+                        current_item.append(char)
                     i += 1
             
-                # 处理最后一个键值对
-                if current_key and current_value:
-                    value_str = ''.join(current_value).strip()
-                    if value_str.startswith('{') and value_str.endswith('}'):
-                        result[current_key] = parse_nested(value_str[1:-1])
-                    else:
-                        if (value_str.startswith('"') and value_str.endswith('"')) or \
-                           (value_str.startswith("'") and value_str.endswith("'")):
-                            value_str = value_str[1:-1]
-                        result[current_key] = value_str
+                # 添加最后一个项目
+                if current_item:
+                    items.append(''.join(current_item).strip())
+            
+                # 第二步：处理每个键值对
+                for item in items:
+                    # 找到第一个不在引号或括号中的冒号作为分隔符
+                    colon_pos = -1
+                    in_quotes = False
+                    quote_char = None
+                    brace_level = 0
+                    bracket_level = 0
+                
+                    for i, char in enumerate(item):
+                        # 处理引号
+                        if char in ('"', "'") and not in_quotes:
+                            in_quotes = True
+                            quote_char = char
+                        elif char == quote_char and in_quotes:
+                            in_quotes = False
+                            quote_char = None
+                    
+                        # 处理嵌套层级
+                        if char == '{' and not in_quotes:
+                            brace_level += 1
+                        elif char == '}' and not in_quotes:
+                            brace_level -= 1
+                        elif char == '[' and not in_quotes:
+                            bracket_level += 1
+                        elif char == ']' and not in_quotes:
+                            bracket_level -= 1
+                    
+                        # 找到第一个最外层的冒号
+                        if char == ':' and brace_level == 0 and bracket_level == 0 and not in_quotes:
+                            colon_pos = i
+                            break
+                
+                    if colon_pos > 0:
+                        key = item[:colon_pos].strip()
+                        value = item[colon_pos+1:].strip()
+                    
+                        # 处理嵌套值
+                        if value.startswith('{') and value.endswith('}'):
+                            result[key] = parse_nested(value[1:-1])
+                        elif value.startswith('[') and value.endswith(']'):
+                            # 处理数组
+                            result[key] = [x.strip().strip('"\'') for x in value[1:-1].split(',')]
+                        else:
+                            # 去除值的引号
+                            if (value.startswith('"') and value.endswith('"')) or \
+                               (value.startswith("'") and value.endswith("'")):
+                                value = value[1:-1]
+                            result[key] = value
             
                 return result
         
@@ -246,15 +280,6 @@ class sub_convert():
                 if '{' in line and '}' in line:
                     content = line[line.find('{')+1:line.rfind('}')]
                     proxy = parse_nested(content)
-                
-                    # 确保所有层级都是字典
-                    for key, value in proxy.items():
-                        if isinstance(value, str) and value.startswith('{') and value.endswith('}'):
-                            try:
-                                proxy[key] = parse_nested(value[1:-1])
-                            except:
-                                pass
-                
                     proxies.append(proxy)
         
             if output:
