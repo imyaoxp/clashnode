@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1029`
+当前合并节点总数: `966`
 - [2hello-world-1989/cn-news](https://github.com/hello-world-1989/cn-news), 节点数量: `6`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `94`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
@@ -22,7 +22,7 @@
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `10`
 - [11liusil/aggregator](https://github.com/liusil/aggregator), 节点数量: `31`
 - [13au3300/aggregator](https://github.com/au3300/aggregator), 节点数量: `79`
-- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `19`
+- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `20`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `34`
 - [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `28`
 - [18HeFung/V2RaySub](https://github.com/HeFung/V2RaySub), 节点数量: `200`
