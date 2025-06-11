@@ -260,8 +260,8 @@ class sub_convert():
                     try:
                         if item['type'] == 'vmess' and 'Host' in item['ws-opts']['headers']:
                             item['ws-opts']['headers']['host'] = item['ws-opts']['headers'].pop("Host")
-                        if item['type'] == 'vless' and 'HOST' in item['ws-opts']['headers']:
-                            item['ws-opts']['headers']['host'] = item['ws-opts']['headers'].pop("HOST")   
+                        if item['type'] == 'vless' and 'host' in item['ws-opts']['headers']:
+                            item['ws-opts']['headers']['Host'] = item['ws-opts']['headers'].pop("host")   
                         if item['type'] == 'ss' and 'HOST' in item['plugin-opts']:
                             item['plugin-opts']['host'] = item['plugin-opts'].pop("HOST")
                         if item['type'] == 'ss' and 'Host' in item['ws-opts']['headers']:
@@ -591,7 +591,7 @@ class sub_convert():
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
                             'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default="") 
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default=" ") 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
