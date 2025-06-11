@@ -582,7 +582,7 @@ class sub_convert():
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
                             'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default="") 
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='') 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
@@ -717,7 +717,7 @@ class sub_convert():
                 
                     # 处理认证信息
                     auth_server = base_part[0].rsplit('@', 1)
-                    auth = auth_server[0] if len(auth_server) == 2 else ""
+                    auth = auth_server[0] if len(auth_server) == 2 else ''
                     server, port = auth_server[-1].split(':')[:2]
 
                     # 初始化配置
@@ -1168,7 +1168,7 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria2':
                     try:
                         # 基础部分
-                        auth_part = f"{proxy['password']}@" if proxy.get('password') else ""
+                        auth_part = f"{proxy['password']}@" if proxy.get('password') else ''
                         base_url = f"hy2://{auth_part}{proxy['server']}:{proxy['port']}"
                     
                         # 参数处理（只添加有效参数）
