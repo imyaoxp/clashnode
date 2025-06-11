@@ -260,11 +260,31 @@ class sub_convert():
                 
                     # 添加到代理列表
                     proxies.append(proxy)
+
+
+            # 自定义YAML生成
+            def generate_yaml(proxies):
+                yaml_lines = ["proxies:"]
+                for proxy in proxies:
+                    yaml_lines.append("  -")
+                    for key, value in proxy.items():
+                        if isinstance(value, dict):
+                            yaml_lines.append(f"    {key}:")
+                            for k, v in value.items():
+                                yaml_lines.append(f"      {k}: {v}")
+                        else:
+                            # 智能添加引号
+                            needs_quote = any(c in str(value) for c in [' ', ':', '#', '&', '*'])
+                            value_str = f'"{value}"' if needs_quote else str(value)
+                            yaml_lines.append(f"    {key}: {value_str}")
+                return '\n'.join(yaml_lines)
         
             if output:
-                return yaml.dump({'proxies': proxies}, default_flow_style=False, sort_keys=False, allow_unicode=True)
+            return generate_yaml(proxies)
             else:
-                return {'proxies': proxies}
+            return {'proxies': proxies}
+            
+
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
         global idid
         # 区域判断(Clash YAML): https://blog.csdn.net/CSDN_duomaomao/article/details/89712826 (ip-api)
