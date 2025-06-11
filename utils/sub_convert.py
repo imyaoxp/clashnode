@@ -181,7 +181,7 @@ class sub_convert():
             # 处理emoji和特殊符号
             sub_content = re.sub(
                 r'(["\'])(.*?[🇦-🇿@/?].*?)\1',
-                lambda m: fr'"{m.group(2).replace('"', r'\"')}"',
+                lambda m: f'"{m.group(2).replace(\'"', '"\')}"',
                 sub_content
             )
               
