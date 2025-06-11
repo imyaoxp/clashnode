@@ -171,14 +171,20 @@ class sub_convert():
                 return ''
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
-            # 添加自动修复内联字典的功能
+            # 预处理包含特殊字符的path值
             sub_content = re.sub(
-                r'-\s*\{([^}]*)\}',
-                lambda m: '- "' + m.group(0).replace('"', '\\"') + '"', 
+                r'path:\s*([^\s,}]+)',
+                lambda m: f'path: "{m.group(1)}"' if any(c in m.group(1) for c in [' ', '?', '&', '@', '/']) else m.group(0),
                 sub_content
             )
         
-            
+            # 处理emoji和特殊符号
+            sub_content = re.sub(
+                r'(["\'])(.*?[🇦-🇿@/?].*?)\1',
+                lambda m: f'"{m.group(2).replace(\'"\', \'\\"\')}"',
+                sub_content
+            )
+              
             
             
             
