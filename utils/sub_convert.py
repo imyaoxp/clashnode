@@ -126,8 +126,9 @@ class sub_convert():
             print('订阅内容解析错误')
             return '订阅内容解析错误'
         
-    def format(sub_content, output=False): # 对节点 Url 进行格式化处理, 输出节点的字典格式, output 为真时输出 YAML 文本
-        if 'proxies:' not in sub_content: # 对 URL 内容进行格式化处理
+    def format(sub_content, output=False):
+        if 'proxies:' not in sub_content:
+            # 处理非YAML内容（保持原有逻辑）
             url_list = []
             try:
                 if '://' not in sub_content:
@@ -139,7 +140,7 @@ class sub_convert():
                     while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
                         url_to_split = url[8:]
                         if 'ss://' in url_to_split and 'vmess://' not in url_to_split and 'vless://' not in url_to_split:
-                            url_splited = url_to_split.replace('ss://', '\nss://', 1) # https://www.runoob.com/python/att-string-replace.html
+                            url_splited = url_to_split.replace('ss://', '\nss://', 1)
                         elif 'ssr://' in url_to_split:
                             url_splited = url_to_split.replace('ssr://', '\nssr://', 1)
                         elif 'vmess://' in url_to_split:
@@ -158,7 +159,6 @@ class sub_convert():
                             url_splited = url_to_split.replace('#', '\n#', 1)
 
                         url_split = url_splited.split('\n')
-
                         front_url = url[:8] + url_split[0]
                         url_list.append(front_url)
                         url = url_split[1]
@@ -171,25 +171,18 @@ class sub_convert():
                 return ''
 
         elif 'proxies:' in sub_content:
-            proxies = []
-            lines = sub_content.split('\n')
-        
-            def parse_nested(content_str):
+            def parse_nested(content):
                 """递归解析嵌套结构"""
                 result = {}
                 items = []
-                current_item = []
+               current = []
                 in_quotes = False
                 quote_char = None
                 brace_level = 0
                 bracket_level = 0
             
-                # 第一步：先按逗号分割键值对，考虑嵌套结构
-                i = 0
-                while i < len(content_str):
-                    char = content_str[i]
-                
-                    # 处理引号
+                # 分割键值对
+                for char in content:
                     if char in ('"', "'") and not in_quotes:
                         in_quotes = True
                         quote_char = char
@@ -197,7 +190,6 @@ class sub_convert():
                         in_quotes = False
                         quote_char = None
                 
-                    # 处理嵌套层级
                     if char == '{' and not in_quotes:
                         brace_level += 1
                     elif char == '}' and not in_quotes:
@@ -207,21 +199,18 @@ class sub_convert():
                     elif char == ']' and not in_quotes:
                         bracket_level -= 1
                 
-                    # 键值对分隔（只在最外层分割）
                     if char == ',' and brace_level == 0 and bracket_level == 0 and not in_quotes:
-                        items.append(''.join(current_item).strip())
-                        current_item = []
+                        items.append(''.join(current).strip())
+                        current = []
                     else:
-                        current_item.append(char)
-                    i += 1
+                        current.append(char)
             
-                # 添加最后一个项目
-                if current_item:
-                    items.append(''.join(current_item).strip())
+                if current:
+                    items.append(''.join(current).strip())
             
-                # 第二步：处理每个键值对
+                # 处理每个键值对
                 for item in items:
-                    # 找到第一个不在引号或括号中的冒号作为分隔符
+                    # 找到第一个不在引号或括号中的冒号
                     colon_pos = -1
                     in_quotes = False
                     quote_char = None
@@ -229,15 +218,13 @@ class sub_convert():
                     bracket_level = 0
                 
                     for i, char in enumerate(item):
-                        # 处理引号
                         if char in ('"', "'") and not in_quotes:
                             in_quotes = True
                             quote_char = char
                         elif char == quote_char and in_quotes:
                             in_quotes = False
                             quote_char = None
-                    
-                        # 处理嵌套层级
+                        
                         if char == '{' and not in_quotes:
                             brace_level += 1
                         elif char == '}' and not in_quotes:
@@ -245,9 +232,8 @@ class sub_convert():
                         elif char == '[' and not in_quotes:
                             bracket_level += 1
                         elif char == ']' and not in_quotes:
-                            bracket_level -= 1
+                           bracket_level -= 1
                     
-                        # 找到第一个最外层的冒号
                         if char == ':' and brace_level == 0 and bracket_level == 0 and not in_quotes:
                             colon_pos = i
                             break
@@ -270,22 +256,45 @@ class sub_convert():
                             result[key] = value
             
                 return result
-        
-            for line in lines:
-                line = line.strip()
-                if not line or line.startswith('#') or not line.startswith('- '):
-                    continue
+
+            # 处理YAML内容
+            try:
+                # 尝试直接加载
+                loaded = yaml.safe_load(sub_content)
+                if output:
+                    return yaml.dump(loaded, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                return loaded
             
-                # 提取大括号内容
-                if '{' in line and '}' in line:
-                    content = line[line.find('{')+1:line.rfind('}')]
-                    proxy = parse_nested(content)
-                    proxies.append(proxy)
-        
-            if output:
-                return yaml.dump({'proxies': proxies}, default_flow_style=False, sort_keys=False, allow_unicode=True)
-            else:
-                return {'proxies': proxies}
+            except Exception:
+                # 手动解析
+                proxies = []
+                lines = sub_content.split('\n')
+            
+                for line in lines:
+                    line = line.strip()
+                    if not line or line.startswith('#') or not line.startswith('- '):
+                        continue
+                
+                    # 提取大括号内容
+                    if '{' in line and '}' in line:
+                        content = line[line.find('{')+1:line.rfind('}')]
+                        proxy = parse_nested(content)
+                    
+                        # 确保所有层级都是字典
+                        for key, value in proxy.items():
+                            if isinstance(value, str) and value.startswith('{') and value.endswith('}'):
+                                try:
+                                    proxy[key] = parse_nested(value[1:-1])
+                                except:
+                                    pass
+                    
+                        proxies.append(proxy)
+            
+                result = {'proxies': proxies}
+            
+                if output:
+                    return yaml.dump(result, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                return result
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
         global idid
         # 区域判断(Clash YAML): https://blog.csdn.net/CSDN_duomaomao/article/details/89712826 (ip-api)
