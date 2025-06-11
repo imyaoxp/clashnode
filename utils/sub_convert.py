@@ -190,6 +190,7 @@ class sub_convert():
                 # 提取花括号内的内容
                 if '{' in line and '}' in line:
                     content = line[line.find('{')+1:line.rfind('}')]
+                    content = content.replace("'", '"')
                 else:
                     continue
                 
