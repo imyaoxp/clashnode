@@ -194,7 +194,7 @@ class sub_convert():
                     m.group(1)
                 + '}',
                 sub_content
-            )
+                )
             
             
             try:
