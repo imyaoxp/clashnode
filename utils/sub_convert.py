@@ -171,6 +171,17 @@ class sub_convert():
                 return ''
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
+            # 添加自动修复内联字典的功能
+            sub_content = re.sub(
+                r'-\s*\{([^}]*)\}',
+                lambda m: '- "' + m.group(0).replace('"', '\\"') + '"', 
+                sub_content
+            )
+        
+            
+            
+            
+            
             try:
                 # 首先尝试直接解析整个YAML
                 try_load = yaml.safe_load(sub_content)
