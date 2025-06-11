@@ -259,6 +259,7 @@ class sub_convert():
                             proxy['password'] = proxy['password'].strip('"\'')
                 
                     # 添加到代理列表
+                    print(f'proxy:{proxy}')
                     proxies.append(proxy)
         
             if output:
