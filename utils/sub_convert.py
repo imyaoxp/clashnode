@@ -139,7 +139,7 @@ class sub_convert():
                     while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
                         url_to_split = url[8:]
                         if 'ss://' in url_to_split and 'vmess://' not in url_to_split and 'vless://' not in url_to_split:
-                            url_splited = url_to_split.replace('ss://', '\nss://', 1)
+                            url_splited = url_to_split.replace('ss://', '\nss://', 1) # https://www.runoob.com/python/att-string-replace.html
                         elif 'ssr://' in url_to_split:
                             url_splited = url_to_split.replace('ssr://', '\nssr://', 1)
                         elif 'vmess://' in url_to_split:
@@ -172,90 +172,49 @@ class sub_convert():
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
             try:
+                # 首先尝试直接解析整个YAML
                 try_load = yaml.safe_load(sub_content)
                 if output == False:
                     sub_content_yaml = try_load
                 else:
                     sub_content_yaml = sub_content
-            except Exception:
-                try:
-                    sub_content = re.sub(r'(?<!\\)"([^":]+)"(?!\s*:)', r'\1', sub_content)  # 移除值两侧的引号
-                    sub_content = re.sub(r'\'([^\':]+)\'(?!\s*:)', r'\1', sub_content)      # 移除单引号
-                
-                    url_list = []
-                    il_chars = ['|', '?', '[', ']', '@', '!', '%']
-
-                    lines = re.split(r'\n+', sub_content)
-                    line_fix_list = []
-
-                    for line in lines:
-                        try:
-                            if not line.strip() or line.strip().startswith('#'):
-                                continue
-                            
-                            value_list = re.split(r': |, ', line)
-                            if len(value_list) > 6:
-                                value_list_fix = []
-                                for value in value_list:
-                                    value_il = any(char in value for char in il_chars)
-                                    if value_il == True and ('{' not in value and '}' not in value):
-                                        value = '"' + value + '"'
-                                        value_list_fix.append(value)
-                                    elif value_il == True and '}' in value:
-                                        if '}}' in value:
-                                            host_part = value.replace('}}','')
-                                            host_value = '"'+host_part+'"}}'
-                                            value_list_fix.append(host_value)
-                                        elif '}}' not in value:
-                                            host_part = value.replace('}','')
-                                            host_value = '"'+host_part+'"}'
-                                            value_list_fix.append(host_value)
-                                    else:
-                                        value_list_fix.append(value)
-                                    line_fix = line
-                                for index in range(len(value_list_fix)):
-                                    line_fix = line_fix.replace(value_list[index], value_list_fix[index])
-                                line_fix_list.append(line_fix)
-                            elif len(value_list) == 2:
-                                value_list_fix = []
-                                for value in value_list:
-                                    value_il = any(char in value for char in il_chars)
-                                    if value_il == True:
-                                        value = '"' + value + '"'
-                                    value_list_fix.append(value)
-                                line_fix = line
-                                for index in range(len(value_list_fix)):
-                                    line_fix = line_fix.replace(value_list[index], value_list_fix[index])
-                                line_fix_list.append(line_fix)
-                            elif len(value_list) == 1:
-                                if ':' in line:
-                                    line_fix_list.append(line)
-                            else:
-                                line_fix_list.append(line)
-                        except Exception as line_err:
-                            print(f'跳过格式错误的行: {line}, 错误: {line_err}')
+                return sub_content_yaml
+            except yaml.YAMLError as yaml_err:
+                print(f'YAML解析错误: {yaml_err}')
+                # 如果直接解析失败，尝试逐行处理
+                lines = sub_content.split('\n')
+                fixed_lines = []
+                for line in lines:
+                    try:
+                        # 跳过空行和注释行
+                        if not line.strip() or line.strip().startswith('#'):
+                            fixed_lines.append(line)
                             continue
-
-                    sub_content = '\n'.join(line_fix_list).replace('False', 'false').replace('True', 'true').replace('Path','path').replace('host','Host').replace('PATH','path')
-
+                    
+                        # 尝试解析当前行
+                        yaml.safe_load(line)
+                        fixed_lines.append(line)
+                    except yaml.YAMLError:
+                        print(f'跳过格式错误的行: {line}')
+                        continue
+            
+                # 重新组合有效的行并解析
+                fixed_content = '\n'.join(fixed_lines)
+                try:
+                    sub_content_yaml = yaml.safe_load(fixed_content)
                     if output == False:
-                        try:
-                            sub_content_yaml = yaml.safe_load(sub_content)
-                        except yaml.YAMLError as yaml_err:
-                            print(f'YAML解析错误: {yaml_err}')
-                            sub_content_yaml = {'proxies': []}
+                        return sub_content_yaml
                     else:
-                        sub_content_yaml = sub_content
+                        return fixed_content
                 except Exception as err:
-                    print(f'Sub_content 格式错误2:{err}')
-                    return {'proxies': []} # 返回空代理列表而不是空字符串
-        
+                    print(f'修复YAML格式失败: {err}')
+                    return {'proxies': []} if output == False else ''
+            except Exception as err:
+                print(f'Sub_content 格式错误2:{err}')
+                return {'proxies': []} if output == False else ''
+
             if output == False:
-                if not isinstance(sub_content_yaml, dict) or 'proxies' not in sub_content_yaml:
-                    return {'proxies': []}
-                
-                valid_proxies = []
-                for item in sub_content_yaml['proxies']:
+                for item in sub_content_yaml['proxies']:# 对转换过程中出现的不标准配置格式转换
                     try:
                         if item['type'] == 'vmess' and 'Host' in item['ws-opts']['headers']:
                             item['ws-opts']['headers']['host'] = item['ws-opts']['headers'].pop("Host")
@@ -266,18 +225,12 @@ class sub_convert():
                         if item['type'] == 'ss' and 'Host' in item['ws-opts']['headers']:
                             item['plugin-opts']['host'] = item['plugin-opts'].pop("Host")  
 
-                        if '.' not in item['server'] and '::' not in item['server']:  # 跳过无效服务器地址
-                            continue
-                        
-                        valid_proxies.append(item)
-                    except (KeyError, TypeError) as item_err:
-                        print(f'跳过无效代理项: {item}, 错误: {item_err}')
-                        continue
-                    
-                sub_content_yaml['proxies'] = valid_proxies
-                return sub_content_yaml
+                    except KeyError:
+                        if '.' not in item['server']:
+                            sub_content_yaml['proxies'].remove(item)
+                        pass
 
-            return sub_content_yaml
+            return sub_content_yaml # 返回字典, output 值为 True 时返回修饰过的 YAML 文本 
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
         global idid
         # 区域判断(Clash YAML): https://blog.csdn.net/CSDN_duomaomao/article/details/89712826 (ip-api)
