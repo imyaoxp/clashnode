@@ -170,121 +170,94 @@ class sub_convert():
                 print('Sub_content 格式错误1')
                 return ''
 
-        elif 'proxies:' in sub_content:
-            proxies = []
-            lines = sub_content.split('\n')
+        elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
+            # 预处理步骤
+            def process_special_chars(match):
+                key, value = match.groups()
+                if any(c in value for c in [' ', '?', '&', '@', '/', '"', "'"]):
+                    return f'{key}: {json.dumps(value)}'
+                return match.group(0)
         
-            # 所有需要特殊处理的嵌套选项
-            opts_fields = [
-                'ws-opts', 'reality-opts', 'http-opts', 
-                'grpc-opts', 'h2-opts', 'tcp-opts',
-                'plugin-opts', 'http2-opts', 'quic-opts',
-                'tls-opts', 'transport-opts'
-            ]
+            # 处理键值对中的特殊字符
+            sub_content = re.sub(
+                r'([a-zA-Z-]+):\s*([^,\n}]+)(?=[,\n}])',
+                process_special_chars,
+                sub_content
+            )
         
-            for line in lines:
-                line = line.strip()
-                if not line or line.startswith('#') or not line.startswith('- '):
-                    continue
-                
-                # 提取花括号内的内容
-                if '{' in line and '}' in line:
-                    content = line[line.find('{')+1:line.rfind('}')]
+            # 处理内联字典 - 修复括号问题
+            sub_content = re.sub(
+                r'\{([^}]*)\}',
+                lambda m: '{' + re.sub(
+                    r'([a-zA-Z-]+):\s*([^,}]+)',
+                    process_special_chars,
+                    m.group(1)
+                ) + '}',
+                sub_content
+            )
+            
+            
+            try:
+                # 首先尝试直接解析整个YAML
+                try_load = yaml.safe_load(sub_content)
+                if output == False:
+                    sub_content_yaml = try_load
                 else:
-                    continue
-                
-                # 分割键值对
-                items = [item.strip() for item in content.split(',') if item.strip()]
-            
-                proxy = {}
-                current_opts = None
-            
-                for item in items:
-                    if ':' not in item:
-                        continue
+                    sub_content_yaml = sub_content
+                return sub_content_yaml
+            except yaml.YAMLError as yaml_err:
+                print(f'YAML解析错误: {yaml_err}')
+                              
+                # 如果直接解析失败，尝试逐行处理
+                lines = sub_content.split('\n')
+                fixed_lines = []
+                for line in lines:
+                    try:
+                        # 跳过空行和注释行
+                        if not line.strip() or line.strip().startswith('#'):
+                            fixed_lines.append(line)
+                            continue
                     
-                    key, value = item.split(':', 1)
-                    key = key.strip()
-                    value = value.strip()
-                
-                    # 处理嵌套选项
-                    if key in opts_fields:
-                        if '{' in value and '}' in value:
-                            opts_content = value[value.find('{')+1:value.rfind('}')]
-                            opts_items = [opt.strip() for opt in opts_content.split(',') if opt.strip()]
-                        
-                            opts = {}
-                            for opt_item in opts_items:
-                                if ':' not in opt_item:
-                                    continue
-                                opt_key, opt_value = opt_item.split(':', 1)
-                                opt_key = opt_key.strip()
-                                opt_value = opt_value.strip().strip('"\'')
-                            
-                                # 处理headers等二级嵌套
-                                if opt_key == 'headers' and '{' in opt_value and '}' in opt_value:
-                                    headers_content = opt_value[opt_value.find('{')+1:opt_value.rfind('}')]
-                                    headers_items = [h.strip() for h in headers_content.split(',') if h.strip()]
-                                
-                                    headers = {}
-                                    for header_item in headers_items:
-                                        if ':' not in header_item:
-                                            continue
-                                        h_key, h_value = header_item.split(':', 1)
-                                        headers[h_key.strip()] = h_value.strip().strip('"\'')
-                                
-                                    opts[opt_key] = headers
-                                else:
-                                    opts[opt_key] = opt_value
-                                
-                            proxy[key] = opts
-                        else:
-                            proxy[key] = value.strip('"\'')
+                        # 尝试解析当前行
+                        yaml.safe_load(line)
+                        fixed_lines.append(line)
+                    except yaml.YAMLError:
+                        print(f'跳过格式错误的行: {line}')
+                        continue
+            
+                # 重新组合有效的行并解析
+                fixed_content = '\n'.join(fixed_lines)
+                try:
+                    sub_content_yaml = yaml.safe_load(fixed_content)
+                    if output == False:
+                        return sub_content_yaml
                     else:
-                        # 处理普通字段
-                        proxy[key] = value.strip('"\'')
-            
-                if 'type' in proxy:
-                    # 类型特定处理
-                    if proxy['type'] == 'ss':
-                        if 'password' in proxy:
-                            proxy['password'] = proxy['password'].strip('"\'')
-                
-                    elif proxy['type'] in ['vmess', 'vless']:
-                        if 'uuid' in proxy:
-                            proxy['uuid'] = proxy['uuid'].strip('"\'')
-                
-                    elif proxy['type'] == 'trojan':
-                        if 'password' in proxy:
-                            proxy['password'] = proxy['password'].strip('"\'')
-                
-                    # 添加到代理列表
-                    proxies.append(proxy)
+                        return fixed_content
+                except Exception as err:
+                    print(f'修复YAML格式失败: {err}')
+                    return {'proxies': []} if output == False else ''
+            except Exception as err:
+                print(f'Sub_content 格式错误2:{err}')
+                return {'proxies': []} if output == False else ''
 
+            if output == False:
+                for item in sub_content_yaml['proxies']:# 对转换过程中出现的不标准配置格式转换
+                    try:
+                        if item['type'] == 'vmess' and 'Host' in item['ws-opts']['headers']:
+                            item['ws-opts']['headers']['host'] = item['ws-opts']['headers'].pop("Host")
+                        if item['type'] == 'vless' and 'host' in item['ws-opts']['headers']:
+                            item['ws-opts']['headers']['Host'] = item['ws-opts']['headers'].pop("host")   
+                        if item['type'] == 'ss' and 'HOST' in item['plugin-opts']:
+                            item['plugin-opts']['host'] = item['plugin-opts'].pop("HOST")
+                        if item['type'] == 'ss' and 'Host' in item['ws-opts']['headers']:
+                            item['plugin-opts']['host'] = item['plugin-opts'].pop("Host")  
 
-            # 自定义YAML生成
-            def generate_yaml(proxies):
-                yaml_lines = ["proxies:"]
-                for proxy in proxies:
-                    yaml_lines.append("  -")
-                    for key, value in proxy.items():
-                        if isinstance(value, dict):
-                            yaml_lines.append(f"    {key}:")
-                            for k, v in value.items():
-                                yaml_lines.append(f"      {k}: {v}")
-                        else:
-                            # 智能添加引号
-                            needs_quote = any(c in str(value) for c in [' ', ':', '#', '&', '*'])
-                            value_str = f'"{value}"' if needs_quote else str(value)
-                            yaml_lines.append(f"    {key}: {value_str}")
-                return '\n'.join(yaml_lines)
-        
-            if output:
-                return generate_yaml(proxies)
-            else:
-                return {'proxies': proxies}
-            
+                    except KeyError:
+                        if '.' not in item['server']:
+                            sub_content_yaml['proxies'].remove(item)
+                        pass
 
+            return sub_content_yaml # 返回字典, output 值为 True 时返回修饰过的 YAML 文本 
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
         global idid
         # 区域判断(Clash YAML): https://blog.csdn.net/CSDN_duomaomao/article/details/89712826 (ip-api)
@@ -602,7 +575,7 @@ class sub_convert():
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
                             'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='') 
+                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default="") 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
@@ -737,7 +710,7 @@ class sub_convert():
                 
                     # 处理认证信息
                     auth_server = base_part[0].rsplit('@', 1)
-                    auth = auth_server[0] if len(auth_server) == 2 else ''
+                    auth = auth_server[0] if len(auth_server) == 2 else ""
                     server, port = auth_server[-1].split(':')[:2]
 
                     # 初始化配置
@@ -1188,7 +1161,7 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria2':
                     try:
                         # 基础部分
-                        auth_part = f"{proxy['password']}@" if proxy.get('password') else ''
+                        auth_part = f"{proxy['password']}@" if proxy.get('password') else ""
                         base_url = f"hy2://{auth_part}{proxy['server']}:{proxy['port']}"
                     
                         # 参数处理（只添加有效参数）
