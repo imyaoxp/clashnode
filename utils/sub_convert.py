@@ -171,28 +171,30 @@ class sub_convert():
                 return ''
 
         elif 'proxies:' in sub_content: # 对 Clash 内容进行格式化处理
-            # 预处理包含特殊字符的path值
+            # 预处理步骤
+            def process_special_chars(match):
+                key, value = match.groups()
+                if any(c in value for c in [' ', '?', '&', '@', '/', '"', "'"]):
+                    return f'{key}: {json.dumps(value)}'
+                return match.group(0)
+        
+            # 处理键值对中的特殊字符
             sub_content = re.sub(
-                r'path:\s*([^\s,}]+)',
-                lambda m: f'path: "{m.group(1)}"' if any(c in m.group(1) for c in [' ', '?', '&', '@', '/']) else m.group(0),
+                r'([a-zA-Z-]+):\s*([^,\n}]+)(?=[,\n}])',
+                process_special_chars,
                 sub_content
             )
         
-            # 处理emoji和特殊符号
-            # 处理emoji和特殊符号
+            # 处理内联字典
             sub_content = re.sub(
-                r'(["\'])(.*?[🇦-🇿@/?].*?)\1',
-                lambda m: fr'"{m.group(2).replace('"', r'\"')}"',
+                r'\{([^}]*)\}',
+                lambda m: '{' + re.sub(
+                    r'([a-zA-Z-]+):\s*([^,}]+)',
+                    process_special_chars,
+                    m.group(1)
+                + '}',
                 sub_content
             )
-
-            sub_content = re.sub(
-                r'(["\'])(.*?[🇦-🇿@/?].*?)\1',
-                lambda m: f'"{m.group(2).replace(\'"', '"\')}"',
-                sub_content
-            )
-              
-            
             
             
             try:
