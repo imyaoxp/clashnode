@@ -262,7 +262,7 @@ class sub_convert():
                 # 尝试直接加载
                 loaded = yaml.safe_load(sub_content)
                 if output:
-                    return yaml.dump(loaded, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                    return yaml.dump(loaded, default_flow_style=True, sort_keys=False, allow_unicode=True)
                 return loaded
             
             except Exception:
