@@ -739,6 +739,62 @@ class sub_convert():
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
                     continue
 
+            
+            if 'hy://' in line:
+                try:
+                    # 分离基础部分和参数部分
+                    url_part = line.replace('hy://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
+                
+                    # 提取认证信息和服务端信息
+                    auth_server = base_part[0].rsplit('@', 1)
+                    auth = auth_server[0] if len(auth_server) == 2 else ''
+                    server, port = auth_server[-1].split(':')[:2]
+
+                    # 初始化配置 (不包含up/down参数)
+                    config = {
+                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria1',
+                        'type': 'hysteria',
+                        'server': server,
+                        'port': int(port),
+                        'auth_str': auth,  # Hysteria1使用auth_str而不是password
+                        'protocol': 'udp',  # 默认使用UDP协议
+                        'skip-cert-verify': True  # 默认跳过证书验证
+                    }
+
+                    # 处理参数部分
+                    if len(base_part) > 1:
+                        params = base_part[1].split('&')
+                        for param in params:
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                key = key.lower()
+                            
+                                # 只处理需要的参数，忽略up/down
+                                if key == 'protocol' and val.lower() in ['udp', 'wechat-video', 'faketcp']:
+                                    config['protocol'] = val.lower()
+                                elif key == 'obfs' and val:
+                                    config['obfs'] = val
+                                elif key == 'obfs-password' and val:
+                                    config['obfs-password'] = val
+                                elif key == 'sni' and val:
+                                    config['sni'] = val
+                                elif key == 'insecure' and val == '1':
+                                    config['skip-cert-verify'] = True
+                                elif key == 'peer' and val:
+                                    config['sni'] = val  # H1中peer参数对应sni
+                                elif key == 'alpn' and val:
+                                    config['alpn'] = val.split(',')
+                
+                    url_list.append(config)
+
+                except Exception as err:
+                    print(config)
+                    print(line)
+                    print(f'Hysteria1解析错误: {err} | 内容: {line[:50]}...')
+                    continue
+            
+            
             if 'hy2://' in line:
                 try:
                     # 提取基础信息
@@ -1195,6 +1251,49 @@ class sub_convert():
                         continue
                 
                          
+                elif proxy['type'] == 'hysteria':  # Hysteria1节点
+                    try:
+                        # 基础部分
+                        auth_part = f"{proxy['auth_str']}@" if proxy.get('auth_str') else ''
+                        base_url = f"hy://{auth_part}{proxy['server']}:{proxy['port']}"
+
+                        # 参数处理 (不包含up/down参数)
+                        params = []
+                    
+                        # 协议类型
+                        protocol = proxy.get('protocol', 'udp')
+                        if protocol != 'udp':  # 默认是udp，非默认才需要添加
+                            params.append(f"protocol={protocol}")
+                    
+                        # 混淆设置
+                        if proxy.get('obfs') and proxy.get('obfs-password'):
+                            params.append(f"obfs={proxy['obfs']}")
+                            params.append(f"obfs-password={proxy['obfs-password']}")
+                    
+                        # TLS设置
+                        if proxy.get('sni'):
+                            params.append(f"peer={proxy['sni']}")  # H1使用peer参数而不是sni
+                    
+                        if proxy.get('skip-cert-verify', True):
+                            params.append("insecure=1")
+                    
+                        if proxy.get('alpn'):
+                            alpn_str = ','.join(proxy['alpn']) if isinstance(proxy['alpn'], list) else proxy['alpn']
+                            params.append(f"alpn={alpn_str}")
+                    
+                        # 组合URL
+                        param_str = '?' + '&'.join(params) if params else ''
+                        hy1_url = f"{base_url}{param_str}#{urllib.parse.quote(proxy['name'])}"
+                        protocol_url.append(hy1_url + '\n')
+
+                    except Exception as err:
+                        print(proxy)
+                        print(hy1_url)
+                        print(f'Hysteria1生成错误: {err} | 节点: {proxy.get("name", "未知")}')
+                        continue
+                
+                
+                
                 elif proxy['type'] == 'hysteria2':
                     try:
                         # 基础部分
@@ -1277,15 +1376,10 @@ class sub_convert():
         elif '_' in url_content:
             url_content = url_content.replace('_', '/')
         #print(len(url_content))
-        missing_padding = len(url_content) % 4
-        if missing_padding != 0:
-            url_content += '='*(4 - missing_padding) # 不是4的倍数后加= https://www.cnblogs.com/wswang/p/7717997.html
-        """ elif(len(url_content)%3 == 1):
-            url_content += '=='
-        elif(len(url_content)%3 == 2): 
-            url_content += '=' """
-        #print(url_content)
-        #print(len(url_content))
+        padding_needed = len(url_content) % 4
+        if padding_needed:
+            url_content += '=' * (4 - padding_needed) # 不是4的倍数后加= https://www.cnblogs.com/wswang/p/7717997.html
+        
         try:
             base64_content = base64.b64decode(url_content.encode('utf-8')).decode('utf-8','ignore') # https://www.codenong.com/42339876/
             base64_content_format = base64_content
