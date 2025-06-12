@@ -293,7 +293,7 @@ class sub_convert():
                 result = {'proxies': proxies}
             
                 if output:
-                    return yaml.dump(result, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                    return yaml.dump(result, default_flow_style=True, sort_keys=False, allow_unicode=True)
                 return result
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
         global idid
@@ -468,7 +468,7 @@ class sub_convert():
                     url_list.append(proxy_str)
              
         yaml_content_dic = {'proxies': url_list}
-        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
+        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=True, sort_keys=False, allow_unicode=True, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
         yaml_content = yaml_content_raw.replace('\'', '').replace('False', 'false').replace('True', 'true')
 
         yaml_content = sub_convert.format(yaml_content,True)
@@ -971,7 +971,7 @@ class sub_convert():
                     continue
 
         yaml_content_dic = {'proxies': url_list}
-        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2)
+        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=True, sort_keys=False, allow_unicode=True, width=750, indent=2)
         yaml_content = sub_convert.format(yaml_content_raw)
         return yaml_content
     def base64_encode(url_content): # 将 URL 内容转换为 Base64
