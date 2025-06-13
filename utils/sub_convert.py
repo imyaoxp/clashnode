@@ -758,6 +758,8 @@ class sub_convert():
                         'server': server,
                         'port': int(port),
                         'auth-str': auth,  # Hysteria1使用auth_str而不是password
+                        'up': '20 Mbps'
+                        'down': '50 Mbps'
                         'protocol': 'udp',  # 默认使用UDP协议
                         'skip-cert-verify': True  # 默认跳过证书验证
                     }
