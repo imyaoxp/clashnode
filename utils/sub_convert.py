@@ -324,15 +324,15 @@ class sub_convert():
                 begin_2 = begin + 1
                 while begin_2 <= (length - 1):
                     if proxy_compared['type'] =='vmess' or  proxy_compared['type'] =='vless':
-                        if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['uuid'] == proxies_list[begin_2]['uuid']:
+                        if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['type'] == proxies_list[begin_2]['type'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['uuid'] == proxies_list[begin_2]['uuid']:
                             proxies_list.pop(begin_2)
                             length -= 1
-                    elif proxy_compared['type'] =='hysteria'
-                        if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['auth-str'] == proxies_list[begin_2]['auth-str']:
+                    elif proxy_compared['type'] =='hysteria':
+                        if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['type'] == proxies_list[begin_2]['type'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['auth-str'] == proxies_list[begin_2]['auth-str']:
                             proxies_list.pop(begin_2)
                             length -= 1                    
                     else:
-                        if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['password'] == proxies_list[begin_2]['password']:
+                        if proxy_compared['server'] == proxies_list[begin_2]['server'] and proxy_compared['type'] == proxies_list[begin_2]['type'] and proxy_compared['port'] == proxies_list[begin_2]['port'] and proxy_compared['password'] == proxies_list[begin_2]['password']:
                             proxies_list.pop(begin_2)
                             length -= 1
                             #print(proxy_compared)
