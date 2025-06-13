@@ -615,8 +615,8 @@ class sub_convert():
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
                         yaml_node['reality-opts'] = {
-                            'public-key': get_param_priority('pbk', 'PublicKey', 'publicKey', default=''),
-                            'short-id': get_param_priority('sid', 'ShortId', 'shortId', default='') 
+                            'public-key': urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default='')),
+                            'short-id': urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
