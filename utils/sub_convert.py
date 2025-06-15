@@ -678,7 +678,7 @@ class sub_convert():
                     part_list = ss_content.split('#', 1)
                     yaml_url = {'name': urllib.parse.unquote(part_list[1])}
 
-                    # 解析 Base64 部分（method:password@server:port 或 method:password）
+                    # 解析 Base64 部分（兼容含插件和不含插件的情况）
                     if '@' in part_list[0]:
                         mix_part = part_list[0].split('@', 1)
                         method_password = sub_convert.base64_decode(urllib.parse.unquote(mix_part[0]))
@@ -688,26 +688,27 @@ class sub_convert():
                         if '@' in decoded:
                             method_password, server_port_part = decoded.split('@', 1)
                         else:
-                            raise ValueError("Invalid SS URI format")
-            
+                            raise ValueError("Invalid SS URI: Missing '@' in decoded Base64")
+
                     # 解析 method:password
                     method, password = method_password.split(':', 1)
                     yaml_url.update({
                         'type': 'ss',
                         'cipher': method,
-                        'password': password.replace('"', '')
+                        'password': password.strip('"')
                     })
 
-                    # 解析 server:port 和插件参数
+                    # 分离 server:port 和插件参数
                     if '?' in server_port_part:
                         server_port, plugin_part = server_port_part.split('?', 1)
                     else:
                         server_port, plugin_part = server_port_part, None
 
+                    # 解析 server:port
                     server, port = server_port.split(':', 1)
                     yaml_url.update({
                         'server': server,
-                        'port': port.split('/')[0]  # 移除可能的路径（兼容旧格式）
+                        'port': port.split('/')[0]  # 移除可能存在的路径
                     })
 
                     # 解析插件参数
@@ -716,28 +717,36 @@ class sub_convert():
                         plugin_str = plugin_params.get('plugin', [''])[0]
                         if plugin_str:
                             plugin_name, *plugin_opts = plugin_str.split(';')
-                            plugin_name = plugin_name.replace('-local', '')  # 移除 "-local" 后缀
+                            plugin_name = plugin_name.replace('-local', '')  # 统一插件名称
                             yaml_url['plugin'] = plugin_name
+                
+                            # 解析插件选项
                             opts = {}
                             for opt in plugin_opts:
                                 if '=' in opt:
                                     key, val = opt.split('=', 1)
                                     opts[key] = val
-                            # 处理特殊参数（如 obfs-host → host）
+                
+                            # 处理 obfs 插件
                             if plugin_name == 'obfs':
                                 opts['mode'] = opts.get('obfs', 'http')
                                 opts['host'] = opts.get('obfs-host', server)
+                                opts['tls'] = 'false'  # obfs-http 默认不启用 TLS
+                
+                            # 处理 v2ray-plugin/xray-plugin
                             elif plugin_name in ['v2ray-plugin', 'xray-plugin']:
                                 opts['mode'] = opts.get('mode', 'websocket')
                                 opts['host'] = opts.get('host', server)
                                 opts['path'] = opts.get('path', '/')
                                 opts['tls'] = 'true'  # 默认启用 TLS
+                
                             yaml_url['plugin-opts'] = opts
 
-                    yaml_url.setdefault('udp', True)
+                    yaml_url['udp'] = True
                     url_list.append(yaml_url)
+    
                 except Exception as err:
-                    print(f"Failed to parse SS node: {line}\nError: {err}")
+                    print(f"SS 解析失败: {err}\n原始链接: {line}")
                     continue
 
 
@@ -1190,8 +1199,8 @@ class sub_convert():
                                     f"mode={mode}",
                                     f"host={host}",
                                     f"path={path}",
-                                    "tls",  # 默认启用TLS
-                                    "mux=4"
+                                    "tls" 
+                                    
                                 ])
                 
                                 # 处理restls参数
