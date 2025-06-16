@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `724`
+当前合并节点总数: `729`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `126`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `49`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `91`
@@ -18,7 +18,7 @@
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `266`
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `10`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `32`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `86`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `89`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
