@@ -16,10 +16,10 @@
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `54`
 - [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `112`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `524`
-- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `12`
+- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `15`
 - [13Jsnzkpg/Jsnzkpg](https://github.com/Jsnzkpg/Jsnzkpg), 节点数量: `0`
-- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `24`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `97`
+- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `25`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `94`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
