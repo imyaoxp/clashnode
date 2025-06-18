@@ -1182,47 +1182,63 @@ class sub_convert():
                 elif proxy['type'] == 'ss':
                     try:
                         if 'plugin' not in proxy:
-                            ss_base64_decoded = str(proxy['cipher']) + ':' + str(proxy['password']) + '@' + str(proxy['server']) + ':' + str(proxy['port'])
+                            # 标准格式：仅对 "method:password" 进行 Base64 编码
+                            ss_base64_decoded = str(proxy['cipher']) + ':' + str(proxy['password'])
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                            ss_proxy = str('ss://' + ss_base64 + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
-        
+    
+                            # 显式声明服务器和端口（@server:port）
+                            ss_proxy = 'ss://' + ss_base64 + '@' + str(proxy['server']) + ':' + str(proxy['port']) + '#' + str(urllib.parse.quote(proxy['name'])) + '\n'
                         elif proxy['plugin'] == 'obfs':
+                            # 设置默认插件参数
                             if 'mode' not in proxy['plugin-opts']:
                                 proxy['plugin-opts']['mode'] = 'http'
                             if 'host' not in proxy['plugin-opts']:
                                 proxy['plugin-opts']['host'] = proxy['server']
-            
-                            ssplugin = str('obfs=' + str(proxy['plugin-opts']['mode']) + ';' + 'obfs-host=' + str(proxy['plugin-opts']['host']))
-                            ssplugin = str(urllib.parse.quote(ssplugin))
-                            ss_base64_decoded = str(str(proxy['cipher']) + ':' + str(proxy['password']))
+    
+                            # 生成插件参数字符串（如 "obfs=http;obfs-host=example.com"）
+                            ssplugin = f"obfs={proxy['plugin-opts']['mode']};obfs-host={proxy['plugin-opts']['host']}"
+                            ssplugin = urllib.parse.quote(ssplugin)  # URL 编码插件参数
+    
+                            # 标准格式：仅对 "method:password" 进行 Base64 编码
+                            ss_base64_decoded = f"{proxy['cipher']}:{proxy['password']}"
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                            ss_base64 = str(ss_base64 + '@' + str(proxy['server']) + ':' + str(proxy['port']))
-                            ss_proxy = str('ss://' + ss_base64 + '/?plugin=obfs-local%3B' + ssplugin + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
-        
+    
+                            # 拼接完整链接（显式声明服务器端口和插件）
+                            ss_proxy = f"ss://{ss_base64}@{proxy['server']}:{proxy['port']}/?plugin=obfs-local%3B{ssplugin}#{urllib.parse.quote(proxy['name'])}\n"
                         # 修改点3：添加xray-plugin编码支持
                         elif proxy['plugin'] in ['v2ray-plugin', 'xray-plugin']:
+                            # 设置默认插件参数
                             if 'mode' not in proxy['plugin-opts']:
                                 proxy['plugin-opts']['mode'] = 'websocket'
                             if 'host' not in proxy['plugin-opts']:
                                 proxy['plugin-opts']['host'] = proxy['server']
                             if 'path' not in proxy['plugin-opts']:
                                 proxy['plugin-opts']['path'] = '/'
-            
-                            # 修改点4：处理restls参数
-                            restls_str = 'restls=true;' if proxy['plugin-opts'].get('restls', 'false') == 'true' else ''
-            
-                            ssplugin = str('mode=' + str(proxy['plugin-opts']['mode']) + ';' + 
-                                         'host=' + str(proxy['plugin-opts']['host']) + ';' + 
-                                         'path=' + str(proxy['plugin-opts']['path']) + ';' +
-                                         restls_str +  # 新增restls参数
-                                         'tls;mux=4')
-            
-                            ssplugin = str(urllib.parse.quote(ssplugin))
-                            ss_base64_decoded = str(str(proxy['cipher']) + ':' + str(proxy['password']))
-                            ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
-                            ss_base64 = str(ss_base64 + '@' + str(proxy['server']) + ':' + str(proxy['port']))
-                            ss_proxy = str('ss://' + ss_base64 + '/?plugin=' + proxy['plugin'] + '-local%3B' + ssplugin + '#' + str(urllib.parse.quote(proxy['name'])) + '\n')
 
+                            # 处理 restls 参数
+                            restls_str = 'restls=true;' if proxy['plugin-opts'].get('restls', 'false') == 'true' else ''
+
+                            # 构建插件参数字符串（标准格式）
+                            plugin_opts = [
+                                f"mode={proxy['plugin-opts']['mode']}",
+                                f"host={proxy['plugin-opts']['host']}",
+                                f"path={proxy['plugin-opts']['path']}",
+                                restls_str,
+                                "tls",
+                                "mux=4"
+                            ]
+                            ssplugin = ';'.join(filter(None, plugin_opts))  # 自动过滤空值
+                            ssplugin = urllib.parse.quote(ssplugin)
+
+                            # 标准格式处理
+                            ss_base64 = sub_convert.base64_encode(f"{proxy['cipher']}:{proxy['password']}")
+    
+                            # 完整标准格式链接
+                            ss_proxy = (
+                                f"ss://{ss_base64}@{proxy['server']}:{proxy['port']}"
+                                f"/?plugin={proxy['plugin']}-local%3B{ssplugin}"
+                                f"#{urllib.parse.quote(proxy['name'])}\n"
+                            )
                         protocol_url.append(ss_proxy)
                     except Exception as err:
                         print(proxy)
