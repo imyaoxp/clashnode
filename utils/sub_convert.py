@@ -614,8 +614,17 @@ class sub_convert():
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
+                        pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
+    
+                        # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
+                        if not pbk or not (
+                            len(pbk) in (43, 44) and 
+                            all(c in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=" for c in pbk)
+                        ):
+                            raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
+    
                         yaml_node['reality-opts'] = {
-                            'public-key': urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default='')),
+                            'public-key': pbk,
                             'short-id': urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
@@ -640,7 +649,7 @@ class sub_convert():
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
-                            'grpc-service-name': get_param_priority('serviceName', 'servicename', default='')
+                            'grpc-service-name': urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default=''))
                         }
 
                     # 3. HTTP/2处理
