@@ -542,7 +542,7 @@ class sub_convert():
                         yaml_url['network'] = 'tcp'
                         if 'type' in vmess_config:  # 处理TCP伪装
                             yaml_url['tcp-opts'] = {
-                                'headers': {'host': vmess_config.get('host', vmess_config['add'])},
+                                'headers': {'host': urllib.parse.unquote(vmess_config.get('host', vmess_config['add']))},
                                 'path': vmess_config.get('path', '/')
                             }
 
