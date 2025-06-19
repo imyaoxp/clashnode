@@ -615,17 +615,17 @@ class sub_convert():
                     security_type = get_param_priority('security', 'Security', default='none').lower()
                     if security_type == 'reality':
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
-    
+                        sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
-                        if not pbk or not (
-                            len(pbk) in (43, 44) and 
-                            all(c in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=" for c in pbk)
-                        ):
+                        if not pbk or not len(pbk) in (32,43, 44): 
                             raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
-    
+                        if sid and not (
+                            1 <= len(sid) <= 16 and 
+                            all(c.lower() in '0123456789abcdefABCDEF' for c in sid)
+                        ):
                         yaml_node['reality-opts'] = {
                             'public-key': pbk,
-                            'short-id': urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
+                            'short-id': sid 
                         }
                         flow = get_param_priority('flow', 'Flow', default='')
                         if flow:
@@ -696,6 +696,8 @@ class sub_convert():
                     method_part = server_part_list[0]
 
                     CLASH_SUPPORTED_SS_CIPHERS = {
+                        'aes-128-cfb', 'aes-192-cfb', 'aes-256-cfb',
+                        'rc4-md5', 'bf-cfb', 'chacha20',
                         'aes-128-gcm', 'aes-192-gcm', 'aes-256-gcm',
                         'chacha20-ietf-poly1305', 'xchacha20-ietf-poly1305',
                         '2022-blake3-aes-128-gcm', '2022-blake3-aes-256-gcm', 
