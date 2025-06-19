@@ -811,8 +811,8 @@ class sub_convert():
                                     config['skip-cert-verify'] = True
                                 elif key == 'alpn' and val:
                                     config['alpn'] = [x.strip() for x in val.split(',')] 
-                
-                    url_list.append(config)
+                    yaml_url = yaml.dump(config, indent=2, sort_keys=False)
+                    url_list.append(yaml_url)
 
                 except Exception as err:
                     print(config)
