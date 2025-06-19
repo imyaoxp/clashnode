@@ -504,8 +504,7 @@ class sub_convert():
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
 
-                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
+
 
                     server_port = str(vmess_config['port']).replace('/', '')
                     yaml_url = {
@@ -519,7 +518,8 @@ class sub_convert():
                         'skip-cert-verify': True,
                         'udp': True
                     }
-
+                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
                     # 处理不同传输方式
                     network_type = vmess_config['net'].lower()
                     if network_type == 'ws':
@@ -544,7 +544,7 @@ class sub_convert():
                                 'headers': {'host': urllib.parse.unquote(vmess_config.get('host', vmess_config['add']))},
                                 'path': vmess_config.get('path', '/')
                             }
-
+        
                     # 处理TLS配置
                     yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
                     url_list.append(yaml_url)
@@ -1043,7 +1043,8 @@ class sub_convert():
                             'tls': proxy.get('tls', False),
                             'sni': proxy.get('sni', proxy['server'])
                         }
-
+                        if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                            raise ValueError(f"Invalid uuid error: {vmess_config['id']}")  # 触发异常处理
                         # 处理不同传输方式的参数
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
