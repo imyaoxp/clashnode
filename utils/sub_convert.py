@@ -787,6 +787,7 @@ class sub_convert():
                         'down': '50 Mbps',
                         'protocol': 'udp',  # 默认使用UDP协议
                         'skip-cert-verify': False  # 默认跳过证书验证
+                        'alpn': ['h3']
                     }
 
                     # 处理参数部分
