@@ -504,7 +504,9 @@ class sub_convert():
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
 
-
+                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                        print('节点格式错误')
+                        continue
 
                     server_port = str(vmess_config['port']).replace('/', '')
                     yaml_url = {
@@ -543,11 +545,9 @@ class sub_convert():
                                 'headers': {'host': urllib.parse.unquote(vmess_config.get('host', vmess_config['add']))},
                                 'path': vmess_config.get('path', '/')
                             }
-        
+
                     # 处理TLS配置
                     yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
-                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理                    
                     url_list.append(yaml_url)
                 
 
@@ -617,7 +617,7 @@ class sub_convert():
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
                         sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
-                        if not pbk or not len(pbk) in (43, 44): 
+                        if not pbk or not len(pbk) in (32,43, 44): 
                             raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
                         if sid and not (
                             1 <= len(sid) <= 16 and 
@@ -783,12 +783,10 @@ class sub_convert():
                         'server': server,
                         'port': int(port),
                         'auth-str': auth,  # Hysteria1使用auth_str而不是password
-                        'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
-                        'protocol': 'udp',  
-                        'skip-cert-verify': False,
-                        'alpn': ['h3']
+                        'protocol': 'udp',  # 默认使用UDP协议
+                        'skip-cert-verify': True  # 默认跳过证书验证
                     }
 
                     # 处理参数部分
@@ -806,14 +804,16 @@ class sub_convert():
                                     config['obfs'] = val
                                 elif key == 'obfs-password' and val:
                                     config['obfs-password'] = val
-                                elif key in ('sni', 'peer') and val:
+                                elif key == 'sni' and val:
                                     config['sni'] = val
                                 elif key == 'insecure' and val == '1':
                                     config['skip-cert-verify'] = True
+                                elif key == 'peer' and val:
+                                    config['sni'] = val  # H1中peer参数对应sni
                                 elif key == 'alpn' and val:
-                                    config['alpn'] = [x.strip() for x in val.split(',')] 
-                    yaml_url = yaml.dump(config, indent=2, sort_keys=False)
-                    url_list.append(yaml_url)
+                                    config['alpn'] = val.split(',')
+                
+                    url_list.append(config)
 
                 except Exception as err:
                     print(config)
@@ -1073,8 +1073,6 @@ class sub_convert():
                         # 构建VMess JSON配置
                         vmess_raw = json.dumps(vmess_config, sort_keys=False, ensure_ascii=False)
                         vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}\n"
-                        if  len(proxy['uuid']) != 36:
-                            raise ValueError(f"Invalid uuid error: {proxy['uuid']}")  # 触发异常处理
                         protocol_url.append(vmess_proxy)
 
                     except Exception as e:
@@ -1299,13 +1297,7 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria':  # Hysteria1节点
                     try:
                         # 基础部分
-                        if proxy.get('auth_str'):
-                            auth_part = f"{proxy['auth-str']}@" 
-                        elif proxy.get('auth-str'):
-                            auth_part = f"{proxy['auth_str']}@" 
-                        else:
-                            auth_part = ''
-                            
+                        auth_part = f"{proxy['auth-str']}@" if proxy.get('auth-str') else ''
                         base_url = f"hy://{auth_part}{proxy['server']}:{proxy['port']}"
 
                         # 参数处理 (不包含up/down参数)
@@ -1323,7 +1315,7 @@ class sub_convert():
                     
                         # TLS设置
                         if proxy.get('sni'):
-                            params.append(f"sni={proxy['sni']}")  # H1使用peer参数而不是sni
+                            params.append(f"peer={proxy['sni']}")  # H1使用peer参数而不是sni
                     
                         if proxy.get('skip-cert-verify', True):
                             params.append("insecure=1")
@@ -1418,7 +1410,6 @@ class sub_convert():
         except Exception as err:
             
             print(f'yaml decode 发生 {err} 错误')
-            
             
             
             
