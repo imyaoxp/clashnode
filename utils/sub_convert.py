@@ -504,9 +504,9 @@ class sub_convert():
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
 
-                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                        print('节点格式错误')
-                        continue
+                    #if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                    #    print('节点格式错误')
+                    #    continue
 
                     server_port = str(vmess_config['port']).replace('/', '')
                     yaml_url = {
@@ -786,7 +786,8 @@ class sub_convert():
                         'up': '20 Mbps',
                         'down': '50 Mbps',
                         'protocol': 'udp',  # 默认使用UDP协议
-                        'skip-cert-verify': True  # 默认跳过证书验证
+                        'skip-cert-verify': False,  # 默认跳过证书验证
+                        'alpn': ['h3']
                     }
 
                     # 处理参数部分
