@@ -1043,8 +1043,8 @@ class sub_convert():
                             'tls': proxy.get('tls', False),
                             'sni': proxy.get('sni', proxy['server'])
                         }
-                        if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                            raise ValueError(f"Invalid uuid error: {vmess_config['id']}")  # 触发异常处理
+                        if  len(proxy['uuid']) != 36:
+                            raise ValueError(f"Invalid uuid error: {proxy['uuid']}")  # 触发异常处理
                         # 处理不同传输方式的参数
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
