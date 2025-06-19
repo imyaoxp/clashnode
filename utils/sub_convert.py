@@ -623,6 +623,7 @@ class sub_convert():
                             1 <= len(sid) <= 16 and 
                             all(c.lower() in '0123456789abcdefABCDEF' for c in sid)
                         ):
+                            raise ValueError(f"Invalid Reality public-key: {sid}")
                         yaml_node['reality-opts'] = {
                             'public-key': pbk,
                             'short-id': sid 
