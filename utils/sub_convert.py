@@ -785,8 +785,8 @@ class sub_convert():
                         'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
-                        'protocol': 'udp',  # 默认使用UDP协议
-                        'skip-cert-verify': False  # 默认跳过证书验证
+                        'protocol': 'udp',  
+                        'skip-cert-verify': False,
                         'alpn': ['h3']
                     }
 
