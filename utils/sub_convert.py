@@ -786,7 +786,7 @@ class sub_convert():
                         'up': '20 Mbps',
                         'down': '50 Mbps',
                         'protocol': 'udp',  # 默认使用UDP协议
-                        'skip-cert-verify': False  # 默认跳过证书验证
+                        'skip-cert-verify': False,  # 默认跳过证书验证
                         'alpn': ['h3']
                     }
 
@@ -811,9 +811,9 @@ class sub_convert():
                                     config['skip-cert-verify'] = True
                                 elif key == 'alpn' and val:
                                     config['alpn'] = [x.strip() for x in val.split(',')] 
-                
-                    url_list.append(config)
-
+                    yaml_str = yaml.dump(config, indent=2, sort_keys=False)
+                    url_list.append(yaml_str)
+                    
                 except Exception as err:
                     print(config)
                     print(line)
