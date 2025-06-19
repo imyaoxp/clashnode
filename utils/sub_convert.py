@@ -504,8 +504,8 @@ class sub_convert():
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
 
-                    #if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                    #    raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
+                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
 
                     server_port = str(vmess_config['port']).replace('/', '')
                     yaml_url = {
@@ -785,8 +785,8 @@ class sub_convert():
                         'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
-                        'protocol': 'udp',  
-                        'skip-cert-verify': False,
+                        'protocol': 'udp',  # 默认使用UDP协议
+                        'skip-cert-verify': False  # 默认跳过证书验证
                         'alpn': ['h3']
                     }
 
@@ -811,8 +811,8 @@ class sub_convert():
                                     config['skip-cert-verify'] = True
                                 elif key == 'alpn' and val:
                                     config['alpn'] = [x.strip() for x in val.split(',')] 
-                    yaml_url = yaml.dump(config, indent=2, sort_keys=False)
-                    url_list.append(yaml_url)
+                
+                    url_list.append(config)
 
                 except Exception as err:
                     print(config)
