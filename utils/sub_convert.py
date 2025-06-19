@@ -1418,7 +1418,7 @@ class sub_convert():
         except Exception as err:
             
             print(f'yaml decode 发生 {err} 错误')
-            continue
+            
             
             
             
