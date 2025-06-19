@@ -782,8 +782,9 @@ class sub_convert():
                         'server': server,
                         'port': int(port),
                         'auth-str': auth,  # Hysteria1使用auth_str而不是password
-                        'up': '20 Mbps',
-                        'down': '50 Mbps',
+                        'auth_str': auth,
+                        'up': '20 mbps',
+                        'down': '50 mbps',
                         'protocol': 'udp',  # 默认使用UDP协议
                         'skip-cert-verify': True  # 默认跳过证书验证
                     }
@@ -1296,7 +1297,13 @@ class sub_convert():
                 elif proxy['type'] == 'hysteria':  # Hysteria1节点
                     try:
                         # 基础部分
-                        auth_part = f"{proxy['auth-str']}@" if proxy.get('auth-str') else ''
+                        if proxy.get('auth_str'):
+                            auth_part = f"{proxy['auth-str']}@" 
+                        elif proxy.get('auth-str'):
+                            auth_part = f"{proxy['auth_str']}@" 
+                        else:
+                            auth_part = ''
+                            
                         base_url = f"hy://{auth_part}{proxy['server']}:{proxy['port']}"
 
                         # 参数处理 (不包含up/down参数)
@@ -1314,7 +1321,7 @@ class sub_convert():
                     
                         # TLS设置
                         if proxy.get('sni'):
-                            params.append(f"peer={proxy['sni']}")  # H1使用peer参数而不是sni
+                            params.append(f"sni={proxy['sni']}")  # H1使用peer参数而不是sni
                     
                         if proxy.get('skip-cert-verify', True):
                             params.append("insecure=1")
