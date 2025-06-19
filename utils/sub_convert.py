@@ -783,10 +783,10 @@ class sub_convert():
                         'port': int(port),
                         'auth-str': auth,  # Hysteria1使用auth_str而不是password
                         'auth_str': auth,
-                        'up': '20 mbps',
-                        'down': '50 mbps',
+                        'up': '20 Mbps',
+                        'down': '50 Mbps',
                         'protocol': 'udp',  # 默认使用UDP协议
-                        'skip-cert-verify': True  # 默认跳过证书验证
+                        'skip-cert-verify': False  # 默认跳过证书验证
                     }
 
                     # 处理参数部分
@@ -804,14 +804,12 @@ class sub_convert():
                                     config['obfs'] = val
                                 elif key == 'obfs-password' and val:
                                     config['obfs-password'] = val
-                                elif key == 'sni' and val:
+                                elif key in ('sni', 'peer') and val:
                                     config['sni'] = val
                                 elif key == 'insecure' and val == '1':
                                     config['skip-cert-verify'] = True
-                                elif key == 'peer' and val:
-                                    config['sni'] = val  # H1中peer参数对应sni
                                 elif key == 'alpn' and val:
-                                    config['alpn'] = val.split(',')
+                                    config['alpn'] = [x.strip() for x in val.split(',')] 
                 
                     url_list.append(config)
 
