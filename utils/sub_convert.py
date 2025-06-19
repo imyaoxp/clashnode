@@ -813,7 +813,7 @@ class sub_convert():
                                     config['sni'] = val  # H1中peer参数对应sni
                                 elif key == 'alpn' and val:
                                     config['alpn'] = val.split(',')
-                
+                    yaml_str = yaml.dump(config, indent=2, sort_keys=False)
                     url_list.append(config)
 
                 except Exception as err:
