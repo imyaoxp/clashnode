@@ -814,7 +814,7 @@ class sub_convert():
                                 elif key == 'alpn' and val:
                                     config['alpn'] = val.split(',')
                     yaml_str = yaml.dump(config, indent=2, sort_keys=False)
-                    url_list.append(config)
+                    url_list.append(yaml_str)
 
                 except Exception as err:
                     print(config)
