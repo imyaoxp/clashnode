@@ -505,8 +505,7 @@ class sub_convert():
                     vmess_config = vmess_default_config
 
                     if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                        print('节点格式错误')
-                        continue
+                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
 
                     server_port = str(vmess_config['port']).replace('/', '')
                     yaml_url = {
@@ -617,7 +616,7 @@ class sub_convert():
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
                         sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
-                        if not pbk or not len(pbk) in (32,43, 44): 
+                        if not pbk or not len(pbk) in (43, 44): 
                             raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
                         if sid and not (
                             1 <= len(sid) <= 16 and 
