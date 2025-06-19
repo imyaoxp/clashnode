@@ -504,8 +504,8 @@ class sub_convert():
                     vmess_default_config.update(vmess_json_config)
                     vmess_config = vmess_default_config
 
-                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
+                    #if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                    #    raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
 
                     server_port = str(vmess_config['port']).replace('/', '')
                     yaml_url = {
