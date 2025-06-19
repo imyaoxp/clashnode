@@ -518,8 +518,7 @@ class sub_convert():
                         'skip-cert-verify': True,
                         'udp': True
                     }
-                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
-                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理
+
                     # 处理不同传输方式
                     network_type = vmess_config['net'].lower()
                     if network_type == 'ws':
@@ -547,6 +546,8 @@ class sub_convert():
         
                     # 处理TLS配置
                     yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
+                    if not vmess_config['id'] or len(vmess_config['id']) != 36:
+                        raise ValueError(f"Invalid uuid: {vmess_config['id']}")  # 触发异常处理                    
                     url_list.append(yaml_url)
                 
 
@@ -1043,8 +1044,7 @@ class sub_convert():
                             'tls': proxy.get('tls', False),
                             'sni': proxy.get('sni', proxy['server'])
                         }
-                        if  len(proxy['uuid']) != 36:
-                            raise ValueError(f"Invalid uuid error: {proxy['uuid']}")  # 触发异常处理
+
                         # 处理不同传输方式的参数
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
@@ -1073,6 +1073,8 @@ class sub_convert():
                         # 构建VMess JSON配置
                         vmess_raw = json.dumps(vmess_config, sort_keys=False, ensure_ascii=False)
                         vmess_proxy = f"vmess://{sub_convert.base64_encode(vmess_raw)}\n"
+                        if  len(proxy['uuid']) != 36:
+                            raise ValueError(f"Invalid uuid error: {proxy['uuid']}")  # 触发异常处理
                         protocol_url.append(vmess_proxy)
 
                     except Exception as e:
@@ -1416,6 +1418,7 @@ class sub_convert():
         except Exception as err:
             
             print(f'yaml decode 发生 {err} 错误')
+            continue
             
             
             
