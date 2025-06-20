@@ -827,6 +827,7 @@ class sub_convert():
                         'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
+                        'protocol': True,
                         'udp': True,
                         'skip-cert-verify': False
                     }
