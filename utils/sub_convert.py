@@ -828,8 +828,7 @@ class sub_convert():
                         'up': '20 Mbps',
                         'down': '50 Mbps',
                         'udp': True,
-                        'skip-cert-verify': False,
-                        'alpn': ['h3']  # 默认值（确保是列表）
+                        'skip-cert-verify': False
                     }
 
                     # 3. 处理查询参数（关键修改点）
