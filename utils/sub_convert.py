@@ -819,17 +819,17 @@ class sub_convert():
 
                     # 2. 初始化节点配置（强制alpn为列表）
                     config = {
-                        'alpn': ['h3'],  # 默认值（确保是列表）
                         'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria1',
                         'type': 'hysteria',
                         'server': server,
                         'port': int(port),
-                        'auth_str': auth,
                         'auth-str': auth,
+                        'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
                         'udp': True,
-                        'skip-cert-verify': False 
+                        'skip-cert-verify': False,
+                        'alpn': ['h3']  # 默认值（确保是列表）
                     }
 
                     # 3. 处理查询参数（关键修改点）
@@ -909,7 +909,9 @@ class sub_convert():
                                 elif key == 'obfs' and val:
                                     config['obfs'] = val
                                 elif key == 'obfs-password' and val:
-                                    config['obfs-password'] = val        
+                                    config['obfs-password'] = val
+                                
+                                
                                 elif key == 'alpn' and val:
                                     config['alpn'] = val.split(',')
                                 
