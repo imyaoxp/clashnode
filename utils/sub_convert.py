@@ -472,12 +472,26 @@ class sub_convert():
                     url_list.append(proxy_str)
              
         yaml_content_dic = {'proxies': url_list}
-        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
-        yaml_content = yaml_content_raw.replace('\'', '').replace('False', 'false').replace('True', 'true')
-
-        yaml_content = sub_convert.format(yaml_content,True)
-        
-        return yaml_content # 输出 YAML 格式文本
+    
+        # 修改这里 - 使用正确的 YAML dumper 配置
+        class IndentDumper(yaml.Dumper):
+            def increase_indent(self, flow=False, indentless=False):
+                return super().increase_indent(flow, False)
+    
+        yaml_content_raw = yaml.dump(
+            yaml_content_dic,
+            Dumper=IndentDumper,
+            default_flow_style=False,
+            sort_keys=False,
+            allow_unicode=True,
+            width=750,
+            indent=2
+        )
+    
+        # 处理布尔值的字符串表示
+        yaml_content = yaml_content_raw.replace("'true'", "true").replace("'false'", "false")
+    
+        return yaml_content
 
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
         url_list = []
