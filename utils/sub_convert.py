@@ -474,9 +474,9 @@ class sub_convert():
              
         yaml_content_dic = {'proxies': url_list}
         yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
-        if '- alpn:' in yaml_content_raw:  # 检测缩进是否不正确
-            yaml_content_raw = yaml_content_raw.replace('- alpn:', '  alpn:')
-            yaml_content_raw = re.sub(r'alpn:\n\s+-', 'alpn:\n    -', yaml_content_raw)
+        
+        yaml_content_raw = yaml_content_raw.replace('alpn:\n', 'alpn:\n  ')
+            
         yaml_content = yaml_content_raw.replace('\'', '').replace('False', 'false').replace('True', 'true')
 
         yaml_content = sub_convert.format(yaml_content,True)
