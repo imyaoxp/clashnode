@@ -1667,6 +1667,7 @@ proxies:
   auth_str: dongtaiwang.com
   up: 20 Mbps
   down: 50 Mbps
+  protocol: true
   udp: true
   skip-cert-verify: true
   alpn:
@@ -1679,6 +1680,7 @@ proxies:
   auth_str: dongtaiwang.com
   up: 20 Mbps
   down: 50 Mbps
+  protocol: true
   udp: true
   skip-cert-verify: true
   alpn:
@@ -1691,6 +1693,7 @@ proxies:
   auth_str: dongtaiwang.com
   up: 20 Mbps
   down: 50 Mbps
+  protocol: true
   udp: true
   skip-cert-verify: true
   alpn:
@@ -1703,6 +1706,7 @@ proxies:
   auth_str: dongtaiwang.com
   up: 20 Mbps
   down: 50 Mbps
+  protocol: true
   udp: true
   skip-cert-verify: true
   alpn:
@@ -1764,6 +1768,7 @@ proxies:
   auth_str: dongtaiwang.com
   up: 20 Mbps
   down: 50 Mbps
+  protocol: true
   udp: true
   skip-cert-verify: true
   alpn:
@@ -3949,19 +3954,19 @@ proxies:
   reality-opts:
     public-key: cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA
     short-id: e8ab71d0
-- name: 10-350-HK
-  server: 43b5a616-sw04g0-swasv3-luwe.hgc1.tcpbbr.net
-  port: 8080
+- name: 10-350-CN
+  server: v28.heduian.link
+  port: 30828
   type: vmess
-  uuid: a2b0fd2b-716f-0df8-d4e2-03a1c00e5f1a
-  alterId: 0
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
   cipher: auto
   skip-cert-verify: true
   udp: true
   network: ws
   ws-opts:
-    host: None
-    path: /
+    host: ocbc.com
+    path: /oooo
   tls: false
 - name: 10-351-TW
   server: 223.165.4.173
@@ -3970,13 +3975,20 @@ proxies:
   cipher: chacha20-ietf-poly1305
   password: f8f7aCzcPKbsF8p3
   udp: true
-- name: 10-352-CN
-  server: 120.232.220.156
-  port: 20406
-  type: ss
-  cipher: aes-256-gcm
-  password: dwz1GtF7
+- name: 10-352-RELAY
+  server: de01.sh-cloudflare.sbs
+  port: 2096
+  type: vmess
+  uuid: 7189dbe5-816b-4140-a04c-8fd7d5858df9
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
   udp: true
+  network: ws
+  ws-opts:
+    host: de01.sh-cloudflare.sbs
+    path: /
+  tls: tls
 - name: 10-353-CN
   server: v39.heduian.link
   port: 30839
@@ -3991,35 +4003,26 @@ proxies:
     host: baidu.com
     path: /oooo
   tls: false
-- name: 10-354-US
-  server: lt.fxlcn.com
-  port: 45288
+- name: 10-354-CN
+  server: 183.240.180.48
+  port: 58436
+  type: ss
+  cipher: 2022-blake3-aes-128-gcm
+  password: di3YDVupSCsXSe2NbYlw5A==
+  udp: true
+- name: 10-355-CN
+  server: v35.heduian.link
+  port: 30835
   type: vmess
-  uuid: 469e0b31-30c3-4dab-800d-711232634ce1
-  alterId: 0
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
   cipher: auto
   skip-cert-verify: true
   udp: true
-  network: tcp
-  tcp-opts:
-    headers:
-      host: lt.fxlcn.com
-    path: /
-  tls: false
-- name: 10-355-HK
-  server: 15002.vpdnss.top
-  port: 15002
-  type: vmess
-  uuid: 9f513161-576b-3abc-9c98-06e52c3a24c6
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: tcp
-  tcp-opts:
-    headers:
-      host: 15002.vpdnss.top
-    path: None
+  network: ws
+  ws-opts:
+    host: v35.heduian.link
+    path: /oooo
   tls: false
 - name: 10-356-RELAY
   server: iIiiI8.222560.xYZ
@@ -4151,6 +4154,13 @@ proxies:
   password: f8f7aCzcPKbsF8p3
   udp: true
 - name: 13-367-CN
+  server: 120.232.220.156
+  port: 20406
+  type: ss
+  cipher: aes-256-gcm
+  password: dwz1GtF7
+  udp: true
+- name: 13-368-CN
   server: 120.198.71.216
   port: 59082
   type: vmess
@@ -4164,7 +4174,7 @@ proxies:
     host: 120.198.71.216
     path: /
   tls: false
-- name: 13-368-JP
+- name: 13-369-JP
   server: aieq.mt.mt5888.top
   port: 44003
   type: ssr
@@ -4175,7 +4185,7 @@ proxies:
   protocol-param: 8198:CsJt8BBrKFOSrjv2
   obfs-param: cbcdc8198.microsoft.com
   group: SSRProvider
-- name: 13-369-CN
+- name: 13-370-CN
   server: pop.air.3278.0tk8a3a1q4t94dler.com
   port: 2062
   type: ss
@@ -4187,13 +4197,6 @@ proxies:
     host: 182039459a34f64238143cd31ddebbc914362.taobao.com
     tls: true
     skip-cert-verify: true
-  udp: true
-- name: 13-370-CN
-  server: 183.240.180.48
-  port: 58436
-  type: ss
-  cipher: 2022-blake3-aes-128-gcm
-  password: di3YDVupSCsXSe2NbYlw5A==
   udp: true
 - name: 13-371-RELAY
   server: rrffghyu.859886.xyz
@@ -4250,6 +4253,7 @@ proxies:
   auth_str: 
   up: 20 Mbps
   down: 50 Mbps
+  protocol: true
   udp: true
   skip-cert-verify: true
   alpn:
