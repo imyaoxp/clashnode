@@ -827,7 +827,7 @@ class sub_convert():
                         'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
-                        'protocol': 'udp',
+                        'udp': True,
                         'skip-cert-verify': False,
                         'alpn': ['h3']  # 默认值（确保是列表）
                     }
@@ -850,7 +850,7 @@ class sub_convert():
 
                         # 其他参数映射
                         param_mappings = {
-                            'protocol': ('protocol', lambda x: x if x in ['udp', 'wechat-video', 'faketcp'] else 'udp'),
+                            'protocol': ('udp', lambda x: x if x in ['udp', 'wechat-video', 'faketcp'] else 'udp'),
                             'obfs': ('obfs', str),
                             'obfs-password': ('obfs-password', str),
                             'sni': ('sni', str),
