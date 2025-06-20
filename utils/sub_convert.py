@@ -830,6 +830,7 @@ class sub_convert():
                     # 4. 最终校验alpn格式
                     if not isinstance(config['alpn'], list):
                         config['alpn'] = [str(config['alpn'])]
+                    print(config)
 
                     url_list.append(config)
                     
