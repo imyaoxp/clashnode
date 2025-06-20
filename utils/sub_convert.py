@@ -794,8 +794,7 @@ class sub_convert():
                         'up': '20 Mbps',
                         'down': '50 Mbps',
                         'protocol': 'udp',  # 默认使用UDP协议
-                        'skip-cert-verify': False,  # 默认跳过证书验证
-                        'alpn': ['h3']
+                        'skip-cert-verify': False
                     }
 
                     # 处理参数部分
@@ -820,8 +819,12 @@ class sub_convert():
                                 elif key == 'peer' and val:
                                     config['sni'] = val  # H1中peer参数对应sni
                                 elif key == 'alpn' and val:
-                                    config['alpn'] = str('  ' + val.split(','))
-                    
+                                    config['alpn'] = [x.strip() for x in val.split(',')]
+                    if 'alpn' not in config:
+                        config['alpn'] = ['h3']
+                    elif isinstance(config['alpn'], str):
+                        config['alpn'] = [config['alpn']]
+                    url_list.append(config)
                     
                 except Exception as err:
                     print(config)
