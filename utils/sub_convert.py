@@ -839,13 +839,7 @@ class sub_convert():
                                 key, val = param.split('=', 1)
                                 params[key.lower()] = val
 
-                        # 特殊处理alpn参数（兼容字符串和列表）
-                        if 'alpn' in params:
-                            alpn_val = params['alpn']
-                            if isinstance(alpn_val, str):
-                                config['alpn'] = [x.strip() for x in alpn_val.split(',')]
-                            elif isinstance(alpn_val, list):
-                                config['alpn'] = alpn_val
+
 
                         # 其他参数映射
                         param_mappings = {
@@ -856,10 +850,18 @@ class sub_convert():
                             'peer': ('sni', str),
                             'insecure': ('skip-cert-verify', lambda x: x == '1')
                         }
-            
+         
                         for param_key, (config_key, converter) in param_mappings.items():
                             if param_key in params:
                                 config[config_key] = converter(params[param_key])
+
+                        # 特殊处理alpn参数（兼容字符串和列表）
+                        if 'alpn' in params:
+                            alpn_val = params['alpn']
+                            if isinstance(alpn_val, str):
+                                config['alpn'] = [x.strip() for x in alpn_val.split(',')]
+                            elif isinstance(alpn_val, list):
+                                config['alpn'] = alpn_val
 
                     # 4. 最终校验alpn格式
                     if not isinstance(config['alpn'], list):
