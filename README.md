@@ -18,7 +18,7 @@
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `24`
 - [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `10`
 - [13Jsnzkpg/Jsnzkpg](https://github.com/Jsnzkpg/Jsnzkpg), 节点数量: `21`
-- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `23`
+- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `22`
 - [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `94`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
