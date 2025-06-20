@@ -490,6 +490,14 @@ class sub_convert():
             if 'vmess://' in line:
                 try:
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
+                    # UUID 验证（新增部分）
+                    if 'id' not in vmess_json_config:
+                        raise ValueError("缺少 UUID 字段")
+            
+                    uuid_str = vmess_json_config['id']
+                    if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
+                        raise ValueError(f"无效的 UUID 格式: {uuid_str}")
+                    
                     # 给 network 字段设置默认值，若不存在则为 'ws'
                     if 'net' not in vmess_json_config:
                         vmess_json_config['net'] = 'ws'  
@@ -1030,6 +1038,9 @@ class sub_convert():
                 if proxy['type'] == 'vmess' : # Vmess 节点提取, 由 Vmess 所有参数 dump JSON 后 base64 得来。
                            
                     try:
+                        uuid_str = proxy['uuid']
+                        if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
+                            raise ValueError(f"无效的 UUID 格式: {uuid_str}")
                         # 提取基础配置，给 network 设默认值
                         network_type = proxy.get('network', 'ws').lower()  
                         vmess_config = {
