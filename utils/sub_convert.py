@@ -843,11 +843,9 @@ class sub_convert():
 
                         # 其他参数映射
                         param_mappings = {
-                            'protocol': ('udp', lambda x: x if x in ['udp', 'wechat-video', 'faketcp'] else 'udp'),
                             'obfs': ('obfs', str),
                             'obfs-password': ('obfs-password', str),
                             'sni': ('sni', str),
-                            'peer': ('sni', str),
                             'insecure': ('skip-cert-verify', lambda x: x == '1')
                         }
          
