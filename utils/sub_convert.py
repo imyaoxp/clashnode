@@ -824,6 +824,7 @@ class sub_convert():
                         'server': server,
                         'port': int(port),
                         'auth-str': auth,
+                        'auth_str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
                         'protocol': 'udp',
