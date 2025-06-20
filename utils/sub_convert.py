@@ -288,7 +288,15 @@ class sub_convert():
                                     proxy[key] = parse_nested(value[1:-1])
                                 except:
                                     pass
+
+                        if 'alpn' in proxy:
+                            if isinstance(proxy['alpn'], str):
+                                proxy['alpn'] = [x.strip() for x in proxy['alpn'].split(',')]
+                            elif not isinstance(proxy['alpn'], list):
+                                proxy['alpn'] = [str(proxy['alpn'])]
                     
+                        
+                        
                         proxies.append(proxy)
             
                 result = {'proxies': proxies}
