@@ -776,55 +776,61 @@ class sub_convert():
             
             if 'hy://' in line:
                 try:
-                    # 分离基础部分和参数部分
+                    # 1. 解析基础URL部分
                     url_part = line.replace('hy://', '').split('#', 1)
                     base_part = url_part[0].split('?', 1)
-                
-                    # 提取认证信息和服务端信息
                     auth_server = base_part[0].rsplit('@', 1)
                     auth = auth_server[0] if len(auth_server) == 2 else ''
                     server, port = auth_server[-1].split(':')[:2]
 
-                    # 初始化配置 (不包含up/down参数)
+                    # 2. 初始化节点配置（强制alpn为列表）
                     config = {
                         'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Hysteria1',
                         'type': 'hysteria',
                         'server': server,
                         'port': int(port),
-                        'auth-str': auth,  # Hysteria1使用auth_str而不是password
+                        'auth-str': auth,
                         'up': '20 Mbps',
                         'down': '50 Mbps',
-                        'protocol': 'udp',  # 默认使用UDP协议
-                        'skip-cert-verify': False
+                        'protocol': 'udp',
+                        'skip-cert-verify': False,
+                        'alpn': ['h3']  # 默认值（确保是列表）
                     }
 
-                    # 处理参数部分
+                    # 3. 处理查询参数（关键修改点）
                     if len(base_part) > 1:
-                        params = base_part[1].split('&')
-                        for param in params:
+                        params = {}
+                        for param in base_part[1].split('&'):
                             if '=' in param:
                                 key, val = param.split('=', 1)
-                                key = key.lower()
-                            
-                                # 只处理需要的参数，忽略up/down
-                                if key == 'protocol' and val.lower() in ['udp', 'wechat-video', 'faketcp']:
-                                    config['protocol'] = val.lower()
-                                elif key == 'obfs' and val:
-                                    config['obfs'] = val
-                                elif key == 'obfs-password' and val:
-                                    config['obfs-password'] = val
-                                elif key == 'sni' and val:
-                                    config['sni'] = val
-                                elif key == 'insecure' and val == '1':
-                                    config['skip-cert-verify'] = True
-                                elif key == 'peer' and val:
-                                    config['sni'] = val  # H1中peer参数对应sni
-                                elif key == 'alpn' and val:
-                                    config['alpn'] = [x.strip() for x in val.split(',')]
-                    if 'alpn' not in config:
-                        config['alpn'] = ['h3']
-                    elif isinstance(config['alpn'], str):
-                        config['alpn'] = [config['alpn']]
+                                params[key.lower()] = val
+
+                        # 特殊处理alpn参数（兼容字符串和列表）
+                        if 'alpn' in params:
+                            alpn_val = params['alpn']
+                            if isinstance(alpn_val, str):
+                                config['alpn'] = [x.strip() for x in alpn_val.split(',')]
+                            elif isinstance(alpn_val, list):
+                                config['alpn'] = alpn_val
+
+                        # 其他参数映射
+                        param_mappings = {
+                            'protocol': ('protocol', lambda x: x if x in ['udp', 'wechat-video', 'faketcp'] else 'udp'),
+                            'obfs': ('obfs', str),
+                            'obfs-password': ('obfs-password', str),
+                            'sni': ('sni', str),
+                            'peer': ('sni', str),
+                            'insecure': ('skip-cert-verify', lambda x: x == '1')
+                        }
+            
+                        for param_key, (config_key, converter) in param_mappings.items():
+                            if param_key in params:
+                                config[config_key] = converter(params[param_key])
+
+                    # 4. 最终校验alpn格式
+                    if not isinstance(config['alpn'], list):
+                        config['alpn'] = [str(config['alpn'])]
+
                     url_list.append(config)
                     
                 except Exception as err:
