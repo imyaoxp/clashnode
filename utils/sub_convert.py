@@ -300,9 +300,27 @@ class sub_convert():
                         proxies.append(proxy)
             
                 result = {'proxies': proxies}
+                # YAML生成（增加对alpn缩进的处理）
+                yaml_content = yaml.dump(
+                    result,
+                    default_flow_style=False,
+                    sort_keys=False,
+                    allow_unicode=True,
+                    width=750,
+                    indent=2
+                )
             
+                # 修复alpn缩进（新增的唯一修改）
+                yaml_content = re.sub(
+                    r'^( *)(alpn:)\n( *)(- )',
+                    r'\1\2\n\1  \4',
+                    yaml_content,
+                    flags=re.MULTILINE
+                )
+
+                
                 if output:
-                    return yaml.dump(result, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                    return yaml_content.replace('\'', '').replace('False', 'false').replace('True', 'true')
                 return result
     def makeup(input, dup_rm_enabled=True, format_name_enabled=True): # 对节点进行区域的筛选和重命名，输出 YAML 文本 
         global idid
