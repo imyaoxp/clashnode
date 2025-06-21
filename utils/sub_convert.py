@@ -89,18 +89,21 @@ class sub_convert():
             sub_content = sub_convert.transfer(raw_input)
 
         if sub_content != '订阅内容解析错误': # 输出
-            dup_rm_enabled = custom_set['dup_rm_enabled']
-            format_name_enabled = custom_set['format_name_enabled']
-            final_content = sub_convert.makeup(sub_content,dup_rm_enabled,format_name_enabled)
-            if output_type == 'YAML':
-                return final_content
-            elif output_type == 'Base64':
-                return sub_convert.base64_encode(sub_convert.yaml_decode(final_content))
-            elif output_type == 'url':
-                return sub_convert.yaml_decode(final_content)
-            else:
-                print('Please define right output type.')
-                return '订阅内容解析错误'
+            try:
+                dup_rm_enabled = custom_set['dup_rm_enabled']
+                format_name_enabled = custom_set['format_name_enabled']
+                final_content = sub_convert.makeup(sub_content,dup_rm_enabled,format_name_enabled)
+                if output_type == 'YAML':
+                    return final_content
+                elif output_type == 'Base64':
+                    return sub_convert.base64_encode(sub_convert.yaml_decode(final_content))
+                elif output_type == 'url':
+                    return sub_convert.yaml_decode(final_content)
+                else:
+                    print('Please define right output type.')
+                    return '订阅内容解析错误'
+            except Exception as err:
+                print(f"订阅内容解析错误{err}")                    
         else:
             return '订阅内容解析错误'
         #idid = ''
