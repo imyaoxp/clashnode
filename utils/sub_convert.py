@@ -599,7 +599,7 @@ class sub_convert():
                 
 
                 except Exception as err:
-                    print(vmess_config)
+                    #print(vmess_config)
                     print(line)
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
                     
