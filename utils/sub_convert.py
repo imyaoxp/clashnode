@@ -526,13 +526,13 @@ class sub_convert():
                 try:
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
                     # UUID 验证（新增部分）
-                    if 'id' not in vmess_json_config:
-                        print(f"跳过无UUID的VMess节点")
-                        continue
-                    uuid_str = vmess_json_config['id']
-                    if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
-                        print(f"跳过无效UUID格式的VMess节点: {uuid_str}")
-                        continue
+                    #if 'id' not in vmess_json_config:
+                     #   raise ValueError("缺少 UUID 字段")
+            
+                    #uuid_str = vmess_json_config['id']
+                   # if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
+                       # raise ValueError(f"无效的 UUID 格式: {uuid_str}")
+                    
                     # 给 network 字段设置默认值，若不存在则为 'ws'
                     if 'net' not in vmess_json_config:
                         vmess_json_config['net'] = 'ws'  
@@ -660,17 +660,13 @@ class sub_convert():
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
                         sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
-                        if not pbk or not len(pbk) in (43, 44): 
-                            print(f"Invalid Reality public-key: {pbk}")
-                            continue
-                            
+                        if not pbk or not len(pbk) in (32,43, 44): 
+                            raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
                         if sid and not (
                             1 <= len(sid) <= 16 and 
                             all(c.lower() in '0123456789abcdefABCDEF' for c in sid)
                         ):
-                            print(f"Invalid sid: {sid}")
-                            continue
-                            
+                            raise ValueError(f"Invalid sid: {sid}")  # 触发异常处理
                         yaml_node['reality-opts'] = {
                             'public-key': pbk,
                             'short-id': sid 
@@ -752,9 +748,7 @@ class sub_convert():
                         '2022-blake3-chacha20-poly1305', 'none'
                     }
                     if method_part.lower() not in CLASH_SUPPORTED_SS_CIPHERS:
-                        print(f"Unsupported cipher '{method_part}' by Clash Meta")
-                        continue
-                        
+                        raise ValueError(f"Unsupported cipher '{method_part}' by Clash Meta")
                     server_part_list = server_part_list[1].rsplit('@', 1)
                     password_part = server_part_list[0]
                     password_part = password_part.replace('"', '')
