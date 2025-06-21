@@ -47,7 +47,9 @@ class sub_convert():
     def __init__(self):
         self.debug = True
     def log(self, message):
-        print(f"[DEBUG] {message}", file = sys.stderr)
+        if self.debug:
+        
+            print(f"[DEBUG] {message}", file = sys.stderr)
         
         
     
