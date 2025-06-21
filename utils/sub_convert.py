@@ -721,7 +721,7 @@ class sub_convert():
                     url_list.append(yaml_node)
 
                 except Exception as e:
-                    print(yaml_node)
+                    #print(yaml_node)
                     print(line)
                     print(f'VLESS编码错误: {e} | 行: {line[:100]}...')
                     continue
@@ -806,7 +806,7 @@ class sub_convert():
                     yaml_url.setdefault('udp', 'true')
                     url_list.append(yaml_url)
                 except Exception as err:
-                    print(yaml_url)
+                    #print(yaml_url)
                     print(f'line:{line}')
                     print(f'yaml_encode 解析 ss 节点发生错误2: {err}')
                     continue
@@ -874,7 +874,7 @@ class sub_convert():
                     url_list.append(config)
                     
                 except Exception as err:
-                    print(config)
+                    #print(config)
                     print(line)
                     print(f'Hysteria1解析错误: {err} | 内容: {line[:50]}...')
                     continue
@@ -925,7 +925,7 @@ class sub_convert():
                     url_list.append(config)
 
                 except Exception as err:
-                    print(config)
+                    #print(config)
                     print(line)
                     print(f'HY2解析错误: {err} | 内容: {line[:50]}...')
                     continue
@@ -990,7 +990,7 @@ class sub_convert():
                     url_list.append(yaml_url)
                     #print(url_list)
                 except Exception as err:
-                    print(yaml_url)
+                    #print(yaml_url)
                     print(line)
                     print(f'yaml_encode 解析 ssr 节点发生错误: {err}')
                     
@@ -1050,7 +1050,7 @@ class sub_convert():
                     if len(yaml_url['password']) == 36:
                         url_list.append(yaml_url)
                 except Exception as err:
-                    print(yaml_url)
+                    #print(yaml_url)
                     print(line)
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
                     continue
@@ -1138,7 +1138,7 @@ class sub_convert():
 
                     except Exception as e:
                         print(proxy)
-                        print(vmess_proxy)
+                        #print(vmess_proxy)
                         print(f'VMess解码错误: {e} | 节点: {proxy.get("name", "未知")}')
                         continue
 
@@ -1238,7 +1238,7 @@ class sub_convert():
 
                     except Exception as e:
                         print(proxy)
-                        print(vless_url)
+                        #print(vless_url)
                         print(f'VLESS解码错误: {e} | 节点: {proxy.get("name", "未知")}')
                         continue
                 
@@ -1306,7 +1306,7 @@ class sub_convert():
                         protocol_url.append(ss_proxy)
                     except Exception as err:
                         print(proxy)
-                        print(ss_proxy)
+                        #print(ss_proxy)
                         print(f'SS生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
                 
@@ -1350,7 +1350,7 @@ class sub_convert():
                         protocol_url.append(trojan_url + '\n')
                     except Exception as err:
                         print(proxy)
-                        print(trojan_url)
+                        #print(trojan_url)
                         print(f'yaml_decode 生成 trojan 节点发生错误: {err}')
                         continue
                 
@@ -1392,7 +1392,7 @@ class sub_convert():
 
                     except Exception as err:
                         print(proxy)
-                        print(hy1_url)
+                        #print(hy1_url)
                         print(f'Hysteria1生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
                 
@@ -1428,7 +1428,7 @@ class sub_convert():
 
                     except Exception as err:
                         print(proxy)
-                        print(hy2_url)
+                        #print(hy2_url)
                         print(f'HY2生成错误: {err} | 节点: {proxy.get("name", "未知")}')
                         continue
 
