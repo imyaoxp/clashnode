@@ -740,13 +740,13 @@ class sub_convert():
                     method_part = server_part_list[0]
 
                     #CLASH_SUPPORTED_SS_CIPHERS = {
-                        'aes-128-cfb', 'aes-192-cfb', 'aes-256-cfb',
-                        'rc4-md5', 'bf-cfb', 'chacha20',
-                        'aes-128-gcm', 'aes-192-gcm', 'aes-256-gcm',
-                        'chacha20-ietf-poly1305', 'xchacha20-ietf-poly1305',
-                        '2022-blake3-aes-128-gcm', '2022-blake3-aes-256-gcm', 
-                        '2022-blake3-chacha20-poly1305', 'none'
-                    }
+                    #    'aes-128-cfb', 'aes-192-cfb', 'aes-256-cfb',
+                    #    'rc4-md5', 'bf-cfb', 'chacha20',
+                    #    'aes-128-gcm', 'aes-192-gcm', 'aes-256-gcm',
+                    #    'chacha20-ietf-poly1305', 'xchacha20-ietf-poly1305',
+                    #    '2022-blake3-aes-128-gcm', '2022-blake3-aes-256-gcm', 
+                    #    '2022-blake3-chacha20-poly1305', 'none'
+                    #}
                     #if method_part.lower() not in CLASH_SUPPORTED_SS_CIPHERS:
                     #    raise ValueError(f"Unsupported cipher '{method_part}' by Clash Meta")
                     server_part_list = server_part_list[1].rsplit('@', 1)
