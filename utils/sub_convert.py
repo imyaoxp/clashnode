@@ -4,6 +4,8 @@
 import re, yaml, json, base64
 import requests, socket, urllib.parse
 from requests.adapters import HTTPAdapter
+import sys
+import traceback
 
 import geoip2.database
 idid = '00'
@@ -42,10 +44,17 @@ class sub_convert():
             format --> makeup --> yaml_decode --> base64_encode --> convert
             base64_final
     """
-
+    def __init__(self):
+        self.debug = True
+    def log(self, message):
+        print(f"[DEBUG] {message}", file = sys.stderr)
+        
+        
+    
     def convert(raw_input, input_type='url', output_type='url', custom_set={'dup_rm_enabled': True, 'format_name_enabled': True}): # {'input_type': ['url', 'content'],'output_type': ['url', 'YAML', 'Base64']}
         # convert Url to YAML or Base64
         global idid
+        self.log(f"开始转换，输入类型{input_type},输出类型{output_type}")
         if input_type == 'url': # 获取 URL 订阅链接内容
             sub_content = ''
             if isinstance(raw_input, list):
@@ -55,6 +64,7 @@ class sub_convert():
                     s.mount('http://', HTTPAdapter(max_retries=5))
                     s.mount('https://', HTTPAdapter(max_retries=5))
                     try:
+                        self.log(f"正在下载{url}")
                         print('Downloading from:' + url)
                         
                         idid = re.findall(r'#\d\d', url)[0]
@@ -85,9 +95,11 @@ class sub_convert():
                     print(err)
                     return 'Url 解析错误'
         elif input_type == 'content': # 解析订阅内容
+            self.log("直接处理输入内容")
             sub_content = sub_convert.transfer(raw_input)
 
         if sub_content != '订阅内容解析错误': # 输出
+            self.log("开始处理订阅内容")
             dup_rm_enabled = custom_set['dup_rm_enabled']
             format_name_enabled = custom_set['format_name_enabled']
             final_content = sub_convert.makeup(sub_content,dup_rm_enabled,format_name_enabled)
@@ -95,8 +107,10 @@ class sub_convert():
                 return final_content
             elif output_type == 'Base64':
                 return sub_convert.base64_encode(sub_convert.yaml_decode(final_content))
+                self.log("base64编码完成")
             elif output_type == 'url':
                 return sub_convert.yaml_decode(final_content)
+                self.log("url解码完成")
             else:
                 print('Please define right output type.')
                 return '订阅内容解析错误'
