@@ -527,12 +527,12 @@ class sub_convert():
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
                     # UUID 验证（新增部分）
                     if 'id' not in vmess_json_config:
-                        raise ValueError("缺少 UUID 字段")
-            
+                        print(f"跳过无UUID的VMess节点")
+                        continue
                     uuid_str = vmess_json_config['id']
                     if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
-                        raise ValueError(f"无效的 UUID 格式: {uuid_str}")
-                    
+                        print(f"跳过无效UUID格式的VMess节点: {uuid_str}")
+                        continue
                     # 给 network 字段设置默认值，若不存在则为 'ws'
                     if 'net' not in vmess_json_config:
                         vmess_json_config['net'] = 'ws'  
