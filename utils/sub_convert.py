@@ -535,7 +535,8 @@ class sub_convert():
             
                     uuid_str = vmess_json_config['id']
                     if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
-                        raise ValueError(f"无效的 UUID 格式: {uuid_str}")
+                        print(f"无效的 UUID 格式: {uuid_str}")
+                        continue
                     
                     # 给 network 字段设置默认值，若不存在则为 'ws'
                     if 'net' not in vmess_json_config:
@@ -602,7 +603,6 @@ class sub_convert():
                     #print(vmess_config)
                     print(line)
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
-                    
                     continue
 
             if 'vless://' in line:
