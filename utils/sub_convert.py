@@ -1085,8 +1085,8 @@ class sub_convert():
                            
                     try:
                         uuid_str = proxy['uuid']
-                        if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
-                            raise ValueError(f"无效的 UUID 格式: {uuid_str}")
+                        #if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid_str, re.I):
+                          #  raise ValueError(f"无效的 UUID 格式: {uuid_str}")
                         # 提取基础配置，给 network 设默认值
                         network_type = proxy.get('network', 'ws').lower()  
                         vmess_config = {
