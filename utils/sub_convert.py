@@ -660,13 +660,17 @@ class sub_convert():
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
                         sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
-                        if not pbk or not len(pbk) in (32,43, 44): 
-                            raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
+                        if not pbk or not len(pbk) in (43, 44): 
+                            print(f"Invalid Reality public-key: {pbk}")
+                            continue
+                            
                         if sid and not (
                             1 <= len(sid) <= 16 and 
                             all(c.lower() in '0123456789abcdefABCDEF' for c in sid)
                         ):
-                            raise ValueError(f"Invalid sid: {sid}")  # 触发异常处理
+                            print(f"Invalid sid: {sid}")
+                            continue
+                            
                         yaml_node['reality-opts'] = {
                             'public-key': pbk,
                             'short-id': sid 
@@ -748,7 +752,9 @@ class sub_convert():
                         '2022-blake3-chacha20-poly1305', 'none'
                     }
                     if method_part.lower() not in CLASH_SUPPORTED_SS_CIPHERS:
-                        raise ValueError(f"Unsupported cipher '{method_part}' by Clash Meta")
+                        print(f"Unsupported cipher '{method_part}' by Clash Meta")
+                        continue
+                        
                     server_part_list = server_part_list[1].rsplit('@', 1)
                     password_part = server_part_list[0]
                     password_part = password_part.replace('"', '')
