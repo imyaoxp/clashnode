@@ -589,10 +589,13 @@ class sub_convert():
                     elif network_type == 'tcp':
                         yaml_url['network'] = 'tcp'
                         if 'type' in vmess_config:  # 处理TCP伪装
-                            yaml_url['tcp-opts'] = {
-                                'headers': {'host': urllib.parse.unquote(vmess_config.get('host', ""))},
-                                'path': vmess_config.get('path', '/')
-                            }
+                            tcp_opts = {}
+                            if 'host' in vmess_config:
+                                tcp_opts['headers'] = {'host': urllib.parse.unquote(vmess_config['host'])}
+                            if 'path' in vmess_config:
+                                tcp_opts['path'] = vmess_config['path']
+                            if tcp_opts:
+                                yaml_url['tcp-opts'] = tcp_opts
 
                     # 处理TLS配置
                     yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
