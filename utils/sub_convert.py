@@ -1479,20 +1479,26 @@ class sub_convert():
             url_content = url_content.replace('-', '+')
         elif '_' in url_content:
             url_content = url_content.replace('_', '/')
-        #print(len(url_content))
+        
         padding_needed = len(url_content) % 4
         if padding_needed:
-            url_content += '=' * (4 - padding_needed) # 不是4的倍数后加= https://www.cnblogs.com/wswang/p/7717997.html
+            url_content += '=' * (4 - padding_needed)
         
         try:
-            base64_content = base64.b64decode(url_content.encode('utf-8')).decode('utf-8','ignore') # https://www.codenong.com/42339876/
+            base64_content = base64.b64decode(url_content.encode('utf-8')).decode('utf-8','ignore')
             base64_content_format = base64_content
             return base64_content_format
         except UnicodeDecodeError:
-            base64_content = base64.b64decode(url_content)
-            base64_content_format = base64_content
-            return base64_content
-
+            try:
+                base64_content = base64.b64decode(url_content)
+                base64_content_format = base64_content
+                return base64_content
+            except Exception as e:
+                raise ValueError(f"解码失败: 原始内容={url_content}, 错误类型={type(e).__name__}, 错误详情={str(e)}") from e
+        except base64.binascii.Error as e:
+            raise ValueError(f"Base64解码错误: 处理后内容={url_content}, 错误类型={type(e).__name__}, 需要填充={padding_needed}, 错误详情={str(e)}") from e
+        except Exception as e:
+            raise ValueError(f"未知解码错误: 原始内容={url_content}, 错误类型={type(e).__name__}, 错误详情={str(e)}") from e
 if __name__ == '__main__':
     
     subscribe = 'https://raw.githubusercontent.com/imyaoxp/freenode/master/sub/sub_merge.txt'
