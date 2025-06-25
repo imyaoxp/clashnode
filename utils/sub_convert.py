@@ -590,11 +590,11 @@ class sub_convert():
                         yaml_url['network'] = 'tcp'
                         if 'type' in vmess_config:  # 处理TCP伪装
                             tcp_opts = {}
-                            if 'host' in vmess_config:
+                            if 'host' in vmess_config and vmess_config['host'] not in [None, '', 'null', 'Null',  '""']:
                                 tcp_opts['headers'] = {'host': urllib.parse.unquote(vmess_config['host'])}
-                            if 'path' in vmess_config:
+                            if 'path' in vmess_config and vmess_config['path'] not in [None, '', '/', 'null', 'Null',  '""']:
                                 tcp_opts['path'] = vmess_config['path']
-                            if tcp_opts:
+                            if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_url['tcp-opts'] = tcp_opts
 
                     # 处理TLS配置
