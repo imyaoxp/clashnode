@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `499`
+当前合并节点总数: `544`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `124`
-- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `24`
+- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `68`
 - [7go4sharing](https://github.com/go4sharing), 节点数量: `27`
 - [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `113`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `219`
