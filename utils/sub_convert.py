@@ -727,7 +727,7 @@ class sub_convert():
                         if host or path:
                             tcp_opts = {}
                             if host:
-                                tcp_opts['headers'] = {'Host': host.plit(',')}
+                                tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
                                 tcp_opts['path'] = path
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
