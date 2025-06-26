@@ -696,7 +696,16 @@ class sub_convert():
                             'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/')),
                             'headers': {'Host': ws_host}
                         }
-
+                    elif network_type == 'httpupgrade':
+                        httpupgrade_host = (
+                            get_param_priority('host', 'Host', 'HOST') or
+                            sni or
+                            server
+                        )
+                        yaml_node['http-opts'] = {
+                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/')),
+                            'headers': {'Host': httpupgrade_host}
+                        }
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
@@ -713,13 +722,16 @@ class sub_convert():
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype')
-                        if header_type and header_type.lower() == 'http':
-                            yaml_node['tcp-opts'] = {
-                                'headers': {
-                                    'Host': get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                                },
-                                'path': get_param_priority('path', 'Path', 'PATH', default='/')
-                            }
+                        host = get_param_priority('Host', 'host', 'HOST')
+                        path = get_param_priority('path', 'Path', 'PATH')
+                        if host or path:
+                            tcp_opts = {}
+                            if host:
+                                tcp_opts['headers'] = {'Host': host.plit(',')}
+                            if path:
+                                tcp_opts['path'] = path
+                            if tcp_opts:  # 仅在 tcp_opts 非空时添加
+                                yaml_url['tcp-opts'] = tcp_opts
 
                     url_list.append(yaml_node)
 
@@ -1202,7 +1214,14 @@ class sub_convert():
                                 headers.get('Host') or
                                 sni
                            )
-
+                        elif network_type == 'httpupgrade':
+                           http_opts = proxy.get('http-opts', {})
+                           params.append(f"type=httpupgrade")
+                           params.append(f"path={http_opts.get('path', '/')}")
+                           if 'host' in http_opts.get('headers', {}):
+                               params.append(f"host={http_opts['headers']['host']}")
+                           elif 'sni' in proxy:
+                               params.append(f"host={proxy['sni']}")
                         # 2. gRPC处理
                         elif network_type == 'grpc':
                             grpc_opts = proxy.get('grpc-opts', {})
