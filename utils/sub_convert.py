@@ -1016,53 +1016,78 @@ class sub_convert():
             
           
             if 'trojan://' in line:
+            if 'trojan://' in line:
                 try:
-                    url_content = line.replace('trojan://', '')
-                    part_list = re.split('#', url_content, maxsplit=1)
-                    yaml_url.setdefault('name', urllib.parse.unquote(part_list[1]))
+                    # 先进行URL解码处理特殊字符
+                    line = urllib.parse.unquote(line)
+        
+                    # 分割节点信息和备注
+                    url_part = line.replace('trojan://', '').split('#', 1)
+                    yaml_url = {
+                        'name': url_part[1] if len(url_part) > 1 else 'trojan-node',
+                        'type': 'trojan',
+                        'udp': True,
+                        'skip-cert-verify': True,
+                        'tls': True  # 默认启用TLS
+                    }
 
-                    server_part = part_list[0]
-                    server_part_list = re.split(':|@|\?|&', server_part)
-                    yaml_url.setdefault('server', server_part_list[1])
-                    yaml_url.setdefault('port', server_part_list[2].replace('/', ''))
-                    yaml_url.setdefault('type', 'trojan')
-                    yaml_url.setdefault('password', server_part_list[0].lower())
+                    # 分割认证信息和参数
+                    server_part = url_part[0].split('?', 1)
+                    auth_part = server_part[0].split('@', 1)
+                    if len(auth_part) != 2:
+                        continue
+            
+                    # 处理服务器地址和端口（兼容末尾带/的情况）
+                    server_port = auth_part[1].replace('/', '').split(':')
+                    yaml_url.update({
+                        'password': auth_part[0],
+                        'server': server_port[0],
+                        'port': int(server_port[1])
+                    })
 
-                    # 解析 Trojan-Go 特有参数
-                    params = server_part.split('?')[1] if '?' in server_part else ''
-                    param_dict = {}
-                    if params:
-                        for param in params.split('&'):
-                            if '=' in param:
-                                key, val = param.split('=', 1)
-                                param_dict[key.lower()] = val
-
-                    # 处理传输协议 (network)
-                    if 'type' in param_dict:
-                        network_type = param_dict['type'].lower()
-                        yaml_url['network'] = network_type
-
-                        # WebSocket 配置
-                        if network_type == 'ws':
-                            yaml_url['ws-opts'] = {
-                                'path': param_dict.get('path', '/'),
-                                'headers': {'host': param_dict.get('host', param_dict.get('sni', yaml_url['server']))}
-                            }
-                        # gRPC 配置
-                        elif network_type == 'grpc':
-                            yaml_url['grpc-opts'] = {
-                                'grpc-service-name': param_dict.get('servicename', '')}
-
-                    # TLS 配置
-                    yaml_url['tls'] = param_dict.get('security', 'tls').lower() == 'tls'
-                    if 'sni' in param_dict:
-                        yaml_url['sni'] = param_dict['sni']
-
-                    yaml_url['skip-cert-verify'] = True
-                    yaml_url['udp'] = True
-
+                    # 解析查询参数
+                    if len(server_part) > 1:
+                        for param in server_part[1].split('&'):
+                            if '=' not in param:
+                                print(f'trojan节点错误')
+                                print(line)
+                                continue
                     
+                            key, val = param.split('=', 1)
+                            key = key.lower()
+                
+                            # 处理security参数
+                            if key == 'security':
+                                yaml_url['tls'] = val.lower() == 'tls'
+                
+                            # 处理sni参数
+                            elif key == 'sni':
+                                yaml_url['sni'] = val
+                
+                            # 处理传输类型
+                            elif key == 'type':
+                                yaml_url['network'] = val.lower()
+                                if val.lower() == 'ws':
+                                    yaml_url['ws-opts'] = {
+                                        'path': '/',
+                                        'headers': {'Host': yaml_url.get('sni', yaml_url['server'])}
+                                    }
+                
+                            # 处理ws路径
+                            elif key == 'path' and 'ws-opts' in yaml_url:
+                                yaml_url['ws-opts']['path'] = val
+                
+                            # 处理ws的host头
+                            elif key == 'host' and 'ws-opts' in yaml_url:
+                                yaml_url['ws-opts']['headers']['Host'] = val
+
+                    # 直接添加到结果列表（不再检查密码长度）
                     url_list.append(yaml_url)
+        
+                    # 调试日志（可选）
+                    print(f"已处理Trojan节点: {yaml_url['name']}")
+        
+
                 except Exception as err:
                     #print(yaml_url)
                     print(line)
