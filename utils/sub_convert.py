@@ -596,6 +596,11 @@ class sub_convert():
                                 tcp_opts['path'] = vmess_config['path']
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_url['tcp-opts'] = tcp_opts
+                    else:
+                        print(f'vmess不支持的network_type:{network_type}')
+                        print(line)
+                        continue
+                        
 
                     # 处理TLS配置
                     yaml_url['tls'] = vmess_config.get('tls', False) or network_type in ['h2', 'grpc']
@@ -608,7 +613,7 @@ class sub_convert():
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
                     continue
 
-            if 'vless://' in line:
+            elif 'vless://' in line:
                 try:
                     # 分离基础部分和参数部分
                     url_part = line.replace('vless://', '').split('#', 1)  # 分割#后的备注部分
@@ -731,6 +736,10 @@ class sub_convert():
                                 tcp_opts['path'] = path
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_url['tcp-opts'] = tcp_opts
+                    else:
+                        print(f'vless不支持的network_type:{network_type}')
+                        print(line)
+                        continue
 
                     url_list.append(yaml_node)
 
@@ -741,7 +750,7 @@ class sub_convert():
                     continue
         
    
-            if 'ss://' in line and 'vless://' not in line and 'vmess://' not in line:
+            elif 'ss://' in line and 'vless://' not in line and 'vmess://' not in line:
                 if '#' not in line:
                     line = line + '#SS%20Node'
                 try:
@@ -826,7 +835,7 @@ class sub_convert():
                     continue
 
             
-            if 'hy://' in line:
+            elif 'hy://' in line:
                 try:
                     # 1. 解析基础URL部分
                     url_part = line.replace('hy://', '').split('#', 1)
@@ -894,7 +903,7 @@ class sub_convert():
                     continue
             
             
-            if 'hy2://' in line:
+            elif 'hy2://' in line:
                 try:
                     # 提取基础信息
                     url_part = line.replace('hy2://', '').split('#', 1)
@@ -946,7 +955,7 @@ class sub_convert():
 
   
                 
-            if 'ssr://' in line:
+            elif 'ssr://' in line:
                 try:
                     ssr_content = sub_convert.base64_decode(line.replace('ssr://', ''))
                     #print(ssr_content)
@@ -1008,15 +1017,10 @@ class sub_convert():
                     print(line)
                     print(f'yaml_encode 解析 ssr 节点发生错误: {err}')
                     
-                    continue
-
-
-
-
-            
+                    continue           
           
            
-            if 'trojan://' in line:
+            elif 'trojan://' in line:
                 try:
                     # 先进行URL解码处理特殊字符
                     line = urllib.parse.unquote(line)
@@ -1094,7 +1098,11 @@ class sub_convert():
                     print(line)
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
                     continue
-
+            else:
+                print(f'不支持的节点类型')
+                print(line)
+                continue
+                
         yaml_content_dic = {'proxies': url_list}
         yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2)
         yaml_content = sub_convert.format(yaml_content_raw)
