@@ -1343,7 +1343,7 @@ class sub_convert():
         
                         # SNI 配置
                         if 'sni' in proxy:
-            params.append(f"sni={proxy['sni']}")
+                            params.append(f"sni={proxy['sni']}")
         
                         # 传输协议
                         network_type = proxy.get('network', 'tcp')
