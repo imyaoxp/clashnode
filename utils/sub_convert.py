@@ -1015,7 +1015,7 @@ class sub_convert():
 
             
           
-            if 'trojan://' in line:
+           
             if 'trojan://' in line:
                 try:
                     # 先进行URL解码处理特殊字符
@@ -1030,11 +1030,13 @@ class sub_convert():
                         'skip-cert-verify': True,
                         'tls': True  # 默认启用TLS
                     }
-
+            
                     # 分割认证信息和参数
                     server_part = url_part[0].split('?', 1)
                     auth_part = server_part[0].split('@', 1)
                     if len(auth_part) != 2:
+                        print(f'trojan节点错误：{line}')
+                        
                         continue
             
                     # 处理服务器地址和端口（兼容末尾带/的情况）
@@ -1049,8 +1051,7 @@ class sub_convert():
                     if len(server_part) > 1:
                         for param in server_part[1].split('&'):
                             if '=' not in param:
-                                print(f'trojan节点错误')
-                                print(line)
+                                print(f'trojan节点错误：{line}')
                                 continue
                     
                             key, val = param.split('=', 1)
