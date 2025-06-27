@@ -615,7 +615,9 @@ class sub_convert():
                     continue
 
             elif 'vless://' in line:
-            
+                if line.count('@') != 1 or line.count(':') <2 or line.count('%40') >= 1:
+                    print(f'节点格式错误，line:{line}')
+                    continue
                 node = None  # 初始化节点对象
                 try:
                     # 保留原始行用于错误报告
