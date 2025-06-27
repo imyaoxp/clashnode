@@ -690,7 +690,7 @@ class sub_convert():
                     # 根据network类型处理特殊参数
                     network_type = yaml_node['network']
                     path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                    if path.count('@') >1 or if path.count('%40') >1:
+                    if path.count('@') >1 or path.count('%40') >1:
                         print(f'vless节点格式错误，line:{line}')
                         continue
                     # 1. WebSocket处理
