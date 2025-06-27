@@ -4,6 +4,7 @@
 
 import re, yaml, json, base64
 import requests, socket, urllib.parse
+import traceback
 from requests.adapters import HTTPAdapter
 
 import geoip2.database
@@ -614,45 +615,47 @@ class sub_convert():
                     continue
 
             elif 'vless://' in line:
+            
+                node = None  # 初始化节点对象
                 try:
-                    # 原始行备份用于错误报告
+                    # 保留原始行用于错误报告
                     raw_line = line
         
-                    # 阶段1：安全分割基础部分（不进行URL解码）
+                    # 阶段1：安全分割基础部分
                     parts = line.split('#', 1)
                     name = urllib.parse.unquote(parts[1]) if len(parts) > 1 else 'vless-node'
         
-                    # 阶段2：提取UUID和服务端信息（保护@符号）
+                    # 阶段2：提取认证信息
                     auth_part = parts[0][8:].split('@', 1)  # 去掉vless://
                     if len(auth_part) != 2:
-                        print(f"⚠️ 缺少认证信息: {raw_line[:60]}...")
+                        print(f"⚠️ 缺少@分隔符: {raw_line[:60]}...")
                         continue
             
                     uuid, server_part = auth_part
                     server_info = server_part.split('?', 1)
-                    server_port = server_info[0].split(':')
+                    server_port = server_info[0].replace('/', '').split(':')
                     if len(server_port) != 2:
                         print(f"⚠️ 端口格式错误: {raw_line[:60]}...")
                         continue
 
-                    # 阶段3：构建节点基础信息
+                    # 阶段3：构建基础节点
                     node = {
                         'name': name,
                         'type': 'vless',
                         'server': server_port[0],
-                        'port': int(server_port[1].replace('/', '')),
+                        'port': int(server_port[1]),
                         'uuid': uuid,
                         'udp': True,
-                        'tls': False,
-                        'network': 'tcp'
+                        'tls': False,  # 默认值
+                        'network': 'tcp'  # 默认值
                     }
 
-                    # 阶段4：安全解析查询参数
+                    # 阶段4：解析查询参数
                     if len(server_info) > 1:
                         from urllib.parse import parse_qs
                         params = parse_qs(server_info[1], keep_blank_values=True)
             
-                        # 处理security
+                        # 处理security参数
                         if 'security' in params:
                             node['tls'] = params['security'][0].lower() == 'tls'
             
@@ -670,27 +673,29 @@ class sub_convert():
                         if 'host' in params and 'ws-opts' in node:
                             node['ws-opts']['headers']['Host'] = params['host'][0]
             
-                        # 处理path（最后单独解码）
+                        # 处理path（需二次URL解码）
                         if 'path' in params:
                             path = urllib.parse.unquote(params['path'][0])
                             if 'ws-opts' in node:
                                 node['ws-opts']['path'] = path
             
-                        # 其他参数
+                        # 处理fingerprint
                         if 'fp' in params:
                             node['client-fingerprint'] = params['fp'][0]
+                        
+                        # 处理alpn
                         if 'alpn' in params:
                             node['alpn'] = params['alpn'][0].split(',')
 
-                    url_list.append(node)
-                    print(f"✅ 成功解析: {node['name']}")
-        
                 except Exception as e:
-                    import traceback
-                    print(f"🔴 解析失败 [{type(e).__name__}]: {str(e)}")
-                    print(f"🔴 问题行: {raw_line[:100]}...")
-                    print(f"🔴 错误详情:\n{traceback.format_exc()}")
-                    continue
+                    print(f"⚠️ 解析失败 [{type(e).__name__}]: {str(e)} | 内容: {raw_line[:60]}...")
+                    node = None
+    
+                # 只有成功解析的节点才加入列表
+                if node:
+                    url_list.append(node)
+                    print(f"✅ 已添加VLESS节点: {node['name']}")
+                continue  # 继续处理下一行
                 #except Exception as e:
                 #    #print(yaml_node)
                  #   print(line)
