@@ -1061,8 +1061,8 @@ class sub_convert():
                     yaml_url['skip-cert-verify'] = True
                     yaml_url['udp'] = True
 
-                    if len(yaml_url['password']) == 36:
-                        url_list.append(yaml_url)
+                    
+                    url_list.append(yaml_url)
                 except Exception as err:
                     #print(yaml_url)
                     print(line)
@@ -1332,47 +1332,45 @@ class sub_convert():
                         continue
                 
                 elif proxy['type'] == 'trojan': # Trojan 节点提取, 由 trojan_proxy 中参数再加上 # 加注释(URL_encode) # trojan Go https://p4gefau1t.github.io/trojan-go/developer/url/
-               
+
                     try:
                         # 基础参数
                         base_url = f"trojan://{proxy['password']}@{proxy['server']}:{proxy['port']}"
-        
-                        # 查询参数
                         params = []
+        
+                        # TLS 配置
                         params.append(f"security={'tls' if proxy.get('tls', True) else 'none'}")
         
-                        # 传输协议 (network)
+                        # SNI 配置
+                        if 'sni' in proxy:
+            params.append(f"sni={proxy['sni']}")
+        
+                        # 传输协议
                         network_type = proxy.get('network', 'tcp')
                         if network_type != 'tcp':
                             params.append(f"type={network_type}")
-                            
+            
                             # WebSocket 配置
                             if network_type == 'ws':
-                                ws_opts = proxy.get('ws-opts', {})
-                                params.append(f"path={ws_opts.get('path', '/')}")
-                                if 'host' in ws_opts.get('headers', {}):
-                                    params.append(f"host={ws_opts['headers']['host']}")
-                                elif 'sni' in proxy:
-                                    params.append(f"host={proxy['sni']}")
+                                if 'ws-opts' in proxy:
+                                    ws_opts = proxy['ws-opts']
+                                    if 'path' in ws_opts:
+                                        params.append(f"path={ws_opts['path']}")
+                                    if 'headers' in ws_opts and 'Host' in ws_opts['headers']:
+                                        params.append(f"host={ws_opts['headers']['Host']}")
             
                             # gRPC 配置
                             elif network_type == 'grpc':
-                                grpc_opts = proxy.get('grpc-opts', {})
-                                if 'grpc-service-name' in grpc_opts:
-                                    params.append(f"serviceName={grpc_opts['grpc-service-name']}")
+                                if 'grpc-opts' in proxy and 'grpc-service-name' in proxy['grpc-opts']:
+                                    params.append(f"serviceName={proxy['grpc-opts']['grpc-service-name']}")
 
-                        # SNI 配置
-                        if 'sni' in proxy:
-                            params.append(f"sni={proxy['sni']}")
-
-                       # 拼接完整链接
+                        # 组合 URL
                         query_str = '&'.join(params)
-                        trojan_url = f"{base_url}?{query_str}#{urllib.parse.quote(proxy['name'])}"
-                        protocol_url.append(trojan_url + '\n')
+                        trojan_url = f"{base_url}?{query_str}#{urllib.parse.quote(proxy['name'])}\n"
+                        protocol_url.append(trojan_url)
                     except Exception as err:
-                        print(proxy)
-                        #print(trojan_url)
                         print(f'yaml_decode 生成 trojan 节点发生错误: {err}')
+                        print(f'问题节点: {proxy}')
                         continue
                 
                          
