@@ -761,9 +761,9 @@ class sub_convert():
                     url_list.append(yaml_node)
 
                 except Exception as e:
-                    #print(yaml_node)
-                    print(line)
-                    print(f'VLESS编码错误: {e} | 行: {line[:100]}...')
+                    print(yaml_node)
+                    
+                    print(f'VLESS编码错误: {e} | line: {line}')
                     continue
         
    
