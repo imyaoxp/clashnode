@@ -689,12 +689,13 @@ class sub_convert():
 
                     # 根据network类型处理特殊参数
                     network_type = yaml_node['network']
-                    path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                    if path.count('@') >1 or path.count('%40') >1:
-                        print(f'vless节点格式错误，line:{line}')
-                        continue
+
                     # 1. WebSocket处理
                     if network_type == 'ws':
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue
                         ws_host = (
                             get_param_priority('host', 'Host', 'HOST') or
                             sni or
@@ -706,7 +707,12 @@ class sub_convert():
                         }
                 
                     elif network_type == 'httpupgrade':
+                        
                         http_opts = proxy.get('http-opts', {})
+                        path=urllib.parse.unquote(http_opts.get('path', '/'))
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue
                         params['type'] = 'httpupgrade'
                         params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
@@ -721,6 +727,10 @@ class sub_convert():
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue                        
                         yaml_node['h2-opts'] = {
                             'host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
                             'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
@@ -731,6 +741,10 @@ class sub_convert():
                         header_type = get_param_priority('headerType', 'headertype')
                         host = get_param_priority('Host', 'host', 'HOST')
                         path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH'))
+                        
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue                       
                         if host or path:
                             tcp_opts = {}
                             if host:
