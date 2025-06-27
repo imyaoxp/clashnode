@@ -614,7 +614,7 @@ class sub_convert():
                     continue
 
             elif 'vless://' in line:
-            if 'vless://' in line:
+            
                 try:
                     # 先进行URL解码处理特殊字符
                     decoded_line = urllib.parse.unquote(line)
