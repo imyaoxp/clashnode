@@ -1099,8 +1099,8 @@ class sub_convert():
                     print(f'yaml_encode 解析 trojan 节点发生错误: {err}')
                     continue
             else:
-                print(f'不支持的节点类型')
-                print(line)
+                print(f'不支持的节点类型,line:{line}')
+                
                 continue
                 
         yaml_content_dic = {'proxies': url_list}
