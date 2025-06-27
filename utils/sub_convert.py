@@ -614,89 +614,88 @@ class sub_convert():
                     continue
 
             elif 'vless://' in line:
-            
                 try:
-                    # 先进行URL解码处理特殊字符
-                    decoded_line = urllib.parse.unquote(line)
+                    # 原始行备份用于错误报告
+                    raw_line = line
         
-                    # 分割节点信息和备注
-                    parts = decoded_line.split('#', 1)
-                    name = parts[1] if len(parts) > 1 else 'vless-node'
+                    # 阶段1：安全分割基础部分（不进行URL解码）
+                    parts = line.split('#', 1)
+                    name = urllib.parse.unquote(parts[1]) if len(parts) > 1 else 'vless-node'
         
-                    # 提取认证信息和服务端配置
+                    # 阶段2：提取UUID和服务端信息（保护@符号）
                     auth_part = parts[0][8:].split('@', 1)  # 去掉vless://
                     if len(auth_part) != 2:
-                        print(f'vless节点错误，line:{line}')
+                        print(f"⚠️ 缺少认证信息: {raw_line[:60]}...")
                         continue
             
                     uuid, server_part = auth_part
                     server_info = server_part.split('?', 1)
                     server_port = server_info[0].split(':')
-        
-                    # 构建基础节点
-                    yaml_node = {
+                    if len(server_port) != 2:
+                        print(f"⚠️ 端口格式错误: {raw_line[:60]}...")
+                        continue
+
+                    # 阶段3：构建节点基础信息
+                    node = {
                         'name': name,
                         'type': 'vless',
                         'server': server_port[0],
-                        'port': int(server_port[1]),
+                        'port': int(server_port[1].replace('/', '')),
                         'uuid': uuid,
                         'udp': True,
-                        'tls': False,  # 默认值
-                        'network': 'tcp'  # 默认值
+                        'tls': False,
+                        'network': 'tcp'
                     }
-        
-                    # 解析查询参数
-                    if len(server_info) > 1:
-                        for param in server_info[1].split('&'):
-                            if '=' not in param:
-                                continue
-                    
-                            key, val = param.split('=', 1)
-                            key = key.lower()
-                
-                            # 处理security参数
-                            if key == 'security':
-                                yaml_node['tls'] = val.lower() == 'tls'
-                
-                            # 处理传输类型
-                            elif key == 'type':
-                                yaml_node['network'] = val.lower()
-                                if val.lower() == 'ws':
-                                    yaml_node['ws-opts'] = {'path': '/', 'headers': {}}
-                
-                            # 处理sni
-                            elif key == 'sni':
-                                yaml_node['sni'] = val
-                                if 'ws-opts' in yaml_node:
-                                    yaml_node['ws-opts']['headers']['Host'] = val
-                
-                            # 处理host头（覆盖sni）
-                            elif key == 'host' and 'ws-opts' in yaml_node:
-                                yaml_node['ws-opts']['headers']['Host'] = val
-                
-                            # 处理路径（需二次URL解码）
-                            elif key == 'path':
-                                path = urllib.parse.unquote(val)
-                                if 'ws-opts' in yaml_node:
-                                    yaml_node['ws-opts']['path'] = path
-                
-                            # 处理fingerprint
-                            elif key == 'fp':
-                                yaml_node['client-fingerprint'] = val
-                
-                            # 处理alpn
-                            elif key == 'alpn':
-                                yaml_node['alpn'] = [val] if ',' not in val else val.split(',')
-        
-                    url_list.append(yaml_node)
-                    print(f"✅ 已解析VLESS节点: {name}")
-        
 
+                    # 阶段4：安全解析查询参数
+                    if len(server_info) > 1:
+                        from urllib.parse import parse_qs
+                        params = parse_qs(server_info[1], keep_blank_values=True)
+            
+                        # 处理security
+                        if 'security' in params:
+                            node['tls'] = params['security'][0].lower() == 'tls'
+            
+                        # 处理传输类型
+                        if 'type' in params:
+                            node['network'] = params['type'][0].lower()
+                            if node['network'] == 'ws':
+                                node['ws-opts'] = {'path': '/', 'headers': {'Host': node['server']}}
+            
+                        # 处理sni/host优先级
+                        if 'sni' in params:
+                            node['sni'] = params['sni'][0]
+                            if 'ws-opts' in node:
+                                node['ws-opts']['headers']['Host'] = params['sni'][0]
+                        if 'host' in params and 'ws-opts' in node:
+                            node['ws-opts']['headers']['Host'] = params['host'][0]
+            
+                        # 处理path（最后单独解码）
+                        if 'path' in params:
+                            path = urllib.parse.unquote(params['path'][0])
+                            if 'ws-opts' in node:
+                                node['ws-opts']['path'] = path
+            
+                        # 其他参数
+                        if 'fp' in params:
+                            node['client-fingerprint'] = params['fp'][0]
+                        if 'alpn' in params:
+                            node['alpn'] = params['alpn'][0].split(',')
+
+                    url_list.append(node)
+                    print(f"✅ 成功解析: {node['name']}")
+        
                 except Exception as e:
-                    #print(yaml_node)
-                    print(line)
-                    print(f'VLESS编码错误: {e} | 行: {line[:100]}...')
+                    import traceback
+                    print(f"🔴 解析失败 [{type(e).__name__}]: {str(e)}")
+                    print(f"🔴 问题行: {raw_line[:100]}...")
+                    print(f"🔴 错误详情:\n{traceback.format_exc()}")
                     continue
+                #except Exception as e:
+                #    #print(yaml_node)
+                 #   print(line)
+                #    print(f'VLESS编码错误: {e} | 行: {line[:100]}...')
+                 #   continue
         
    
             elif 'ss://' in line and 'vless://' not in line and 'vmess://' not in line:
