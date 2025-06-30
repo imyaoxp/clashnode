@@ -10,13 +10,13 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `564`
+当前合并节点总数: `579`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `124`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `3`
-- [7go4sharing](https://github.com/go4sharing), 节点数量: `38`
+- [7go4sharing](https://github.com/go4sharing), 节点数量: `52`
 - [8yorkLiu/FreeV2RayNode](https://github.com/yorkLiu/FreeV2RayNode), 节点数量: `113`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `224`
-- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `9`
+- [10Pawdroid/Free-servers](https://github.com/Pawdroid/Free-servers), 节点数量: `10`
 - [13Jsnzkpg/Jsnzkpg](https://github.com/Jsnzkpg/Jsnzkpg), 节点数量: `15`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `15`
 - [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `4`
