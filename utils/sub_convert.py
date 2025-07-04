@@ -640,9 +640,10 @@ class sub_convert():
                             if name in raw_params:
                                 return raw_params[name]
                         for name in possible_names:
-                            lower_name = name.lower()
-                            if lower_name in params_lower:
-                                return params_lower[lower_name][1]
+                            if name:
+                                lower_name = name.lower()
+                                if lower_name in params_lower:
+                                    return params_lower[lower_name][1]
                         return default
 
                     # 获取公共参数
@@ -738,9 +739,9 @@ class sub_convert():
 
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
-                        header_type = get_param_priority('headerType', 'headertype')
-                        host = get_param_priority('Host', 'host', 'HOST')
-                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH'))
+                        header_type = get_param_priority('headerType', 'headertype', default='')
+                        host = get_param_priority('Host', 'host', 'HOST', default='')
+                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
                         
                         if path.count('@') >1 or path.count('%40') >1:
                             print(f'vless节点格式错误，line:{line}')
