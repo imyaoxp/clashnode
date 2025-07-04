@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `566`
+当前合并节点总数: `567`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `124`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `117`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `54`
