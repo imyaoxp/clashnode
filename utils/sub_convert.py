@@ -608,7 +608,7 @@ class sub_convert():
                 
 
                 except Exception as err:
-                    print(url_list)
+                    #print(url_list)
                     print(line)
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
                     continue
@@ -1130,7 +1130,7 @@ class sub_convert():
                     url_list.append(yaml_url)
         
                     # 调试日志（可选）
-                    print(f"已处理Trojan节点: {yaml_url['name']}")
+                    #print(f"已处理Trojan节点: {yaml_url['name']}")
         
 
                 except Exception as err:
