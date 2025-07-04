@@ -1289,7 +1289,7 @@ class sub_convert():
                            )
                         elif network_type == 'httpupgrade':
                             params = {}  # 初始化空字典
-                            http_opts = yaml_node.get('http-opts', {})
+                            http_opts = proxy.get('http-opts', {})
                             params.update({
                                 'type': 'httpupgrade',
                                 'path': urllib.parse.quote(http_opts.get('path', '/'))
@@ -1298,8 +1298,8 @@ class sub_convert():
                             headers = http_opts.get('headers', {})
                             if 'host' in headers:
                                 params['host'] = headers['host']
-                            elif 'sni' in yaml_node:
-                                params['host'] = yaml_node['sni']
+                            elif 'sni' in proxy:
+                                params['host'] = proxy['sni']
                         elif network_type == 'grpc':
                             grpc_opts = proxy.get('grpc-opts', {})
                             params['serviceName'] = (
