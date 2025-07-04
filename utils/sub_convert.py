@@ -615,14 +615,28 @@ class sub_convert():
 
             elif 'vless://' in line:
                 try:
-                    # 分离基础部分和参数部分
-                    url_part = line.replace('vless://', '').split('#', 1)  # 分割#后的备注部分
-                    base_part = url_part[0].split('?', 1)  # 分割?前的核心部分和参数部分
+                    # 分割基础部分和参数
+                    url_part = line.replace('vless://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
+                
+                    # 提取UUID和服务端信息（安全处理@）
+                    auth_part = base_part[0].rsplit('@', 1)
+                    if len(auth_part) != 2:
+                        print(f"⚠️ 格式错误：缺少@符号 | {line}")
+                        continue
+                
+                    uuid = auth_part[0]
+                    server_port = auth_part[1].replace('/', '').split(':')
+                    if len(server_port) < 2:
+                        print(f"⚠️ 格式错误：缺少端口 | {line}")
+                        continue
+                
+                    server, port = server_port[0], server_port[1]
 
-                    # 提取UUID和服务端信息
-                    uuid, server_port = base_part[0].split('@')
-                    server, port = server_port.replace('/', '').split(':')[:2]
-
+                    # === 新增UUID格式验证 ===
+                    if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid, re.I):
+                        print(f"⚠️ 无效UUID：{uuid} | 节点已跳过")
+                        continue
                     # 参数解析（保留原始大小写）
                     raw_params = {}
                     if len(base_part) > 1:
@@ -694,9 +708,9 @@ class sub_convert():
                     # 1. WebSocket处理
                     if network_type == 'ws':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue
                         ws_host = (
                             get_param_priority('host', 'Host', 'HOST') or
                             sni or
@@ -711,9 +725,9 @@ class sub_convert():
                         
                         http_opts = proxy.get('http-opts', {})
                         path=urllib.parse.unquote(http_opts.get('path', '/'))
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue
                         params['type'] = 'httpupgrade'
                         params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
@@ -728,14 +742,22 @@ class sub_convert():
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue                        
-                        yaml_node['h2-opts'] = {
-                            'host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
-                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        }
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
+                        host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue                
+
+
+                        if host or path:
+                            h2_opts = {}
+                            if host:
+                                h2_opts['host'] = host
+                            if path:
+                                h2_opts['path'] = path
+                            if h2_opts:  # 仅在 tcp_opts 非空时添加
+                                yaml_url['h2-opts'] = h2_opts
+                        
 
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
@@ -743,9 +765,9 @@ class sub_convert():
                         host = get_param_priority('Host', 'host', 'HOST', default='')
                         path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
                         
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue                       
+                        #if path.count('@') >1 or path.count('%40') >1:
+                         #   print(f'vless节点格式错误，line:{line}')
+                         #   continue                       
                         if host or path:
                             tcp_opts = {}
                             if host:
