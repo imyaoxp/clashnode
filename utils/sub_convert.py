@@ -732,8 +732,8 @@ class sub_convert():
                         params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
                             params['host'] = http_opts['headers']['host']
-                        elif 'sni' in proxy:
-                            params['host'] = proxy['sni']
+                        elif 'sni' in yaml_node:
+                            params['host'] = yaml_node['sni']
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
