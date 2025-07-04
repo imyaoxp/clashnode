@@ -708,9 +708,9 @@ class sub_convert():
                     # 1. WebSocket处理
                     if network_type == 'ws':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue
                         ws_host = (
                             get_param_priority('host', 'Host', 'HOST') or
                             sni or
@@ -721,13 +721,13 @@ class sub_convert():
                             'headers': {'Host': ws_host}
                         }
                 
-                    elif network_type == 'httpupgrade' :
+                    elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
                         
-                        http_opts = proxy.get('http-opts', {})
+                        http_opts = yaml_node.get('http-opts', {})
                         path=urllib.parse.unquote(http_opts.get('path', '/'))
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue
                         params['type'] = 'httpupgrade'
                         params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
@@ -744,9 +744,9 @@ class sub_convert():
                     elif network_type == 'h2':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue                
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue                
 
 
                         if host or path:
@@ -765,9 +765,9 @@ class sub_convert():
                         host = get_param_priority('Host', 'host', 'HOST', default='')
                         path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
                         
-                        if path.count('@') >1 or path.count('%40') >1:
-                            print(f'vless节点格式错误，line:{line}')
-                            continue                       
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue                       
                         if host or path:
                             tcp_opts = {}
                             if host:
