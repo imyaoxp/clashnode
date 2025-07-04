@@ -1,4 +1,4 @@
-
+;
 
 #!/usr/bin/env python3
 
@@ -830,8 +830,8 @@ class sub_convert():
                     if 'obfs-local' in line:
                         yaml_url.setdefault('Plugin', 'obfs')
                         plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';')
-                        plugin_mode = re.compile('obfs=(.*?);').findall(plugin_list)[0]
-                        plugin_host = re.compile('obfs-host=(.*?);').findall(plugin_list)[0]
+                        plugin_mode = urllib.parse.unquote(re.compile('obfs=(.*?);').findall(plugin_list)[0])
+                        plugin_host = urllib.parse.unquote(re.compile('obfs-host=(.*?);').findall(plugin_list)[0])
                         yaml_url['plugin'] = yaml_url.pop("Plugin")
                         yaml_url.setdefault('plugin-opts', {
                             'mode': plugin_mode, 
@@ -846,10 +846,10 @@ class sub_convert():
                         yaml_url.setdefault('Plugin', plugin_type)
                         plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';')
             
-                        plugin_mode = re.compile('mode=(.*?);').findall(plugin_list)[0]
-                        plugin_host = re.compile('host=(.*?);').findall(plugin_list)[0]
+                        plugin_mode = urllib.parse.unquote(re.compile('mode=(.*?);').findall(plugin_list)[0])
+                        plugin_host = urllib.parse.unquote(re.compile('host=(.*?);').findall(plugin_list)[0])
                         plugin_host = plugin_host if plugin_host else yaml_url['server']
-                        plugin_path = re.compile('path=(.*?);').findall(plugin_list)[0]
+                        plugin_path = urllib.parse.unquote(re.compile('path=(.*?);').findall(plugin_list)[0])
                         plugin_path = plugin_path if plugin_path else '/'
             
                         # 修改点2：添加restls支持
@@ -1341,8 +1341,9 @@ class sub_convert():
                 elif proxy['type'] == 'ss':
                     try:
                         if 'plugin' not in proxy:
+                            
                             # 标准格式：仅对 "method:password" 进行 Base64 编码
-                            ss_base64_decoded = str(proxy['cipher']) + ':' + str(proxy['password'])
+                            ss_base64_decoded = str(proxy['cipher']) + ':' + urllib.parse.quote(str(proxy['password']))
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
     
                             # 显式声明服务器和端口（@server:port）
