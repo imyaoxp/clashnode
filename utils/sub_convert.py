@@ -1,4 +1,4 @@
-;
+
 
 #!/usr/bin/env python3
 
@@ -1391,7 +1391,7 @@ class sub_convert():
                             ssplugin = urllib.parse.quote(ssplugin)
 
                             # 标准格式处理
-                            ss_base64 = sub_convert.base64_encode(f"{proxy['cipher']}:{proxy['password']}")
+                            ss_base64 = sub_convert.base64_encode(f"{proxy['cipher']}:{urllib.parse.quote(proxy['password'])}")
     
                             # 完整标准格式链接
                             ss_proxy = (
