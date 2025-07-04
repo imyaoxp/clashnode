@@ -721,7 +721,7 @@ class sub_convert():
                             'headers': {'Host': ws_host}
                         }
                 
-                    elif network_type == 'httpupgrade' or network_type == 'xhttp' or network_type == 'http':
+                    elif network_type == 'httpupgrade' :
                         
                         http_opts = proxy.get('http-opts', {})
                         path=urllib.parse.unquote(http_opts.get('path', '/'))
