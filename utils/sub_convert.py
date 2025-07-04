@@ -1288,14 +1288,18 @@ class sub_convert():
                                 sni
                            )
                         elif network_type == 'httpupgrade':
-                           http_opts = proxy.get('http-opts', {})
-                           params.append(f"type=httpupgrade")
-                           params.append(f"path={http_opts.get('path', '/')}")
-                           if 'host' in http_opts.get('headers', {}):
-                               params.append(f"host={http_opts['headers']['host']}")
-                           elif 'sni' in proxy:
-                               params.append(f"host={proxy['sni']}")
-                        # 2. gRPC处理
+                            params = {}  # 初始化空字典
+                            http_opts = yaml_node.get('http-opts', {})
+                            params.update({
+                                'type': 'httpupgrade',
+                                'path': urllib.parse.quote(http_opts.get('path', '/'))
+                            })
+                            # 处理 host 头部
+                            headers = http_opts.get('headers', {})
+                            if 'host' in headers:
+                                params['host'] = headers['host']
+                            elif 'sni' in yaml_node:
+                                params['host'] = yaml_node['sni']
                         elif network_type == 'grpc':
                             grpc_opts = proxy.get('grpc-opts', {})
                             params['serviceName'] = (
