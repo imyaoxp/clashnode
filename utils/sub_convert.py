@@ -722,7 +722,7 @@ class sub_convert():
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
-                        
+                        params = {}
                         http_opts = yaml_node.get('http-opts', {})
                         path=urllib.parse.unquote(http_opts.get('path', '/'))
                         #if path.count('@') >1 or path.count('%40') >1:
