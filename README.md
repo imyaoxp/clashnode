@@ -15,8 +15,8 @@
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `87`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `343`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `32`
-- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `0`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `98`
+- [22skywrt/aggregator](https://github.com/skywrt/aggregator), 节点数量: `1`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `91`
 - [24wangyingbo/v2rayse_sub](https://github.com/wangyingbo/v2rayse_sub), 节点数量: `152`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
