@@ -683,7 +683,7 @@ class sub_convert():
 
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
-                    yaml_node['tls'] = security in ('tls', 'reality')  # 明确判断
+                    yaml_node['tls'] = security_type in ('tls', 'reality')  # 明确判断
                     # 强制清理无效参数
                     raw_params.pop('encryption', None)
                     if not yaml_node['tls']:
