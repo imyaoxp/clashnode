@@ -683,6 +683,12 @@ class sub_convert():
 
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
+                    yaml_node['tls'] = security in ('tls', 'reality')  # 明确判断
+                    # 强制清理无效参数
+                    raw_params.pop('encryption', None)
+                    if not yaml_node['tls']:
+                        raw_params.pop('fp', None)
+                        raw_params.pop('sni', None)
                     if security_type == 'reality':
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
                         sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
@@ -708,6 +714,8 @@ class sub_convert():
                     # 1. WebSocket处理
                     if network_type == 'ws':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if not path.startswith('/'):
+                            path = '/' + path
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -782,6 +790,7 @@ class sub_convert():
                         continue
 
                     url_list.append(yaml_node)
+                    print(f'添加vless节点{yaml_node}')
 
                 except Exception as e:
                     import traceback
