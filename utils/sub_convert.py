@@ -620,9 +620,9 @@ class sub_convert():
                     base_part = url_part[0].split('?', 1)
                 
                     # 提取UUID和服务端信息（安全处理@）
-                    auth_part = base_part[0].split('@')
+                    auth_part = base_part[0].rsplit('@', 1)
                     if len(auth_part) != 2:
-                        print(f"⚠️ 格式错误：只能有1个@符号 | {line}")
+                        print(f"⚠️ 格式错误：缺少@符号 | {line}")
                         continue
                 
                     uuid = auth_part[0]
@@ -683,12 +683,6 @@ class sub_convert():
 
                     # 处理Reality配置
                     security_type = get_param_priority('security', 'Security', default='none').lower()
-                    yaml_node['tls'] = security_type in ('tls', 'reality')  # 明确判断
-                    # 强制清理无效参数
-                    raw_params.pop('encryption', None)
-                    if not yaml_node['tls']:
-                        raw_params.pop('fp', None)
-                        raw_params.pop('sni', None)
                     if security_type == 'reality':
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
                         sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
@@ -714,8 +708,6 @@ class sub_convert():
                     # 1. WebSocket处理
                     if network_type == 'ws':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -790,12 +782,11 @@ class sub_convert():
                         continue
 
                     url_list.append(yaml_node)
-                    print(f'添加vless节点{yaml_node}')
 
                 except Exception as e:
-                    import traceback
-                    print("❌ 发生错误:", traceback.format_exc())  # 打印完整堆栈
-                    print("原始行内容:", line)
+                    print(yaml_node)
+                    
+                    print(f'VLESS编码错误: {e} | line: {line}')
                     continue
         
    
@@ -1289,10 +1280,7 @@ class sub_convert():
                         # 1. WebSocket处理
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
-                            path = ws_opts.get('path', '/')
-                            #if not path.startswith('/') or not path.startswith('%2F'):
-                             #   path = '%2F' + path
-                            params['path'] = path
+                            params['path'] = ws_opts.get('path', '/')
                             headers = ws_opts.get('headers', {})
                             params['host'] = (
                                 headers.get('host') or
@@ -1345,7 +1333,6 @@ class sub_convert():
                             if v not in (None, '')
                         )
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
-                        print(f'生成链接{vless_url}')
                         protocol_url.append(vless_url + '\n')
 
                     except Exception as e:
