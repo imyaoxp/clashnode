@@ -617,12 +617,12 @@ class sub_convert():
                 try:
                     # 分割基础部分和参数
                     url_part = line.replace('vless://', '').split('#', 1)
-                    base_part = url_part[0].split('?', 1)
+                    base_part = url_part[0].split('?')
                 
                     # 提取UUID和服务端信息（安全处理@）
                     auth_part = base_part[0].rsplit('@', 1)
                     if len(auth_part) != 2:
-                        print(f"⚠️ 格式错误：缺少@符号 | {line}")
+                        print(f"⚠️ 格式错误：只允许1个@符号 | {line}")
                         continue
                 
                     uuid = auth_part[0]
@@ -708,6 +708,8 @@ class sub_convert():
                     # 1. WebSocket处理
                     if network_type == 'ws':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if not path.startswith('/'):
+                            path = '/' + path
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -725,6 +727,8 @@ class sub_convert():
                         params = {}
                         http_opts = yaml_node.get('http-opts', {})
                         path=urllib.parse.unquote(http_opts.get('path', '/'))
+                        if not path.startswith('/'):
+                            path = '/' + path
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -742,7 +746,9 @@ class sub_convert():
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if not path.startswith('/'):
+                            path = '/' + path
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
@@ -763,7 +769,9 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='')
-                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
+                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if not path.startswith('/'):
+                            path = '/' + path
                         
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
@@ -1280,7 +1288,10 @@ class sub_convert():
                         # 1. WebSocket处理
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
-                            params['path'] = ws_opts.get('path', '/')
+                            path = ws_opts.get('path', '/')
+                            if not path.startswith('/'):
+                                path = '/' + path
+                            params['path'] = path
                             headers = ws_opts.get('headers', {})
                             params['host'] = (
                                 headers.get('host') or
@@ -1290,9 +1301,12 @@ class sub_convert():
                         elif network_type == 'httpupgrade':
                             params = {}  # 初始化空字典
                             http_opts = proxy.get('http-opts', {})
+                            path = http_opts.get('path', '/')
+                            if not path.startswith('/'):
+                                path = '/' + path
                             params.update({
                                 'type': 'httpupgrade',
-                                'path': http_opts.get('path', '/')
+                                'path': path
                             })
                             # 处理 host 头部
                             headers = http_opts.get('headers', {})
@@ -1311,20 +1325,26 @@ class sub_convert():
                         # 3. HTTP/2处理
                         elif network_type == 'h2':
                             h2_opts = proxy.get('h2-opts', {})
-                            params['path'] = h2_opts.get('path', '/')
+                            path = h2_opts.get('path', '/')
+                            if not path.startswith('/'):
+                                path = '/' + path
+                            params['path'] = path
                             if 'host' in h2_opts and h2_opts['host']:
                                 params['host'] = ','.join(h2_opts['host'])
 
                         # 4. TCP处理（HTTP伪装）
                         elif network_type == 'tcp':
                             tcp_opts = proxy.get('tcp-opts', {})
+                            path = tcp_opts.get('path', '/')
+                            if not path.startswith('/'):
+                                path = '/' + path
                             if 'headers' in tcp_opts:
                                 headers = tcp_opts['headers']
                                 host = headers.get('Host') or headers.get('host')
                                 if host:
                                     params['headerType'] = 'http'
                                     params['host'] = ','.join(host) if isinstance(host, list) else host
-                                    params['path'] = tcp_opts.get('path', '/')
+                                    params['path'] = path
 
                         # 生成标准化URL
                         query_str = '&'.join(
