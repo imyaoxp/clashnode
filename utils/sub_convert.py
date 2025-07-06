@@ -1289,6 +1289,7 @@ class sub_convert():
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
                             path = ws_opts.get('path', '/')
+                            path = path.encode('utf-8').decode('unicode-escape')
                             if not path.startswith('/'):
                                 path = '/' + path
                             params['path'] = path
@@ -1302,6 +1303,7 @@ class sub_convert():
                             params = {}  # 初始化空字典
                             http_opts = proxy.get('http-opts', {})
                             path = http_opts.get('path', '/')
+                            path = path.encode('utf-8').decode('unicode-escape')
                             if not path.startswith('/'):
                                 path = '/' + path
                             params.update({
@@ -1326,6 +1328,7 @@ class sub_convert():
                         elif network_type == 'h2':
                             h2_opts = proxy.get('h2-opts', {})
                             path = h2_opts.get('path', '/')
+                            path = path.encode('utf-8').decode('unicode-escape')
                             if not path.startswith('/'):
                                 path = '/' + path
                             params['path'] = path
@@ -1336,6 +1339,7 @@ class sub_convert():
                         elif network_type == 'tcp':
                             tcp_opts = proxy.get('tcp-opts', {})
                             path = tcp_opts.get('path', '/')
+                            path = path.encode('utf-8').decode('unicode-escape')
                             if not path.startswith('/'):
                                 path = '/' + path
                             if 'headers' in tcp_opts:
