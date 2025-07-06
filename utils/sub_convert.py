@@ -756,7 +756,7 @@ class sub_convert():
                             if path:
                                 h2_opts['path'] = path
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
-                                yaml_url['h2-opts'] = h2_opts
+                                yaml_node['h2-opts'] = h2_opts
                         
 
                     # 4. TCP处理（含HTTP伪装）
@@ -775,7 +775,7 @@ class sub_convert():
                             if path:
                                 tcp_opts['path'] = path
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
-                                yaml_url['tcp-opts'] = tcp_opts
+                                yaml_node['tcp-opts'] = tcp_opts
                     else:
                         print(f'vless不支持的network_type:{network_type}')
                         print(line)
