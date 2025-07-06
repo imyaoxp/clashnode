@@ -784,9 +784,9 @@ class sub_convert():
                     url_list.append(yaml_node)
 
                 except Exception as e:
-                    print(yaml_node)
-                    
-                    print(f'VLESS编码错误: {e} | line: {line}')
+                    import traceback
+                    print("❌ 发生错误:", traceback.format_exc())  # 打印完整堆栈
+                    print("原始行内容:", line)
                     continue
         
    
