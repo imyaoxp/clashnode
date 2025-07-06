@@ -1289,7 +1289,10 @@ class sub_convert():
                         # 1. WebSocket处理
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
-                            params['path'] = ws_opts.get('path', '/')
+                            path = ws_opts.get('path', '/')
+                            if not path.startswith('/'):
+                                path = '/' + path
+                            params['path'] = path
                             headers = ws_opts.get('headers', {})
                             params['host'] = (
                                 headers.get('host') or
