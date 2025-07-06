@@ -622,7 +622,7 @@ class sub_convert():
                     # 提取UUID和服务端信息（安全处理@）
                     auth_part = base_part[0].rsplit('@', 1)
                     if len(auth_part) != 2:
-                        print(f"⚠️ 格式错误：缺少@符号 | {line}")
+                        print(f"⚠️ 格式错误：应仅有1个@ | {line}")
                         continue
                 
                     uuid = auth_part[0]
