@@ -631,7 +631,7 @@ class sub_convert():
                         print(f"⚠️ 格式错误：缺少端口 | {line}")
                         continue
                 
-                    server, port = server_port[0], server_port[1]
+                    server, port = server_port[0], re.findall(r'[0-9]', server_port[1])
 
                     # === 新增UUID格式验证 ===
                     if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid, re.I):
