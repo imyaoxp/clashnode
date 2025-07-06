@@ -790,7 +790,7 @@ class sub_convert():
                         continue
 
                     url_list.append(yaml_node)
-                    print(f′添加clash{yaml_node}')
+                    print(f'添加clash{yaml_node}')
 
                 except Exception as e:
                     print(yaml_node)
