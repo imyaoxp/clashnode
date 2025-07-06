@@ -790,6 +790,7 @@ class sub_convert():
                         continue
 
                     url_list.append(yaml_node)
+                    print(f′添加clash{yaml_node}')
 
                 except Exception as e:
                     print(yaml_node)
@@ -1358,6 +1359,7 @@ class sub_convert():
                         )
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(vless_url + '\n')
+                        print(f'添加{vless_url}')
 
                     except Exception as e:
                         print(proxy)
