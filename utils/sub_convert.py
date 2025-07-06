@@ -1342,6 +1342,7 @@ class sub_convert():
                             if v not in (None, '')
                         )
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
+                        print(f'生成链接{vless_url}')
                         protocol_url.append(vless_url + '\n')
 
                     except Exception as e:
