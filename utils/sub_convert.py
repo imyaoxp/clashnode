@@ -620,7 +620,7 @@ class sub_convert():
                     base_part = url_part[0].split('?', 1)
                 
                     # 提取UUID和服务端信息（安全处理@）
-                    auth_part = base_part[0].rsplit('@', 1)
+                    auth_part = base_part[0].split('@')
                     if len(auth_part) != 2:
                         print(f"⚠️ 格式错误：应仅有1个@ | {line}")
                         continue
