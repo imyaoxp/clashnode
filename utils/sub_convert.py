@@ -614,122 +614,180 @@ class sub_convert():
                     continue
 
             elif 'vless://' in line:
-            
-                # 1. 分割基础部分
                 try:
-                    # 1. 基础正则匹配
-                    match = re.match(
-                        r'vless://([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})@([^:]+):(\d+)(?:/|\?)?([^#]*)(?:#(.*))?',
-                        url,
-                        re.I
+                    # 分割基础部分和参数
+                    url_part = line.replace('vless://', '').split('#', 1)
+                    base_part = url_part[0].split('?', 1)
+                
+                    # 提取UUID和服务端信息（安全处理@）
+                    auth_part = base_part[0].split('@')
+                    if len(auth_part) != 2:
+                        print(f"⚠️ 格式错误：只能有1个@符号 | {line}")
+                        continue
+                
+                    uuid = auth_part[0]
+                    server_port = auth_part[1].replace('/', '').split(':')
+                    if len(server_port) < 2:
+                        print(f"⚠️ 格式错误：缺少端口 | {line}")
+                        continue
+                
+                    server, port = server_port[0], server_port[1]
+
+                    # === 新增UUID格式验证 ===
+                    if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid, re.I):
+                        print(f"⚠️ 无效UUID：{uuid} | 节点已跳过")
+                        continue
+                    # 参数解析（保留原始大小写）
+                    raw_params = {}
+                    if len(base_part) > 1:
+                        for param in base_part[1].split('&'):
+                            if '=' in param:
+                                key, val = param.split('=', 1)
+                                raw_params[key] = val
+
+                    # 创建大小写不敏感的参数字典
+                    params_lower = {k.lower(): (k, v) for k, v in raw_params.items()}
+
+                    # 优先级获取函数（兼容大小写）
+                    def get_param_priority(*possible_names, default=None):
+                        for name in possible_names:
+                            if name in raw_params:
+                                return raw_params[name]
+                        for name in possible_names:
+                            if name:
+                                lower_name = name.lower()
+                                if lower_name in params_lower:
+                                    return params_lower[lower_name][1]
+                        return default
+
+                    # 获取公共参数
+                    sni = (
+                        get_param_priority('sni', 'SNI', 'Sni') or
+                        get_param_priority('servername', 'ServerName', 'serverName', 'Servername') or
+                        get_param_priority('host', 'Host', 'HOST') or
+                        server
                     )
-                    if not match:
-                        print(f"⚠️ 无效VLESS格式: {url[:60]}...")
-                        return None
 
-                    uuid, server, port, params_str, name = match.groups()
-                    name = urllib.parse.unquote(name) if name else None
-
-                    # 2. 验证端口
-                    try:
-                        port = int(port)
-                        if not 0 <= port <= 65535:
-                            print(f"⚠️ 无效端口: {port} (应在0-65535范围内)")
-                            return None
-                    except ValueError:
-                        print(f"⚠️ 端口不是数字: {port}")
-                        return None
-
-                    # 3. 解析参数
-                    params = {}
-                    for param in params_str.split('&'):
-                        if '=' in param:
-                            key, val = param.split('=', 1)
-                            params[key.lower()] = urllib.parse.unquote(val)
-
-                    # 4. 构建基础配置
-                    config = {
-                        'name': name or f"VLESS-{server}:{port}",
-                        'type': 'vless',
+                    # 构建基础节点
+                    yaml_node = {
+                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else 'Unnamed',
                         'server': server,
                         'port': port,
+                        'type': 'vless',
                         'uuid': uuid,
+                        'servername': sni,
+                        'tls': get_param_priority('security', 'Security', default='none').lower() in ['tls', 'reality'],
+                        'network': get_param_priority('type', 'Type', default='tcp').lower(),
                         'udp': True
                     }
 
-                    # 5. 处理传输协议
-                    network = params.get('type', 'tcp').lower()
-                    if network in ('http', 'xhttp'):
-                        network = 'httpupgrade'
-                    config['network'] = network
+                    # 处理Reality配置
+                    security_type = get_param_priority('security', 'Security', default='none').lower()
+                    if security_type == 'reality':
+                        pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
+                        sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
+                        # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
+                        if not pbk or not len(pbk) in (32,43, 44): 
+                            raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
+                        if sid and not (
+                            1 <= len(sid) <= 16 and 
+                            all(c.lower() in '0123456789abcdefABCDEF' for c in sid)
+                        ):
+                            raise ValueError(f"Invalid sid: {sid}")  # 触发异常处理
+                        yaml_node['reality-opts'] = {
+                            'public-key': pbk,
+                            'short-id': sid 
+                        }
+                        flow = get_param_priority('flow', 'Flow', default='')
+                        if flow:
+                            yaml_node['flow'] = flow
 
-                    # 各传输协议处理
-                    if network == 'ws':
-                        config['ws-opts'] = {
-                            'path': params.get('path', '/').replace('%40', '@'),
-                            'headers': {'Host': params.get('host', server)}
-                        }
-                    elif network == 'grpc':
-                        config['grpc-opts'] = {
-                            'grpc-service-name': params.get('servicename', '')
-                        }
-                    elif network == 'h2':
-                        config['h2-opts'] = {
-                            'path': params.get('path', '/'),
-                            'host': [params.get('host', server)]
-                        }
-                    elif network == 'httpupgrade':
-                        config['http-opts'] = {
-                            'path': params.get('path', '/'),
-                            'headers': {'Host': params.get('host', server)}
-                        }
-                    elif network == 'tcp':
-                        if 'header' in params:
-                            config['tcp-opts'] = {
-                                'header': {
-                                    'type': params['header']
-                                }
-                            }
+                    # 根据network类型处理特殊参数
+                    network_type = yaml_node['network']
 
-                    # 6. 处理TLS/Reality
-                    security = params.get('security', '').lower()
-                    if security in ('tls', 'reality'):
-                        config['tls'] = True
-                        if security == 'reality':
-                            reality_opts = {}
-                            # pbk验证：长度43或44且仅含安全字符
-                            if 'pbk' in params and \
-                                len(params['pbk']) in (43, 44) and \
-                                re.match(r'^[A-Za-z0-9+/=-]+$', params['pbk']):
-                                reality_opts['public-key'] = params['pbk']
-                            # sid验证：1-16位十六进制
-                            if 'sid' in params and re.match(r'^[0-9a-fA-F]{1,16}$', params['sid']):
-                                reality_opts['short-id'] = params['sid']
-                            if reality_opts:
-                                config['reality-opts'] = reality_opts
-                                if 'flow' in params:
-                                    config['flow'] = params['flow']
-                    elif security == 'none':
-                        config['tls'] = False
-
-                    # 7. 其他参数
-                    if 'sni' in params:
-                        config['sni'] = params['sni']
-                    if 'fp' in params:
-                        config['client-fingerprint'] = params['fp']
+                    # 1. WebSocket处理
+                    if network_type == 'ws':
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue
+                        ws_host = (
+                            get_param_priority('host', 'Host', 'HOST') or
+                            sni or
+                            server
+                        )
+                        yaml_node['ws-opts'] = {
+                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/')),
+                            'headers': {'Host': ws_host}
+                        }
                 
-                    # 清理空值
-                    config = {k: v for k, v in config.items() if v is not None}
-                    url_list.append(config)
+                    elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
+                        params = {}
+                        http_opts = yaml_node.get('http-opts', {})
+                        path=urllib.parse.unquote(http_opts.get('path', '/'))
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue
+                        params['type'] = 'httpupgrade'
+                        params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
+                        if 'host' in http_opts.get('headers', {}):
+                            params['host'] = http_opts['headers']['host']
+                        elif 'sni' in yaml_node:
+                            params['host'] = yaml_node['sni']
+                    # 2. gRPC处理
+                    elif network_type == 'grpc':
+                        yaml_node['grpc-opts'] = {
+                            'grpc-service-name': urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default=''))
+                        }
+
+                    # 3. HTTP/2处理
+                    elif network_type == 'h2':
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
+                        host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue                
+
+
+                        if host or path:
+                            h2_opts = {}
+                            if host:
+                                h2_opts['host'] = host
+                            if path:
+                                h2_opts['path'] = path
+                            if h2_opts:  # 仅在 tcp_opts 非空时添加
+                                yaml_url['h2-opts'] = h2_opts
+                        
+
+                    # 4. TCP处理（含HTTP伪装）
+                    elif network_type == 'tcp':
+                        header_type = get_param_priority('headerType', 'headertype', default='')
+                        host = get_param_priority('Host', 'host', 'HOST', default='')
+                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
+                        
+                        #if path.count('@') >1 or path.count('%40') >1:
+                        #    print(f'vless节点格式错误，line:{line}')
+                        #    continue                       
+                        if host or path:
+                            tcp_opts = {}
+                            if host:
+                                tcp_opts['headers'] = {'Host': host.split(',')}
+                            if path:
+                                tcp_opts['path'] = path
+                            if tcp_opts:  # 仅在 tcp_opts 非空时添加
+                                yaml_url['tcp-opts'] = tcp_opts
+                    else:
+                        print(f'vless不支持的network_type:{network_type}')
+                        print(line)
+                        continue
+
+                    url_list.append(yaml_node)
+
                 except Exception as e:
-                    print(f"[参数错误] 添加失败 | 错误: {str(e)}")
+                    print(yaml_node)
+                    
+                    print(f'VLESS编码错误: {e} | line: {line}')
                     continue
-                
-
-            
-
-
-
         
    
             elif 'ss://' in line and 'vless://' not in line and 'vmess://' not in line:
