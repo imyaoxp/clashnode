@@ -617,157 +617,102 @@ class sub_convert():
             
                 # 1. 分割基础部分
                 try:
-                    url_part = line.replace('vless://', '').split('#', 1)
-                    base_part = url_part[0].split('?', 1)
-                except Exception as e:
-                    print(f"[分割错误] {line[:60]}... | 错误: {str(e)}")
-                    continue
-            
-                # 2. 提取UUID和服务端
-                try:
-                    auth_part = base_part[0].rsplit('@', 1)
-                    if len(auth_part) != 2:
-                        print(f"[格式错误] 缺少@分隔符: {line[:60]}...")
-                        continue
-                    
-                    uuid, server_part = auth_part
-                    if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid, re.I):
-                        print(f"[UUID错误] 无效格式: {uuid}")
-                        continue
-                except Exception as e:
-                    print(f"[提取错误] {line[:60]}... | 错误: {str(e)}")
-                    continue
-            
-                # 3. 提取端口
-                try:
-                    port_match = re.search(r':(\d{1,5})(?:/|\?|#|$)', server_part)
-                    if not port_match:
-                        print(f"[端口错误] 未找到端口: {line[:60]}...")
-                        continue
-                    
-                    port = int(port_match.group(1))
-                    if not 0 <= port <= 65535:
-                        print(f"[端口错误] 超出范围(0-65535): {port}")
-                        continue
-                    
-                    server = server_part[:port_match.start()].replace('/', '')
-                except Exception as e:
-                    print(f"[端口错误] {line[:60]}... | 错误: {str(e)}")
-                    continue
-            
-                # 4. 参数解析
-                params = {}
-                if len(base_part) > 1:
-                    for param in base_part[1].split('&'):
-                        try:
-                            if '=' in param and param.split('=')[1]:
-                                key, val = param.split('=', 1)
-                                params[key.lower()] = urllib.parse.unquote(val)
-                        except Exception as e:
-                            print(f"[参数错误] 解析失败: {param} | 错误: {str(e)}")
-                            continue
-            
-                # 5. 构建配置
-                try:
+                    # 1. 基础正则匹配
+                    match = re.match(
+                        r'vless://([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})@([^:]+):(\d+)(?:/|\?)?([^#]*)(?:#(.*))?',
+                        url,
+                        re.I
+                    )
+                    if not match:
+                        print(f"⚠️ 无效VLESS格式: {url[:60]}...")
+                        return None
+
+                    uuid, server, port, params_str, name = match.groups()
+                    name = urllib.parse.unquote(name) if name else None
+
+                    # 2. 验证端口
+                    try:
+                        port = int(port)
+                        if not 0 <= port <= 65535:
+                            print(f"⚠️ 无效端口: {port} (应在0-65535范围内)")
+                            return None
+                    except ValueError:
+                        print(f"⚠️ 端口不是数字: {port}")
+                        return None
+
+                    # 3. 解析参数
+                    params = {}
+                    for param in params_str.split('&'):
+                        if '=' in param:
+                            key, val = param.split('=', 1)
+                            params[key.lower()] = urllib.parse.unquote(val)
+
+                    # 4. 构建基础配置
                     config = {
-                        'name': urllib.parse.unquote(url_part[1]) if len(url_part) > 1 else None,
+                        'name': name or f"VLESS-{server}:{port}",
+                        'type': 'vless',
                         'server': server,
                         'port': port,
-                        'type': 'vless',
                         'uuid': uuid,
                         'udp': True
                     }
-                except Exception as e:
-                    print(f"[配置错误] 构建失败 | 错误: {str(e)}")
-                    continue
-            
-                # 6. 处理传输协议
-                try:
-                    if 'type' in params:
-                        network = params['type'].lower()
-                        if network in ('http', 'xhttp'):
-                            network = 'httpupgrade'
-                        
-                        config['network'] = network
-                    
-                        # 支持所有传输类型
-                        if network == 'ws':
-                            ws_opts = {}
-                            if 'path' in params:
-                                ws_opts['path'] = params['path'] or '/'
-                            if 'host' in params:
-                                ws_opts['headers'] = {'Host': params['host']}
-                            if ws_opts:
-                                config['ws-opts'] = ws_opts
-                    
-                        elif network == 'grpc':
-                            grpc_opts = {}
-                            if 'servicename' in params:
-                                grpc_opts['grpc-service-name'] = params['servicename']
-                            if grpc_opts:
-                                config['grpc-opts'] = grpc_opts
-                    
-                        elif network == 'h2':
-                            h2_opts = {}
-                            if 'path' in params:
-                                h2_opts['path'] = params['path'] or '/'
-                            if 'host' in params:
-                                h2_opts['host'] = [params['host']]
-                            if h2_opts:
-                                config['h2-opts'] = h2_opts
-                    
-                        elif network == 'tcp':
-                            tcp_opts = {}
-                            if 'header' in params:
-                                tcp_opts['header'] = {'type': params['header']}
-                            if tcp_opts:
-                                config['tcp-opts'] = tcp_opts
-                    
-                        elif network == 'httpupgrade':
-                            http_opts = {}
-                            if 'path' in params:
-                                http_opts['path'] = params['path'] or '/'
-                            if 'host' in params:
-                                http_opts['headers'] = {'Host': params['host']}
-                            if http_opts:
-                                config['http-opts'] = http_opts
-                except Exception as e:
-                    print(f"[协议错误] 处理失败 | 网络类型: {network} | 错误: {str(e)}")
-                    continue
-            
-                # 7. 处理TLS/Reality
-                try:
-                    if 'security' in params:
-                        security = params['security'].lower()
-                        if security in ('tls', 'reality'):
-                            config['tls'] = True
-                            if security == 'reality':
-                                reality_opts = {}
-                            
-                                # pbk验证（仅长度和字符）
-                                if 'pbk' in params:
-                                    pbk = params['pbk']
-                                    if len(pbk) in (43, 44) and re.match(r'^[A-Za-z0-9+/=-]+$', pbk):
-                                        reality_opts['public-key'] = pbk
-                                    else:
-                                        print(f"[Reality错误] 无效pbk: {pbk}")
-                            
-                                # sid验证
-                                if 'sid' in params and re.match(r'^[0-9a-fA-F]{1,16}$', params['sid']):
-                                    reality_opts['short-id'] = params['sid']
-                                else:
-                                    print(f"[Reality错误] 无效sid: {params.get('sid')}")
-                            
-                                if reality_opts:
-                                    config['reality-opts'] = reality_opts
-                                    if 'flow' in params:
-                                        config['flow'] = params['flow']
-                except Exception as e:
-                    print(f"[TLS错误] 处理失败 | 错误: {str(e)}")
-                    continue
-            
-                # 8. 其他参数
-                try:
+
+                    # 5. 处理传输协议
+                    network = params.get('type', 'tcp').lower()
+                    if network in ('http', 'xhttp'):
+                        network = 'httpupgrade'
+                    config['network'] = network
+
+                    # 各传输协议处理
+                    if network == 'ws':
+                        config['ws-opts'] = {
+                            'path': params.get('path', '/').replace('%40', '@'),
+                            'headers': {'Host': params.get('host', server)}
+                        }
+                    elif network == 'grpc':
+                        config['grpc-opts'] = {
+                            'grpc-service-name': params.get('servicename', '')
+                        }
+                    elif network == 'h2':
+                        config['h2-opts'] = {
+                            'path': params.get('path', '/'),
+                            'host': [params.get('host', server)]
+                        }
+                    elif network == 'httpupgrade':
+                        config['http-opts'] = {
+                            'path': params.get('path', '/'),
+                            'headers': {'Host': params.get('host', server)}
+                        }
+                    elif network == 'tcp':
+                        if 'header' in params:
+                            config['tcp-opts'] = {
+                                'header': {
+                                    'type': params['header']
+                                }
+                            }
+
+                    # 6. 处理TLS/Reality
+                    security = params.get('security', '').lower()
+                    if security in ('tls', 'reality'):
+                        config['tls'] = True
+                        if security == 'reality':
+                            reality_opts = {}
+                            # pbk验证：长度43或44且仅含安全字符
+                            if 'pbk' in params and \
+                                len(params['pbk']) in (43, 44) and \
+                                re.match(r'^[A-Za-z0-9+/=-]+$', params['pbk']):
+                                reality_opts['public-key'] = params['pbk']
+                            # sid验证：1-16位十六进制
+                            if 'sid' in params and re.match(r'^[0-9a-fA-F]{1,16}$', params['sid']):
+                                reality_opts['short-id'] = params['sid']
+                            if reality_opts:
+                                config['reality-opts'] = reality_opts
+                                if 'flow' in params:
+                                    config['flow'] = params['flow']
+                    elif security == 'none':
+                        config['tls'] = False
+
+                    # 7. 其他参数
                     if 'sni' in params:
                         config['sni'] = params['sni']
                     if 'fp' in params:
