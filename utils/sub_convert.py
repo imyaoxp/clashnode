@@ -1290,7 +1290,7 @@ class sub_convert():
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
                             path = ws_opts.get('path', '/')
-                            if not path.startswith('/'):
+                            if not path.startswith('/') or not path.startswith('%2F'):
                                 path = '/' + path
                             params['path'] = path
                             headers = ws_opts.get('headers', {})
