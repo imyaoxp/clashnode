@@ -1292,7 +1292,7 @@ class sub_convert():
                             http_opts = proxy.get('http-opts', {})
                             params.update({
                                 'type': 'httpupgrade',
-                                'path': urllib.parse.quote(http_opts.get('path', '/'))
+                                'path': http_opts.get('path', '/')
                             })
                             # 处理 host 头部
                             headers = http_opts.get('headers', {})
