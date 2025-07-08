@@ -1205,7 +1205,7 @@ class sub_convert():
                 raw_path = '/' + raw_path
             if '%' in raw_path and '%25' not in raw_path:
                 return raw_path
-            return urllib.parse.quote(raw_path, safe="/?&="
+            return urllib.parse.quote(raw_path, safe="/?&=")
         
         try:
             
