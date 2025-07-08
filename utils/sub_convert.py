@@ -758,7 +758,7 @@ class sub_convert():
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
                         params = {}
                         http_opts = yaml_node.get('http-opts', {})
-
+                        path = decode_url_path(http_opts.get('path', ''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -778,6 +778,7 @@ class sub_convert():
                     elif network_type == 'h2':
 
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
+                        path=decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -797,7 +798,7 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='')
-                       
+                        path = decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                       
