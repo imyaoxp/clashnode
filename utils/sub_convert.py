@@ -44,6 +44,30 @@ class sub_convert():
             format --> makeup --> yaml_decode --> base64_encode --> convert
             base64_final
     """
+    #将URL编码的路径转换为Clash可读格式,自动处理多重编码（如%25252525）和Unicode转义
+    def decode_url_path(url_path, max_decode=5):
+        if not isinstance(url_path, str):
+            url_path = str(url_path)
+
+        # 循环解码多重编码（最多 5 次）
+        decoded_path = url_path
+        for _ in range(max_decode):
+            if '%' not in decoded_path:
+                break
+            decoded_path = urllib.parse.unquote(decoded_path)
+
+        # 处理可能的 UTF-8 编码错误（如双重编码的 Unicode）
+        try:
+            decoded_path = decoded_path.encode('latin-1').decode('utf-8')
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            pass  # 如果已经是正常 Unicode，跳过
+
+        # 规范化路径（确保以 / 开头）
+        if not decoded_path.startswith('/'):
+            decoded_path = '/' + decoded_path
+
+        return decoded_path
+
 
     def convert(raw_input, input_type='url', output_type='url', custom_set={'dup_rm_enabled': True, 'format_name_enabled': True}): # {'input_type': ['url', 'content'],'output_type': ['url', 'YAML', 'Base64']}
         # convert Url to YAML or Base64
@@ -522,29 +546,7 @@ class sub_convert():
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
         
         
-        #将URL编码的路径转换为Clash可读格式,自动处理多重编码（如%25252525）和Unicode转义
-        def decode_url_path(url_path, max_decode=5):
-            if not isinstance(url_path, str):
-                url_path = str(url_path)
-
-            # 循环解码多重编码（最多 5 次）
-            decoded_path = url_path
-            for _ in range(max_decode):
-                if '%' not in decoded_path:
-                    break
-                decoded_path = urllib.parse.unquote(decoded_path)
-
-            # 处理可能的 UTF-8 编码错误（如双重编码的 Unicode）
-            try:
-                decoded_path = decoded_path.encode('latin-1').decode('utf-8')
-            except (UnicodeEncodeError, UnicodeDecodeError):
-                pass  # 如果已经是正常 Unicode，跳过
-
-            # 规范化路径（确保以 / 开头）
-            if not decoded_path.startswith('/'):
-                decoded_path = '/' + decoded_path
-
-            return decoded_path
+        
         
         
         url_list = []
