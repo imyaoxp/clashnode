@@ -1,5 +1,6 @@
 
 
+
 #!/usr/bin/env python3
 
 import re, yaml, json, base64
@@ -608,35 +609,21 @@ class sub_convert():
                 
 
                 except Exception as err:
-                    #print(url_list)
+                    print(url_list)
                     print(line)
                     print(f'yaml_encode 解析 vmess 节点发生错误: {err}')
                     continue
 
             elif 'vless://' in line:
                 try:
-                    # 分割基础部分和参数
-                    url_part = line.replace('vless://', '').split('#', 1)
-                    base_part = url_part[0].split('?', 1)
-                
-                    # 提取UUID和服务端信息（安全处理@）
-                    auth_part = base_part[0].rsplit('@', 1)
-                    if len(auth_part) != 2:
-                        print(f"⚠️ 格式错误：缺少@符号 | {line}")
-                        continue
-                
-                    uuid = auth_part[0]
-                    server_port = auth_part[1].replace('/', '').split(':')
-                    if len(server_port) < 2:
-                        print(f"⚠️ 格式错误：缺少端口 | {line}")
-                        continue
-                
-                    server, port = server_port[0], server_port[1]
+                    # 分离基础部分和参数部分
+                    url_part = line.replace('vless://', '').split('#', 1)  # 分割#后的备注部分
+                    base_part = url_part[0].split('?', 1)  # 分割?前的核心部分和参数部分
 
-                    # === 新增UUID格式验证 ===
-                    if not re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', uuid, re.I):
-                        print(f"⚠️ 无效UUID：{uuid} | 节点已跳过")
-                        continue
+                    # 提取UUID和服务端信息
+                    uuid, server_port = base_part[0].split('@')
+                    server, port = server_port.replace('/', '').split(':')[:2]
+
                     # 参数解析（保留原始大小写）
                     raw_params = {}
                     if len(base_part) > 1:
@@ -654,10 +641,9 @@ class sub_convert():
                             if name in raw_params:
                                 return raw_params[name]
                         for name in possible_names:
-                            if name:
-                                lower_name = name.lower()
-                                if lower_name in params_lower:
-                                    return params_lower[lower_name][1]
+                            lower_name = name.lower()
+                            if lower_name in params_lower:
+                                return params_lower[lower_name][1]
                         return default
 
                     # 获取公共参数
@@ -708,9 +694,9 @@ class sub_convert():
                     # 1. WebSocket处理
                     if network_type == 'ws':
                         path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        #if path.count('@') >1 or path.count('%40') >1:
-                        #    print(f'vless节点格式错误，line:{line}')
-                        #    continue
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue
                         ws_host = (
                             get_param_priority('host', 'Host', 'HOST') or
                             sni or
@@ -721,13 +707,13 @@ class sub_convert():
                             'headers': {'Host': ws_host}
                         }
                 
-                    elif network_type == 'httpupgrade' :
+                    elif network_type == 'httpupgrade':
                         
                         http_opts = proxy.get('http-opts', {})
                         path=urllib.parse.unquote(http_opts.get('path', '/'))
-                        #if path.count('@') >1 or path.count('%40') >1:
-                        #    print(f'vless节点格式错误，line:{line}')
-                        #    continue
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue
                         params['type'] = 'httpupgrade'
                         params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
@@ -742,32 +728,24 @@ class sub_convert():
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
-                        host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                        #if path.count('@') >1 or path.count('%40') >1:
-                        #    print(f'vless节点格式错误，line:{line}')
-                        #    continue                
-
-
-                        if host or path:
-                            h2_opts = {}
-                            if host:
-                                h2_opts['host'] = host
-                            if path:
-                                h2_opts['path'] = path
-                            if h2_opts:  # 仅在 tcp_opts 非空时添加
-                                yaml_url['h2-opts'] = h2_opts
-                        
+                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue                        
+                        yaml_node['h2-opts'] = {
+                            'host': get_param_priority('host', 'Host', 'HOST', default='').split(','),
+                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
+                        }
 
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
-                        header_type = get_param_priority('headerType', 'headertype', default='')
-                        host = get_param_priority('Host', 'host', 'HOST', default='')
-                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default=''))
+                        header_type = get_param_priority('headerType', 'headertype')
+                        host = get_param_priority('Host', 'host', 'HOST')
+                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH'))
                         
-                        #if path.count('@') >1 or path.count('%40') >1:
-                         #   print(f'vless节点格式错误，line:{line}')
-                         #   continue                       
+                        if path.count('@') >1 or path.count('%40') >1:
+                            print(f'vless节点格式错误，line:{line}')
+                            continue                       
                         if host or path:
                             tcp_opts = {}
                             if host:
@@ -830,8 +808,8 @@ class sub_convert():
                     if 'obfs-local' in line:
                         yaml_url.setdefault('Plugin', 'obfs')
                         plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';')
-                        plugin_mode = urllib.parse.unquote(re.compile('obfs=(.*?);').findall(plugin_list)[0])
-                        plugin_host = urllib.parse.unquote(re.compile('obfs-host=(.*?);').findall(plugin_list)[0])
+                        plugin_mode = re.compile('obfs=(.*?);').findall(plugin_list)[0]
+                        plugin_host = re.compile('obfs-host=(.*?);').findall(plugin_list)[0]
                         yaml_url['plugin'] = yaml_url.pop("Plugin")
                         yaml_url.setdefault('plugin-opts', {
                             'mode': plugin_mode, 
@@ -846,10 +824,10 @@ class sub_convert():
                         yaml_url.setdefault('Plugin', plugin_type)
                         plugin_list = str(urllib.parse.unquote(server_part_list[1]) + ';')
             
-                        plugin_mode = urllib.parse.unquote(re.compile('mode=(.*?);').findall(plugin_list)[0])
-                        plugin_host = urllib.parse.unquote(re.compile('host=(.*?);').findall(plugin_list)[0])
+                        plugin_mode = re.compile('mode=(.*?);').findall(plugin_list)[0]
+                        plugin_host = re.compile('host=(.*?);').findall(plugin_list)[0]
                         plugin_host = plugin_host if plugin_host else yaml_url['server']
-                        plugin_path = urllib.parse.unquote(re.compile('path=(.*?);').findall(plugin_list)[0])
+                        plugin_path = re.compile('path=(.*?);').findall(plugin_list)[0]
                         plugin_path = plugin_path if plugin_path else '/'
             
                         # 修改点2：添加restls支持
@@ -1130,7 +1108,7 @@ class sub_convert():
                     url_list.append(yaml_url)
         
                     # 调试日志（可选）
-                    #print(f"已处理Trojan节点: {yaml_url['name']}")
+                    print(f"已处理Trojan节点: {yaml_url['name']}")
         
 
                 except Exception as err:
@@ -1341,9 +1319,8 @@ class sub_convert():
                 elif proxy['type'] == 'ss':
                     try:
                         if 'plugin' not in proxy:
-                            
                             # 标准格式：仅对 "method:password" 进行 Base64 编码
-                            ss_base64_decoded = str(proxy['cipher']) + ':' + urllib.parse.quote(str(proxy['password']))
+                            ss_base64_decoded = str(proxy['cipher']) + ':' + str(proxy['password'])
                             ss_base64 = sub_convert.base64_encode(ss_base64_decoded)
     
                             # 显式声明服务器和端口（@server:port）
@@ -1391,7 +1368,7 @@ class sub_convert():
                             ssplugin = urllib.parse.quote(ssplugin)
 
                             # 标准格式处理
-                            ss_base64 = sub_convert.base64_encode(f"{proxy['cipher']}:{urllib.parse.quote(proxy['password'])}")
+                            ss_base64 = sub_convert.base64_encode(f"{proxy['cipher']}:{proxy['password']}")
     
                             # 完整标准格式链接
                             ss_proxy = (
