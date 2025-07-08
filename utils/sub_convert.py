@@ -1274,7 +1274,7 @@ class sub_convert():
                         network = get_any_case(proxy, ['network'], 'tcp').lower()
                         sni = get_any_case(proxy, ['sni', 'servername'], proxy['server'])
                         security = 'tls' if proxy.get('tls') else 'none'
-
+                        port = str(proxy['port']).replace('/','')
                         # === 路径处理（新增：强制以/开头） ===
                         def process_path(raw_path):
                             """处理路径：确保以/开头且避免双重编码"""
