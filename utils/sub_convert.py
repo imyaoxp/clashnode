@@ -520,6 +520,31 @@ class sub_convert():
         return yaml_content # 输出 YAML 格式文本
 
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
+        # ===== 内联路径处理器（与decode保持一致） =====
+        def process_path(raw_path):
+            """统一路径处理：解码Unicode转义并安全编码"""
+            if not isinstance(raw_path, str):
+                raw_path = str(raw_path)
+        
+            # 处理\UXXXXXXXX和格式错误的UXXXXXXXX
+            if '\\U' in raw_path or ('U000' in raw_path and '\\' not in raw_path):
+                raw_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', raw_path)
+                try:
+                    raw_path = raw_path.encode('utf-8').decode('unicode-escape')
+                except:
+                    pass
+        
+            # 规范化路径
+            if not raw_path.startswith('/'):
+                raw_path = '/' + raw_path
+        
+            # 避免双重编码
+            if '%' in raw_path and '%25' not in raw_path:
+                return raw_path
+            return urllib.parse.quote(raw_path, safe="/?&=")
+        # ===== 结束路径处理器 =====
+        
+        
         url_list = []
 
         lines = re.split(r'\n+', url_content)
@@ -1167,6 +1192,20 @@ class sub_convert():
         return base64_content
 
     def yaml_decode(url_content): # YAML 文本转换为 URL 链接内容
+        # ===== 复用相同的路径处理器 =====
+        def process_path(raw_path):
+            """与yaml_encode完全一致"""
+            if not isinstance(raw_path, str):
+                raw_path = str(raw_path)
+            if '\\U' in raw_path or ('U000' in raw_path and '\\' not in raw_path):
+                raw_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', raw_path)
+                try: raw_path = raw_path.encode('utf-8').decode('unicode-escape')
+                except: pass
+            if not raw_path.startswith('/'):
+                raw_path = '/' + raw_path
+            if '%' in raw_path and '%25' not in raw_path:
+                return raw_path
+            return urllib.parse.quote(raw_path, safe="/?&="
         
         try:
             
