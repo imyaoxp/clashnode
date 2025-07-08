@@ -1252,112 +1252,124 @@ class sub_convert():
                 
                 elif proxy['type'] == 'vless':
                     try:
-                        # 优先级获取函数
-                        def get_priority(*keys, default=None):
-                            for key in keys:
-                                value = proxy.get(key)
-                                if value is not None:
-                                    return value
-                                # 检查小写变体
-                                lower_key = key.lower()
-                                for k, v in proxy.items():
-                                    if k.lower() == lower_key:
-                                        return v
+                        # === 基础参数校验 ===
+                        for field in ['server', 'port', 'uuid']:
+                            if field not in proxy:
+                                raise ValueError(f"Missing required field: {field}")
+
+                        # === 参数获取（兼容大小写） ===
+                        def get_any_case(d, keys, default=None):
+                            """字典键名大小写不敏感查找"""
+                            if not isinstance(d, dict):
+                                return default
+                            for k in keys:
+                                if k in d:
+                                    return d[k]
+                                for dk, dv in d.items():
+                                    if str(dk).lower() == str(k).lower():
+                                        return dv
                             return default
 
-                        # 获取公共参数
-                        sni = (
-                            get_priority('servername', 'serverName', 'ServerName', 'Servername') or
-                            get_priority('sni', 'SNI', 'Sni') or
-                            get_priority('host', 'Host', 'HOST') or
-                            proxy['server']
-                        )
+                        # 获取核心参数
+                        network = get_any_case(proxy, ['network'], 'tcp').lower()
+                        sni = get_any_case(proxy, ['sni', 'servername'], proxy['server'])
+                        security = 'tls' if proxy.get('tls') else 'none'
 
-                        # 构建基础参数
-                        security_type = 'reality' if 'reality-opts' in proxy else ('tls' if proxy.get('tls') else 'none')
+                        # === 路径处理（新增：强制以/开头） ===
+                        def process_path(raw_path):
+                            """处理路径：确保以/开头且避免双重编码"""
+                            if not isinstance(raw_path, str):
+                                raw_path = str(raw_path)
+                            # 确保以/开头
+                            if not raw_path.startswith('/'):
+                                raw_path = '/' + raw_path
+                            # 避免双重编码
+                            if '%' in raw_path and '%25' not in raw_path:
+                                return raw_path
+                            return urllib.parse.quote(raw_path, safe="/?&=")
+
+                        # === 各传输类型特殊处理 ===
                         params = {
-                            'security': security_type,
-                            'type': proxy.get('network', 'tcp'),
+                            'type': network,
+                            'security': security,
                             'sni': sni
                         }
 
-                        # 处理Reality配置
-                        if security_type == 'reality':
-                            reality_opts = proxy['reality-opts']
-                            params['pbk'] = reality_opts.get('public-key', '')
-                            params['sid'] = reality_opts.get('short-id', '')
-                            if 'flow' in proxy:
-                                params['flow'] = proxy['flow']
-
-                        # 根据network类型处理特殊参数
-                        network_type = proxy.get('network', 'tcp')
-
-                        # 1. WebSocket处理
-                        if network_type == 'ws':
-                            ws_opts = proxy.get('ws-opts', {})
-                            path = urllib.parse.quote(ws_opts.get('path', '/'), safe="/?&=")
-                            if not path.startswith('/'):
-                                path = '/' + path
-                            params['path'] = path
-                            headers = ws_opts.get('headers', {})
-                            params['host'] = (
-                                headers.get('host') or
-                                headers.get('Host') or
-                                sni
-                           )
-                        elif network_type == 'httpupgrade':
-                            params = {}  # 初始化空字典
-                            http_opts = proxy.get('http-opts', {})
+                        # 1. WebSocket (ws)
+                        if network == 'ws':
+                            ws_opts = get_any_case(proxy, ['ws-opts'], {})
+                            raw_path = get_any_case(ws_opts, ['path'], '/')
+                            headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
-                                'type': 'httpupgrade',
-                                'path': urllib.parse.quote(http_opts.get('path', '/'), safe="/?&=")
+                                'path': process_path(raw_path),  # 使用统一路径处理
+                                'host': get_any_case(headers, ['host'], sni)
                             })
-                            # 处理 host 头部
-                            headers = http_opts.get('headers', {})
-                            if 'host' in headers:
-                                params['host'] = headers['host']
-                            elif 'sni' in proxy:
-                                params['host'] = proxy['sni']
-                        elif network_type == 'grpc':
-                            grpc_opts = proxy.get('grpc-opts', {})
-                            params['serviceName'] = (
-                                grpc_opts.get('grpc-service-name') or
-                                grpc_opts.get('grpcServiceName') or
-                               ''
-                            )
 
-                        # 3. HTTP/2处理
-                        elif network_type == 'h2':
-                            h2_opts = proxy.get('h2-opts', {})
-                            params['path'] = urllib.parse.quote(h2_opts.get('path', '/'), safe="/?&=")
-                            if 'host' in h2_opts and h2_opts['host']:
-                                params['host'] = ','.join(h2_opts['host'])
+                        # 2. HTTP/2 (h2)
+                        elif network == 'h2':
+                            h2_opts = get_any_case(proxy, ['h2-opts'], {})
+                            raw_path = get_any_case(h2_opts, ['path'], '/')
+                            hosts = get_any_case(h2_opts, ['host'], [sni])
+                            params.update({
+                                'path': process_path(raw_path),
+                                'host': ','.join(hosts) if isinstance(hosts, list) else hosts
+                            })
 
-                        # 4. TCP处理（HTTP伪装）
-                        elif network_type == 'tcp':
-                            tcp_opts = proxy.get('tcp-opts', {})
-                            if 'headers' in tcp_opts:
-                                headers = tcp_opts['headers']
-                                host = headers.get('Host') or headers.get('host')
-                                if host:
-                                    params['headerType'] = 'http'
-                                    params['host'] = ','.join(host) if isinstance(host, list) else host
-                                    params['path'] = urllib.parse.quote(tcp_opts.get('path', '/'), safe="/?&=")
+                        # 3. gRPC (grpc) - 无path参数
+                        elif network == 'grpc':
+                            grpc_opts = get_any_case(proxy, ['grpc-opts'], {})
+                            params['serviceName'] = get_any_case(grpc_opts, ['grpc-service-name'], '')
 
-                        # 生成标准化URL
+                        # 4. TCP (tcp)
+                        elif network == 'tcp':
+                            tcp_opts = get_any_case(proxy, ['tcp-opts'], {})
+                            raw_path = get_any_case(tcp_opts, ['path'], '/')
+                            headers = get_any_case(tcp_opts, ['headers'], {})
+                            if raw_path or headers:
+                                params['header'] = {
+                                    'type': 'http',
+                                    'request': {
+                                        'path': process_path(raw_path),
+                                        'headers': {'Host': get_any_case(headers, ['host'], sni)}
+                                    }
+                                }
+
+                        # 5. HTTP Upgrade (httpupgrade)
+                        elif network == 'httpupgrade' or network == 'http' or network == 'xhttp':
+                            http_opts = get_any_case(proxy, ['http-opts'], {})
+                            raw_path = get_any_case(http_opts, ['path'], '/')
+                            headers = get_any_case(http_opts, ['headers'], {})
+                            params.update({
+                                'path': process_path(raw_path),
+                                'host': get_any_case(headers, ['host'], sni)
+                            })
+
+                        # === Reality 支持 ===
+                        reality_opts = get_any_case(proxy, ['reality-opts'], {})
+                        if reality_opts:
+                            params.update({
+                                'security': 'reality',
+                                'pbk': get_any_case(reality_opts, ['public-key', 'pbk'], ''),
+                                'sid': get_any_case(reality_opts, ['short-id', 'sid'], ''),
+                                'flow': get_any_case(proxy, ['flow'], '')
+                            })
+
+                        # === 生成查询字符串 ===
                         query_str = '&'.join(
-                            f"{k}={str(v)}" 
-                            for k, v in params.items() 
-                            if v not in (None, '')
+                            f"{k}={urllib.parse.quote(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
+                            for k, v in params.items()
+                            if v not in (None, "", False, {})
                         )
+
+                        # === 构建最终URL ===
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
-                        print(f'生成链接{vless_url}')
                         protocol_url.append(vless_url + '\n')
 
                     except Exception as e:
-                        print(proxy)
-                        #print(vless_url)
-                        print(f'VLESS解码错误: {e} | 节点: {proxy.get("name", "未知")}')
+                        print(f"❌ VLESS 节点处理失败: {proxy.get('name', '未知')}")
+                        print(f"   错误类型: {type(e).__name__}")
+                        print(f"   错误详情: {str(e)}")
+                        print(f"   节点配置: {proxy}")
                         continue
                 
                 
