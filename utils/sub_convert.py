@@ -1604,6 +1604,7 @@ class sub_convert():
             
             
     def base64_decode(url_content): # Base64 转换为 URL 链接内容
+        url_content = str(url_content)
         if '-' in url_content:
             url_content = url_content.replace('-', '+')
         elif '_' in url_content:
