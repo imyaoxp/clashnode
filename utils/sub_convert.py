@@ -739,9 +739,7 @@ class sub_convert():
 
                     # 1. WebSocket处理
                     if network_type == 'ws':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
+                        
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -751,21 +749,19 @@ class sub_convert():
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/')),
+                            'path': process_path(get_param_priority('path', 'Path', 'PATH', default='/')),
                             'headers': {'Host': ws_host}
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
                         params = {}
                         http_opts = yaml_node.get('http-opts', {})
-                        path=urllib.parse.unquote(http_opts.get('path', '/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
+
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         params['type'] = 'httpupgrade'
-                        params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
+                        params['path'] = process_path(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
                             params['host'] = http_opts['headers']['host']
                         elif 'sni' in yaml_node:
@@ -778,9 +774,7 @@ class sub_convert():
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
+
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
@@ -792,7 +786,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host
                             if path:
-                                h2_opts['path'] = path
+                                h2_opts['path'] = process_path(get_param_priority('path', 'Path', 'PATH', default='/'))
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
@@ -801,9 +795,7 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='')
-                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path                        
+                       
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                       
@@ -812,7 +804,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
-                                tcp_opts['path'] = path
+                                tcp_opts['path'] = process_path(get_param_priority('path', 'Path', 'PATH', default='/'))
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
@@ -1314,20 +1306,7 @@ class sub_convert():
                         sni = get_any_case(proxy, ['sni', 'servername'], proxy['server'])
                         security = 'tls' if proxy.get('tls') else 'none'
                         port = str(proxy['port']).replace('/','')
-                        # === 路径处理（新增：强制以/开头） ===
-                        def process_path(raw_path):
-                            """处理路径：确保以/开头且避免双重编码"""
-                            if not isinstance(raw_path, str):
-                                raw_path = str(raw_path)
-                            # 确保以/开头
-                            if not raw_path.startswith('/'):
-                                raw_path = '/' + raw_path
-                            # 避免双重编码
-                            if '%' in raw_path and '%25' not in raw_path:
-                                return raw_path
-                            return urllib.parse.quote(raw_path, safe="/?&=")
 
-                        # === 各传输类型特殊处理 ===
                         params = {
                             'type': network,
                             'security': security,
