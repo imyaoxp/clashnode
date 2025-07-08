@@ -520,29 +520,29 @@ class sub_convert():
         return yaml_content # 输出 YAML 格式文本
 
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
-        # ===== 内联路径处理器（与decode保持一致） =====
-        def process_path(raw_path):
-            """统一路径处理：解码Unicode转义并安全编码"""
-            if not isinstance(raw_path, str):
-                raw_path = str(raw_path)
+        # ===== 路径解码器（用于yaml_encode）=====
+        def decode_path(encoded_path):
+            """将URL编码的路径解码为Clash可读格式"""
+            if not isinstance(encoded_path, str):
+                encoded_path = str(encoded_path)
         
-            # 处理\UXXXXXXXX和格式错误的UXXXXXXXX
-            if '\\U' in raw_path or ('U000' in raw_path and '\\' not in raw_path):
-                raw_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', raw_path)
+            # 先URL解码
+            decoded_path = urllib.parse.unquote(encoded_path)
+        
+            # 处理Unicode转义序列
+            if '\\U' in decoded_path or ('U000' in decoded_path and '\\' not in decoded_path):
+                decoded_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', decoded_path)
                 try:
-                    raw_path = raw_path.encode('utf-8').decode('unicode-escape')
+                    decoded_path = decoded_path.encode('utf-8').decode('unicode-escape')
                 except:
                     pass
         
             # 规范化路径
-            if not raw_path.startswith('/'):
-                raw_path = '/' + raw_path
-        
-            # 避免双重编码
-            if '%' in raw_path and '%25' not in raw_path:
-                return raw_path
-            return urllib.parse.quote(raw_path, safe="/?&=")
-        # ===== 结束路径处理器 =====
+            if not decoded_path.startswith('/'):
+                decoded_path = '/' + decoded_path
+            
+            return decoded_path
+    # ===== 结束解码器 =====
         
         
         url_list = []
@@ -749,7 +749,7 @@ class sub_convert():
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': process_path(get_param_priority('path', 'Path', 'PATH', default='/')),
+                            'path': decode_path(get_param_priority('path', 'Path', 'PATH', default='/')),
                             'headers': {'Host': ws_host}
                         }
                 
@@ -761,7 +761,7 @@ class sub_convert():
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         params['type'] = 'httpupgrade'
-                        params['path'] = process_path(http_opts.get('path', '/'))
+                        params['path'] = decode_path(http_opts.get('path', '/'))
                         if 'host' in http_opts.get('headers', {}):
                             params['host'] = http_opts['headers']['host']
                         elif 'sni' in yaml_node:
@@ -786,7 +786,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host
                             if path:
-                                h2_opts['path'] = process_path(get_param_priority('path', 'Path', 'PATH', default='/'))
+                                h2_opts['path'] = decode_path(get_param_priority('path', 'Path', 'PATH', default='/'))
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
@@ -804,7 +804,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
-                                tcp_opts['path'] = process_path(get_param_priority('path', 'Path', 'PATH', default='/'))
+                                tcp_opts['path'] = decode_path(get_param_priority('path', 'Path', 'PATH', default='/'))
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
@@ -1184,20 +1184,27 @@ class sub_convert():
         return base64_content
 
     def yaml_decode(url_content): # YAML 文本转换为 URL 链接内容
-        # ===== 复用相同的路径处理器 =====
-        def process_path(raw_path):
-            """与yaml_encode完全一致"""
-            if not isinstance(raw_path, str):
-                raw_path = str(raw_path)
-            if '\\U' in raw_path or ('U000' in raw_path and '\\' not in raw_path):
-                raw_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', raw_path)
-                try: raw_path = raw_path.encode('utf-8').decode('unicode-escape')
-                except: pass
-            if not raw_path.startswith('/'):
-                raw_path = '/' + raw_path
-            if '%' in raw_path and '%25' not in raw_path:
-                return raw_path
-            return urllib.parse.quote(raw_path, safe="/?&=")
+        # ===== 路径编码器（用于yaml_decode）=====
+        def encode_path(decoded_path):
+            """将Clash路径编码为URL安全格式"""
+            if not isinstance(decoded_path, str):
+                decoded_path = str(decoded_path)
+        
+            # 处理Unicode字符转义
+            if '\\U' in decoded_path or ('U000' in decoded_path and '\\' not in decoded_path):
+                decoded_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', decoded_path)
+                try:
+                    decoded_path = decoded_path.encode('utf-8').decode('unicode-escape')
+                except:
+                    pass
+        
+            # 规范化路径
+            if not decoded_path.startswith('/'):
+                decoded_path = '/' + decoded_path
+            
+            # URL编码
+            return urllib.parse.quote(decoded_path, safe="/?&=")
+        # ===== 结束编码器 =====
         
         try:
             
@@ -1319,7 +1326,7 @@ class sub_convert():
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
-                                'path': process_path(raw_path),  # 使用统一路径处理
+                                'path': encode_path(raw_path),  # 使用统一路径处理
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
@@ -1329,7 +1336,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = get_any_case(h2_opts, ['host'], [sni])
                             params.update({
-                                'path': process_path(raw_path),
+                                'path': encode_path(raw_path),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1347,7 +1354,7 @@ class sub_convert():
                                 params['header'] = {
                                     'type': 'http',
                                     'request': {
-                                        'path': process_path(raw_path),
+                                        'path': encode_path(raw_path),
                                         'headers': {'Host': get_any_case(headers, ['host'], sni)}
                                     }
                                 }
@@ -1358,7 +1365,7 @@ class sub_convert():
                             raw_path = get_any_case(http_opts, ['path'], '/')
                             headers = get_any_case(http_opts, ['headers'], {})
                             params.update({
-                                'path': process_path(raw_path),
+                                'path': encode_path(raw_path),
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
