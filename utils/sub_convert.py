@@ -520,34 +520,33 @@ class sub_convert():
         return yaml_content # 输出 YAML 格式文本
 
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
+        
+        
+        #将URL编码的路径转换为Clash可读格式,自动处理多重编码（如%25252525）和Unicode转义
         def decode_url_path(url_path, max_decode=5):
-        """
-        将URL编码的路径转换为Clash可读格式
-        自动处理多重编码（如%25252525）和Unicode转义
-        """
-        if not isinstance(url_path, str):
-            url_path = str(url_path)
+            if not isinstance(url_path, str):
+                url_path = str(url_path)
     
-        # 循环解码多重编码（最多5次）
-        decoded_path = url_path
-        for _ in range(max_decode):
-            if '%25' not in decoded_path:
-                break
-            decoded_path = urllib.parse.unquote(decoded_path)
+            # 循环解码多重编码（最多5次）
+            decoded_path = url_path
+            for _ in range(max_decode):
+                if '%25' not in decoded_path:
+                    break
+                decoded_path = urllib.parse.unquote(decoded_path)
     
-        # 处理Unicode转义序列
-        def handle_unicode(s):
-            s = re.sub(r'\\u([0-9a-fA-F]{4})', lambda m: chr(int(m.group(1), 16)), s)
-            s = re.sub(r'U\+([0-9a-fA-F]{4})', lambda m: chr(int(m.group(1), 16)), s)
-            return s
+            # 处理Unicode转义序列
+            def handle_unicode(s):
+                s = re.sub(r'\\u([0-9a-fA-F]{4})', lambda m: chr(int(m.group(1), 16)), s)
+                s = re.sub(r'U\+([0-9a-fA-F]{4})', lambda m: chr(int(m.group(1), 16)), s)
+                return s
     
-        decoded_path = handle_unicode(decoded_path)
+            decoded_path = handle_unicode(decoded_path)
     
-        # 规范化路径
-        if not decoded_path.startswith('/'):
-            decoded_path = '/' + decoded_path
+            # 规范化路径
+            if not decoded_path.startswith('/'):
+                decoded_path = '/' + decoded_path
     
-        return decoded_path
+            return decoded_path
         
         
         url_list = []
@@ -1189,29 +1188,28 @@ class sub_convert():
         return base64_content
 
     def yaml_decode(url_content): # YAML 文本转换为 URL 链接内容
+        
+        
+        #将Clash路径编码为URL安全格式，自动防止双重编码并保留特殊字符
         def encode_clash_path(clash_path):
-        """
-        将Clash路径编码为URL安全格式
-        自动防止双重编码并保留特殊字符
-        """
-        if not isinstance(clash_path, str):
-            clash_path = str(clash_path)
+            if not isinstance(clash_path, str):
+                clash_path = str(clash_path)
     
-        # 先解码确保没有部分编码内容
-        decoded_path = urllib.parse.unquote(clash_path)
+            # 先解码确保没有部分编码内容
+            decoded_path = urllib.parse.unquote(clash_path)
     
-        # 处理Unicode字符
-        try:
-            encoded_path = urllib.parse.quote(decoded_path.encode('utf-8').decode('latin-1'), safe="/?&=")
-        except:
-            encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
+            # 处理Unicode字符
+            try:
+                encoded_path = urllib.parse.quote(decoded_path.encode('utf-8').decode('latin-1'), safe="/?&=")
+            except:
+                encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
     
-        # 最终检查（理论上不应该需要）
-        while '%25' in encoded_path and encoded_path.count('%25') < 3:  # 最多处理2层
-            encoded_path = urllib.parse.unquote(encoded_path)
-            encoded_path = urllib.parse.quote(encoded_path, safe="/?&=")
+            # 最终检查（理论上不应该需要）
+            while '%25' in encoded_path and encoded_path.count('%25') < 3:  # 最多处理2层
+                encoded_path = urllib.parse.unquote(encoded_path)
+                encoded_path = urllib.parse.quote(encoded_path, safe="/?&=")
     
-        return encoded_path
+            return encoded_path
         
         try:
             
