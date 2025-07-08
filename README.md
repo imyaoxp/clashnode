@@ -10,13 +10,13 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `637`
+当前合并节点总数: `548`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `3`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `124`
-- [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `187`
+- [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `180`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `28`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `96`
-- [24wangyingbo/v2rayse_sub](https://github.com/wangyingbo/v2rayse_sub), 节点数量: `288`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `0`
+- [24wangyingbo/v2rayse_sub](https://github.com/wangyingbo/v2rayse_sub), 节点数量: `286`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `3`
 
 
