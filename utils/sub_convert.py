@@ -1295,7 +1295,7 @@ class sub_convert():
                         # 1. WebSocket处理
                         if network_type == 'ws':
                             ws_opts = proxy.get('ws-opts', {})
-                            path = ws_opts.get('path', '/')
+                            path = urllib.parse.quote(ws_opts.get('path', '/'), safe="/?&=")
                             if not path.startswith('/'):
                                 path = '/' + path
                             params['path'] = path
@@ -1310,7 +1310,7 @@ class sub_convert():
                             http_opts = proxy.get('http-opts', {})
                             params.update({
                                 'type': 'httpupgrade',
-                                'path': urllib.parse.quote(http_opts.get('path', '/'))
+                                'path': urllib.parse.quote(http_opts.get('path', '/'), safe="/?&=")
                             })
                             # 处理 host 头部
                             headers = http_opts.get('headers', {})
@@ -1329,7 +1329,7 @@ class sub_convert():
                         # 3. HTTP/2处理
                         elif network_type == 'h2':
                             h2_opts = proxy.get('h2-opts', {})
-                            params['path'] = h2_opts.get('path', '/')
+                            params['path'] = urllib.parse.quote(h2_opts.get('path', '/'), safe="/?&=")
                             if 'host' in h2_opts and h2_opts['host']:
                                 params['host'] = ','.join(h2_opts['host'])
 
@@ -1342,11 +1342,11 @@ class sub_convert():
                                 if host:
                                     params['headerType'] = 'http'
                                     params['host'] = ','.join(host) if isinstance(host, list) else host
-                                    params['path'] = tcp_opts.get('path', '/')
+                                    params['path'] = urllib.parse.quote(tcp_opts.get('path', '/'), safe="/?&=")
 
                         # 生成标准化URL
                         query_str = '&'.join(
-                            f"{k}={urllib.parse.quote(str(v))}" 
+                            f"{k}={str(v)}" 
                             for k, v in params.items() 
                             if v not in (None, '')
                         )
