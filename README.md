@@ -10,8 +10,8 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1`
-- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `1`
+当前合并节点总数: `9`
+- [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `9`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
