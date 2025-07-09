@@ -1197,13 +1197,9 @@ class sub_convert():
 
             # 先解码确保没有部分编码内容
             decoded_path = sub_convert.decode_url_path(clash_path)
-            #if not decoded_path.startswith('/'):
-            #    decoded_path = '/' + decoded_path.lstrip('/')
-            
-            # 处理 Unicode 字符（如中文、emoji）
-            #try:
-            #    encoded_path = urllib.parse.quote(decoded_path.encode('utf-8').decode('latin-1'), safe="/?&=")
-            #except:
+            print(f"解码后路径: {decoded_path}")  # 调试输出
+            if ':' in decoded_path and not decoded_path.startswith(('http:', 'https:')):
+                decoded_path = decoded_path.replace(':', urllib.parse.quote(':'))
             encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
             return encoded_path
         
@@ -1325,9 +1321,12 @@ class sub_convert():
                         if network == 'ws':
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
+                            print(f"原始路径: {raw_path}")  # 调试输出
+                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/')
+                            print(f"编码后路径: {encoded_path}")  # 调试输出
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),  # 使用统一路径处理
+                                'path': encoded_path,
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
@@ -1392,10 +1391,10 @@ class sub_convert():
                         protocol_url.append(vless_url + '\n')
 
                     except Exception as e:
-                        print(f"❌ VLESS 节点处理失败: {proxy.get('name', '未知')}")
-                        print(f"   错误类型: {type(e).__name__}")
-                        print(f"   错误详情: {str(e)}")
-                        print(f"   节点配置: {proxy}")
+                        print(f"❌ 处理VLess节点时发生错误: {e}")
+                        print(f"完整节点配置: {proxy}")
+                        import traceback
+                        traceback.print_exc()  # 打印完整堆栈
                         continue
                 
                 
