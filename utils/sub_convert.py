@@ -1324,7 +1324,7 @@ class sub_convert():
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             print(f"原始路径: {raw_path}")  # 调试输出
-                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/')
+                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
                             print(f"编码后路径: {encoded_path}")  # 调试输出
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
@@ -1338,7 +1338,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = get_any_case(h2_opts, ['host'], [sni])
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1356,7 +1356,7 @@ class sub_convert():
                                 params['header'] = {
                                     'type': 'http',
                                     'request': {
-                                        'path': '/' + encode_clash_path(raw_path).lstrip('/'),
+                                        'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                         'headers': {'Host': get_any_case(headers, ['host'], sni)}
                                     }
                                 }
@@ -1368,7 +1368,7 @@ class sub_convert():
                             raw_path = get_any_case(http_opts, ['path'], '/')
                             headers = get_any_case(http_opts, ['headers'], {})
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
