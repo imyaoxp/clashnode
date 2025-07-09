@@ -1201,6 +1201,7 @@ class sub_convert():
             if ':' in decoded_path and not decoded_path.startswith(('http:', 'https:')):
                 decoded_path = decoded_path.replace(':', urllib.parse.quote(':'))
             encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
+            print(f"最终编码路径: {encoded_path}")  # 调试输出
             return encoded_path
         
         try:
