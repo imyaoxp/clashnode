@@ -754,6 +754,7 @@ class sub_convert():
                         )
                         yaml_node['ws-opts'] = {
                             'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '')
+                            'Host': ws_host
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
