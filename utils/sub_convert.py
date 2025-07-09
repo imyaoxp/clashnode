@@ -753,7 +753,7 @@ class sub_convert():
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '')
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', ''),
                             'Host': ws_host
                         }
                 
