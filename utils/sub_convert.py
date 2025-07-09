@@ -57,10 +57,10 @@ class sub_convert():
             decoded_path = urllib.parse.unquote(decoded_path)
 
         # 处理可能的 UTF-8 编码错误（如双重编码的 Unicode）
-        try:
-            decoded_path = decoded_path.encode('latin-1').decode('utf-8')
-        except (UnicodeEncodeError, UnicodeDecodeError):
-            pass  # 如果已经是正常 Unicode，跳过
+        #try:
+         #   decoded_path = decoded_path.encode('latin-1').decode('utf-8')
+        #except (UnicodeEncodeError, UnicodeDecodeError):
+        #    pass  # 如果已经是正常 Unicode，跳过
 
         # 规范化路径（确保以 / 开头）
         #if not decoded_path.startswith('/'):
