@@ -753,7 +753,7 @@ class sub_convert():
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/')
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '')
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
@@ -764,7 +764,7 @@ class sub_convert():
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         params['type'] = 'httpupgrade'
-                        params['path'] = sub_convert.decode_url_path(http_opts.get('path', '/'))
+                        params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).lstrip('/').replace(':', '')
                         if 'host' in http_opts.get('headers', {}):
                             params['host'] = http_opts['headers']['host']
                         elif 'sni' in yaml_node:
@@ -779,7 +779,7 @@ class sub_convert():
                     elif network_type == 'h2':
 
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/')
+                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':', '')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -790,7 +790,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host
                             if path:
-                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/')
+                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
@@ -808,7 +808,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
-                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/')
+                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '')
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
@@ -1339,7 +1339,7 @@ class sub_convert():
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             print(f"原始路径: {raw_path}")  # 调试输出
-                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/')
+                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace('%3A', '')
                             print(f"编码后路径: {encoded_path}")  # 调试输出
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
@@ -1353,7 +1353,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = get_any_case(h2_opts, ['host'], [sni])
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace('%3A', ''),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1371,7 +1371,7 @@ class sub_convert():
                                 params['header'] = {
                                     'type': 'http',
                                     'request': {
-                                        'path': '/' + encode_clash_path(raw_path).lstrip('/'),
+                                        'path': '/' + encode_clash_path(raw_path).lstrip('/').replace('%3A', ''),
                                         'headers': {'Host': get_any_case(headers, ['host'], sni)}
                                     }
                                 }
@@ -1382,7 +1382,7 @@ class sub_convert():
                             raw_path = get_any_case(http_opts, ['path'], '/')
                             headers = get_any_case(http_opts, ['headers'], {})
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace('%3A', ''),
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
