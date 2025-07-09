@@ -748,13 +748,13 @@ class sub_convert():
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         ws_host = (
-                            get_param_priority('host', 'Host', 'HOST') or
+                            get_param_priority('Host', 'host', 'HOST') or
                             sni or
                             server
                         )
                         yaml_node['ws-opts'] = {
                             'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', ''),
-                            'Host': ws_host
+                            'headers': {'Host': ws_host}
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
