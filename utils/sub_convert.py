@@ -1201,10 +1201,10 @@ class sub_convert():
             #    decoded_path = '/' + decoded_path.lstrip('/')
             
             # 处理 Unicode 字符（如中文、emoji）
-            try:
-                encoded_path = urllib.parse.quote(decoded_path.encode('utf-8').decode('latin-1'), safe="/?&=")
-            except:
-                encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
+            #try:
+            #    encoded_path = urllib.parse.quote(decoded_path.encode('utf-8').decode('latin-1'), safe="/?&=")
+            #except:
+            encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
             return encoded_path
         
         try:
