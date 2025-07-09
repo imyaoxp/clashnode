@@ -1406,6 +1406,7 @@ class sub_convert():
                         # === 构建最终URL ===
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(vless_url + '\n')
+                        print(f'已添加节点{vless_url}')
 
                     except Exception as e:
                         print(f"❌ 处理VLess节点时发生错误: {e}")
