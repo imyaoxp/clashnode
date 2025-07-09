@@ -1383,7 +1383,7 @@ class sub_convert():
 
                         # === 生成查询字符串 ===
                         query_str = '&'.join(
-                            f"{k}={urllib.parse.quote(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
+                            f"{k}={encode_clash_path(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
                             for k, v in params.items()
                             if v not in (None, "", False, {})
                         )
