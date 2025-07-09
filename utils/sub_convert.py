@@ -780,7 +780,7 @@ class sub_convert():
                     elif network_type == 'h2':
 
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':','%3A').replace(',', '%2C')).replace('@', '%40')
+                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':','%3A').replace(',', '%2C').replace('@', '%40')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -791,7 +791,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host
                             if path:
-                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C')).replace('@', '%40')
+                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
