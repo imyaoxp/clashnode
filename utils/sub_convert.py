@@ -1384,7 +1384,7 @@ class sub_convert():
                         query_str = '&'.join(
                             f"{k}={encode_clash_path(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
                             for k, v in params.items()
-                            if v not in (None, "", False, {})
+                            if v not in (None, "", False, {} ,"none")
                         )
 
                         # === 构建最终URL ===
