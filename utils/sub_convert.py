@@ -63,8 +63,8 @@ class sub_convert():
             pass  # 如果已经是正常 Unicode，跳过
 
         # 规范化路径（确保以 / 开头）
-        if not decoded_path.startswith('/'):
-            decoded_path = '/' + decoded_path
+        #if not decoded_path.startswith('/'):
+        #    decoded_path = '/' + decoded_path
 
         return decoded_path
 
@@ -753,14 +753,13 @@ class sub_convert():
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')),
-                            'headers': {'Host': ws_host}
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/')
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
                         params = {}
                         http_opts = yaml_node.get('http-opts', {})
-                        path = sub_convert.decode_url_path(http_opts.get('path', ''))
+                        path = '/' + sub_convert.decode_url_path(http_opts.get('path', '')).lstrip('/')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
@@ -780,7 +779,7 @@ class sub_convert():
                     elif network_type == 'h2':
 
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                        path=sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
+                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -791,7 +790,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host
                             if path:
-                                h2_opts['path'] = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/'))
+                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
@@ -809,7 +808,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
-                                tcp_opts['path'] = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/'))
+                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/')
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
@@ -1198,8 +1197,8 @@ class sub_convert():
 
             # 先解码确保没有部分编码内容
             decoded_path = sub_convert.decode_url_path(clash_path)
-            if not decoded_path.startswith('/'):
-                decoded_path = '/' + decoded_path.lstrip('/')
+            #if not decoded_path.startswith('/'):
+            #    decoded_path = '/' + decoded_path.lstrip('/')
             
             # 处理 Unicode 字符（如中文、emoji）
             try:
@@ -1328,7 +1327,7 @@ class sub_convert():
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
-                                'path': encode_clash_path(raw_path),  # 使用统一路径处理
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),  # 使用统一路径处理
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
@@ -1338,7 +1337,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = get_any_case(h2_opts, ['host'], [sni])
                             params.update({
-                                'path': encode_clash_path(raw_path),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1356,7 +1355,7 @@ class sub_convert():
                                 params['header'] = {
                                     'type': 'http',
                                     'request': {
-                                        'path': encode_clash_path(raw_path),
+                                        'path': '/' + encode_clash_path(raw_path).lstrip('/'),
                                         'headers': {'Host': get_any_case(headers, ['host'], sni)}
                                     }
                                 }
@@ -1367,7 +1366,7 @@ class sub_convert():
                             raw_path = get_any_case(http_opts, ['path'], '/')
                             headers = get_any_case(http_opts, ['headers'], {})
                             params.update({
-                                'path': encode_clash_path(raw_path),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/'),
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
@@ -1383,7 +1382,7 @@ class sub_convert():
 
                         # === 生成查询字符串 ===
                         query_str = '&'.join(
-                            f"{k}={(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
+                            f"{k}={encode_clash_path(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
                             for k, v in params.items()
                             if v not in (None, "", False, {})
                         )
