@@ -58,7 +58,7 @@ class sub_convert():
 
         # 处理可能的 UTF-8 编码错误（如双重编码的 Unicode）
         #try:
-         #   decoded_path = decoded_path.encode('latin-1').decode('utf-8')
+        #   decoded_path = decoded_path.encode('latin-1').decode('utf-8')
         #except (UnicodeEncodeError, UnicodeDecodeError):
         #    pass  # 如果已经是正常 Unicode，跳过
 
@@ -1196,26 +1196,10 @@ class sub_convert():
                 clash_path = str(clash_path)
 
             # 1. 先解码防止双重编码
-            decoded_path = urllib.parse.unquote(clash_path)
+            decoded_path = sub_convert.decode_url_path(clash_path)
             print(f"解码后路径: {decoded_path}")  # 调试输出
 
-            # 2. 特殊处理路径中的冒号（非协议部分）
-            if ':' in decoded_path:
-                # 分割路径和查询参数（如果有）
-                path_parts = decoded_path.split('?', 1)
-                path = path_parts[0]
-        
-                # 编码路径中的冒号（除了 http:/https: 开头）
-                if not path.startswith(('http:', 'https:')):
-                    path = path.replace(':', urllib.parse.quote(':'))  # 仅编码冒号
-        
-                # 处理查询参数（如果有）
-                if len(path_parts) > 1:
-                    query = urllib.parse.quote(path_parts[1], safe='=&')
-                    return f"{path}?{query}"
-                return path
-
-            # 3. 普通路径编码（保留 /?&= 不编码）
+            
             encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
             print(f"最终编码路径: {encoded_path}")  # 调试输出
             return encoded_path
