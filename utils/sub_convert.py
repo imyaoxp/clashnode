@@ -1363,11 +1363,12 @@ class sub_convert():
 
                         # 5. HTTP Upgrade (httpupgrade)
                         elif network == 'httpupgrade' or network == 'http' or network == 'xhttp':
-                            network = 'httpupgrade'
+                            
                             http_opts = get_any_case(proxy, ['http-opts'], {})
                             raw_path = get_any_case(http_opts, ['path'], '/')
                             headers = get_any_case(http_opts, ['headers'], {})
                             params.update({
+                                'type': 'httpupgrade',
                                 'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                 'host': get_any_case(headers, ['host'], sni)
                             })
