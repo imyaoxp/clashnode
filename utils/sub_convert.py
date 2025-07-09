@@ -1329,7 +1329,7 @@ class sub_convert():
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
                                 'path': encoded_path,
-                                'host': get_any_case(headers, ['host'], sni)
+                                'host': get_any_case(headers, ['Host'], sni)
                             })
 
                         # 2. HTTP/2 (h2)
