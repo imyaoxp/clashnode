@@ -1387,7 +1387,7 @@ class sub_convert():
                             f"{k}={encode_clash_path(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
                             for k, v in params.items()
                             if v not in (None, "", False, {} ,"none")
-                        )
+                        ) + '&'
 
                         # === 构建最终URL ===
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
