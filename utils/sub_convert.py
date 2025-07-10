@@ -510,8 +510,7 @@ class sub_convert():
                         idid = re.findall(r'\d\d',idid)[0]
                         proxyname=str(idid)
                 
-                proxyname=re.findall(r'^..',proxyname)[0]
-                        
+                proxyname = (re.findall(r'^..', proxyname) or [proxyname[:1]])[0]
                 if len(proxies_list) >=1000:
                     
                     proxy['name'] =f'{proxyname}-{proxy_index:0>4d}-{country_code}'
