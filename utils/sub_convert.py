@@ -292,7 +292,17 @@ class sub_convert():
                 # 尝试直接加载
                 loaded = yaml.safe_load(sub_content)
                 if output:
-                    return yaml.dump(loaded, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                    yaml_content=yaml.dump(loaded, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                    # 修复alpn缩进（新增的唯一修改）
+                    yaml_content = re.sub(
+                        r'^( *)(alpn:)\n( *)(- )',
+                        r'\1\2\n\1  \4',
+                        yaml_content,
+                        flags=re.MULTILINE
+                    )
+
+                    
+                    return yaml_content.replace('\'', '').replace('False', 'false').replace('True', 'true')
                 return loaded
             
             except Exception:
