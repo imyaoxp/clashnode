@@ -1274,7 +1274,7 @@ class sub_convert():
                         # 3. gRPC (grpc) - 无path参数
                         elif network == 'grpc':
                             grpc_opts = get_any_case(proxy, ['grpc-opts'], {})
-                            params['serviceName'] = get_any_case(grpc_opts, ['grpc-service-name'], '')
+                            params['serviceName'] = encode_clash_path(get_any_case(grpc_opts, ['grpc-service-name'], '')).replace(':', '%3A')
 
                         # 4. TCP (tcp)
                         elif network == 'tcp':
