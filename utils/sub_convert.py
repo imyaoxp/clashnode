@@ -292,17 +292,7 @@ class sub_convert():
                 # 尝试直接加载
                 loaded = yaml.safe_load(sub_content)
                 if output:
-                    yaml_content=yaml.dump(loaded, default_flow_style=False, canonical=False, sort_keys=False, allow_unicode=True, default_style='"')
-                    # 修复alpn缩进（新增的唯一修改）
-                    yaml_content = re.sub(
-                        r'^( *)(alpn:)\n( *)(- )',
-                        r'\1\2\n\1  \4',
-                        yaml_content,
-                        flags=re.MULTILINE
-                    )
-
-                    
-                    return yaml_content.replace('\'', '').replace('False', 'false').replace('True', 'true')
+                    return yaml.dump(loaded, default_flow_style=True, sort_keys=False, allow_unicode=True)
                 return loaded
             
             except Exception:
@@ -346,9 +336,7 @@ class sub_convert():
                     sort_keys=False,
                     allow_unicode=True,
                     width=750,
-                    canonical=False, 
-                    indent=2,
-                    default_style='"'
+                    indent=2
                 )
             
                 # 修复alpn缩进（新增的唯一修改）
@@ -412,6 +400,73 @@ class sub_convert():
         for proxy in proxies_list: # 改名
             
             if format_name_enabled:
+                emoji = {
+                    'AD': '🇦🇩', 'AE': '🇦🇪', 'AF': '🇦🇫', 'AG': '🇦🇬', 
+                    'AI': '🇦🇮', 'AL': '🇦🇱', 'AM': '🇦🇲', 'AO': '🇦🇴', 
+                    'AQ': '🇦🇶', 'AR': '🇦🇷', 'AS': '🇦🇸', 'AT': '🇦🇹', 
+                    'AU': '🇦🇺', 'AW': '🇦🇼', 'AX': '🇦🇽', 'AZ': '🇦🇿', 
+                    'BA': '🇧🇦', 'BB': '🇧🇧', 'BD': '🇧🇩', 'BE': '🇧🇪', 
+                    'BF': '🇧🇫', 'BG': '🇧🇬', 'BH': '🇧🇭', 'BI': '🇧🇮', 
+                    'BJ': '🇧🇯', 'BL': '🇧🇱', 'BM': '🇧🇲', 'BN': '🇧🇳', 
+                    'BO': '🇧🇴', 'BQ': '🇧🇶', 'BR': '🇧🇷', 'BS': '🇧🇸', 
+                    'BT': '🇧🇹', 'BV': '🇧🇻', 'BW': '🇧🇼', 'BY': '🇧🇾', 
+                    'BZ': '🇧🇿', 'CA': '🇨🇦', 'CC': '🇨🇨', 'CD': '🇨🇩', 
+                    'CF': '🇨🇫', 'CG': '🇨🇬', 'CH': '🇨🇭', 'CI': '🇨🇮', 
+                    'CK': '🇨🇰', 'CL': '🇨🇱', 'CM': '🇨🇲', 'CN': '🇨🇳', 
+                    'CO': '🇨🇴', 'CR': '🇨🇷', 'CU': '🇨🇺', 'CV': '🇨🇻', 
+                    'CW': '🇨🇼', 'CX': '🇨🇽', 'CY': '🇨🇾', 'CZ': '🇨🇿', 
+                    'DE': '🇩🇪', 'DJ': '🇩🇯', 'DK': '🇩🇰', 'DM': '🇩🇲', 
+                    'DO': '🇩🇴', 'DZ': '🇩🇿', 'EC': '🇪🇨', 'EE': '🇪🇪', 
+                    'EG': '🇪🇬', 'EH': '🇪🇭', 'ER': '🇪🇷', 'ES': '🇪🇸', 
+                    'ET': '🇪🇹', 'EU': '🇪🇺', 'FI': '🇫🇮', 'FJ': '🇫🇯', 
+                    'FK': '🇫🇰', 'FM': '🇫🇲', 'FO': '🇫🇴', 'FR': '🇫🇷', 
+                    'GA': '🇬🇦', 'GB': '🇬🇧', 'GD': '🇬🇩', 'GE': '🇬🇪', 
+                    'GF': '🇬🇫', 'GG': '🇬🇬', 'GH': '🇬🇭', 'GI': '🇬🇮', 
+                    'GL': '🇬🇱', 'GM': '🇬🇲', 'GN': '🇬🇳', 'GP': '🇬🇵', 
+                    'GQ': '🇬🇶', 'GR': '🇬🇷', 'GS': '🇬🇸', 'GT': '🇬🇹', 
+                    'GU': '🇬🇺', 'GW': '🇬🇼', 'GY': '🇬🇾', 'HK': '🇭🇰', 
+                    'HM': '🇭🇲', 'HN': '🇭🇳', 'HR': '🇭🇷', 'HT': '🇭🇹', 
+                    'HU': '🇭🇺', 'ID': '🇮🇩', 'IE': '🇮🇪', 'IL': '🇮🇱', 
+                    'IM': '🇮🇲', 'IN': '🇮🇳', 'IO': '🇮🇴', 'IQ': '🇮🇶', 
+                    'IR': '🇮🇷', 'IS': '🇮🇸', 'IT': '🇮🇹', 'JE': '🇯🇪', 
+                    'JM': '🇯🇲', 'JO': '🇯🇴', 'JP': '🇯🇵', 'KE': '🇰🇪', 
+                    'KG': '🇰🇬', 'KH': '🇰🇭', 'KI': '🇰🇮', 'KM': '🇰🇲', 
+                    'KN': '🇰🇳', 'KP': '🇰🇵', 'KR': '🇰🇷', 'KW': '🇰🇼', 
+                    'KY': '🇰🇾', 'KZ': '🇰🇿', 'LA': '🇱🇦', 'LB': '🇱🇧', 
+                    'LC': '🇱🇨', 'LI': '🇱🇮', 'LK': '🇱🇰', 'LR': '🇱🇷', 
+                    'LS': '🇱🇸', 'LT': '🇱🇹', 'LU': '🇱🇺', 'LV': '🇱🇻', 
+                    'LY': '🇱🇾', 'MA': '🇲🇦', 'MC': '🇲🇨', 'MD': '🇲🇩', 
+                    'ME': '🇲🇪', 'MF': '🇲🇫', 'MG': '🇲🇬', 'MH': '🇲🇭', 
+                    'MK': '🇲🇰', 'ML': '🇲🇱', 'MM': '🇲🇲', 'MN': '🇲🇳', 
+                    'MO': '🇲🇴', 'MP': '🇲🇵', 'MQ': '🇲🇶', 'MR': '🇲🇷', 
+                    'MS': '🇲🇸', 'MT': '🇲🇹', 'MU': '🇲🇺', 'MV': '🇲🇻', 
+                    'MW': '🇲🇼', 'MX': '🇲🇽', 'MY': '🇲🇾', 'MZ': '🇲🇿', 
+                    'NA': '🇳🇦', 'NC': '🇳🇨', 'NE': '🇳🇪', 'NF': '🇳🇫', 
+                    'NG': '🇳🇬', 'NI': '🇳🇮', 'NL': '🇳🇱', 'NO': '🇳🇴', 
+                    'NP': '🇳🇵', 'NR': '🇳🇷', 'NU': '🇳🇺', 'NZ': '🇳🇿', 
+                    'OM': '🇴🇲', 'PA': '🇵🇦', 'PE': '🇵🇪', 'PF': '🇵🇫', 
+                    'PG': '🇵🇬', 'PH': '🇵🇭', 'PK': '🇵🇰', 'PL': '🇵🇱', 
+                    'PM': '🇵🇲', 'PN': '🇵🇳', 'PR': '🇵🇷', 'PS': '🇵🇸', 
+                    'PT': '🇵🇹', 'PW': '🇵🇼', 'PY': '🇵🇾', 'QA': '🇶🇦', 
+                    'RE': '🇷🇪', 'RO': '🇷🇴', 'RS': '🇷🇸', 'RU': '🇷🇺', 
+                    'RW': '🇷🇼', 'SA': '🇸🇦', 'SB': '🇸🇧', 'SC': '🇸🇨', 
+                    'SD': '🇸🇩', 'SE': '🇸🇪', 'SG': '🇸🇬', 'SH': '🇸🇭', 
+                    'SI': '🇸🇮', 'SJ': '🇸🇯', 'SK': '🇸🇰', 'SL': '🇸🇱', 
+                    'SM': '🇸🇲', 'SN': '🇸🇳', 'SO': '🇸🇴', 'SR': '🇸🇷', 
+                    'SS': '🇸🇸', 'ST': '🇸🇹', 'SV': '🇸🇻', 'SX': '🇸🇽', 
+                    'SY': '🇸🇾', 'SZ': '🇸🇿', 'TC': '🇹🇨', 'TD': '🇹🇩', 
+                    'TF': '🇹🇫', 'TG': '🇹🇬', 'TH': '🇹🇭', 'TJ': '🇹🇯', 
+                    'TK': '🇹🇰', 'TL': '🇹🇱', 'TM': '🇹🇲', 'TN': '🇹🇳', 
+                    'TO': '🇹🇴', 'TR': '🇹🇷', 'TT': '🇹🇹', 'TV': '🇹🇻', 
+                    'TW': '🇹🇼', 'TZ': '🇹🇿', 'UA': '🇺🇦', 'UG': '🇺🇬', 
+                    'UM': '🇺🇲', 'US': '🇺🇸', 'UY': '🇺🇾', 'UZ': '🇺🇿', 
+                    'VA': '🇻🇦', 'VC': '🇻🇨', 'VE': '🇻🇪', 'VG': '🇻🇬', 
+                    'VI': '🇻🇮', 'VN': '🇻🇳', 'VU': '🇻🇺', 'WF': '🇼🇫', 
+                    'WS': '🇼🇸', 'XK': '🇽🇰', 'YE': '🇾🇪', 'YT': '🇾🇹', 
+                    'ZA': '🇿🇦', 'ZM': '🇿🇲', 'ZW': '🇿🇼', 
+                    'RELAY': '🏁',
+                    'NOWHERE': '🇦🇶',
+                }
 
                 server = proxy['server']
                 if server.replace('.','').isdigit():
@@ -435,7 +490,10 @@ class sub_convert():
                 elif country_code == 'PRIVATE':
                     country_code = 'RELAY'
 
-                
+                if country_code in emoji:
+                    name_emoji = emoji[country_code]
+                else:
+                    name_emoji = emoji['NOWHERE']
 
                 proxy_index = proxies_list.index(proxy)
                 proxyname= proxy['name']
@@ -451,8 +509,9 @@ class sub_convert():
                     else :
                         idid = re.findall(r'\d\d',idid)[0]
                         proxyname=str(idid)
-                proxyname = ''.join(re.findall(r'[a-zA-Z0-9]', proxyname)[:2]) if len(re.findall(r'[a-zA-Z0-9]', proxyname))>=2 else 'NO'
                 
+                proxyname=re.findall(r'^..',proxyname)[0]
+                        
                 if len(proxies_list) >=1000:
                     
                     proxy['name'] =f'{proxyname}-{proxy_index:0>4d}-{country_code}'
@@ -461,15 +520,15 @@ class sub_convert():
                 
                 
                 if proxy['server'] != '127.0.0.1':
-                    #proxy_str = str(proxy)
-                    url_list.append(proxy)
+                    proxy_str = str(proxy)
+                    url_list.append(proxy_str)
             elif format_name_enabled == False:
                 if proxy['server'] != '127.0.0.1':
-                    #proxy_str = str(proxy)
-                    url_list.append(proxy)
+                    proxy_str = str(proxy)
+                    url_list.append(proxy_str)
              
         yaml_content_dic = {'proxies': url_list}
-        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, canonical=False, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
+        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
         
         #yaml_content_raw = re.sub(
         #    r'^(\s*)alpn:\s*(\r?\n)(\s*)- ',
@@ -714,7 +773,7 @@ class sub_convert():
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
-                            'grpc-service-name': sub_convert.decode_url_path(get_param_priority('serviceName', 'servicename', default='')).replace(':','%3A').replace(',', '%2C').replace('@', '%40')
+                            'grpc-service-name': urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default=''))
                         }
 
                     # 3. HTTP/2处理
@@ -759,7 +818,7 @@ class sub_convert():
                         continue
 
                     url_list.append(yaml_node)
-                    print(f'添加vless节点{yaml_node}')
+                    #print(f'添加vless节点{yaml_node}')
 
                 except Exception as e:
                     import traceback
@@ -1122,7 +1181,7 @@ class sub_convert():
                 continue
                 
         yaml_content_dic = {'proxies': url_list}
-        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, canonical=False, width=750, indent=2)
+        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2)
         yaml_content = sub_convert.format(yaml_content_raw)
         return yaml_content
     def base64_encode(url_content): # 将 URL 内容转换为 Base64
@@ -1286,7 +1345,7 @@ class sub_convert():
                         # 3. gRPC (grpc) - 无path参数
                         elif network == 'grpc':
                             grpc_opts = get_any_case(proxy, ['grpc-opts'], {})
-                            params['serviceName'] = encode_clash_path(get_any_case(grpc_opts, ['grpc-service-name'], '')).replace(':', '%3A')
+                            params['serviceName'] = get_any_case(grpc_opts, ['grpc-service-name'], '')
 
                         # 4. TCP (tcp)
                         elif network == 'tcp':
@@ -1329,7 +1388,7 @@ class sub_convert():
                             f"{k}={encode_clash_path(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
                             for k, v in params.items()
                             if v not in (None, "", False, {} ,"none")
-                        ) + '&'
+                        )
 
                         # === 构建最终URL ===
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
