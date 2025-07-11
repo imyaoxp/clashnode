@@ -70,91 +70,107 @@ class sub_convert():
 
 
     def convert(raw_input, input_type='url', output_type='url', custom_set={'dup_rm_enabled': True, 'format_name_enabled': True}): # {'input_type': ['url', 'content'],'output_type': ['url', 'YAML', 'Base64']}
-        # convert Url to YAML or Base64
-        global idid
-        if input_type == 'url': # 获取 URL 订阅链接内容
-            sub_content = ''
-            if isinstance(raw_input, list):
-                a_content = []
-                for url in raw_input:
+        try:
+            # convert Url to YAML or Base64
+            global idid
+            if input_type == 'url': # 获取 URL 订阅链接内容
+                sub_content = ''
+                if isinstance(raw_input, list):
+                    a_content = []
+                    for url in raw_input:
+                        s = requests.Session()
+                        s.mount('http://', HTTPAdapter(max_retries=5))
+                        s.mount('https://', HTTPAdapter(max_retries=5))
+                        try:
+                            print('Downloading from:' + url)
+                        
+                            idid = re.findall(r'#\d\d', url)[0]
+                            idid = re.findall(r'\d\d',idid)[0]
+                        
+                            resp = s.get(url, timeout=5)
+                            s_content = sub_convert.yaml_decode(sub_convert.transfer(resp.content.decode('utf-8')))
+                            a_content.append(s_content)
+                        except Exception as err:
+                            print(err)
+                            return 'Url 解析错误'
+                    sub_content = sub_convert.transfer(''.join(a_content))
+                
+                else:
                     s = requests.Session()
                     s.mount('http://', HTTPAdapter(max_retries=5))
                     s.mount('https://', HTTPAdapter(max_retries=5))
                     try:
-                        print('Downloading from:' + url)
-                        
-                        idid = re.findall(r'#\d\d', url)[0]
+                        print('Downloading from:' + raw_input)
+                        idid = re.findall(r'#\d\d', raw_input)[0]
                         idid = re.findall(r'\d\d',idid)[0]
-                        
-                        resp = s.get(url, timeout=5)
-                        s_content = sub_convert.yaml_decode(sub_convert.transfer(resp.content.decode('utf-8')))
-                        a_content.append(s_content)
+                        print (idid)
+                        resp = s.get(raw_input, timeout=5)
+                        sub_content = sub_convert.transfer(resp.content.decode('utf-8'))
+                        if idid == '99' :
+                            idid = ''
                     except Exception as err:
                         print(err)
                         return 'Url 解析错误'
-                sub_content = sub_convert.transfer(''.join(a_content))
-                
-            else:
-                s = requests.Session()
-                s.mount('http://', HTTPAdapter(max_retries=5))
-                s.mount('https://', HTTPAdapter(max_retries=5))
-                try:
-                    print('Downloading from:' + raw_input)
-                    idid = re.findall(r'#\d\d', raw_input)[0]
-                    idid = re.findall(r'\d\d',idid)[0]
-                    print (idid)
-                    resp = s.get(raw_input, timeout=5)
-                    sub_content = sub_convert.transfer(resp.content.decode('utf-8'))
-                    if idid == '99' :
-                        idid = ''
-                except Exception as err:
-                    print(err)
-                    return 'Url 解析错误'
-        elif input_type == 'content': # 解析订阅内容
-            sub_content = sub_convert.transfer(raw_input)
+            elif input_type == 'content': # 解析订阅内容
+                sub_content = sub_convert.transfer(raw_input)
 
-        if sub_content != '订阅内容解析错误': # 输出
-            try:
-                dup_rm_enabled = custom_set['dup_rm_enabled']
-                format_name_enabled = custom_set['format_name_enabled']
-                final_content = sub_convert.makeup(sub_content,dup_rm_enabled,format_name_enabled)
-                if output_type == 'YAML':
-                    return final_content
-                elif output_type == 'Base64':
-                    return sub_convert.base64_encode(sub_convert.yaml_decode(final_content))
-                elif output_type == 'url':
-                    return sub_convert.yaml_decode(final_content)
-                else:
-                    print('Please define right output type.')
-                    return '订阅内容解析错误'
-            except Exception as err:
-                print(f"订阅内容解析错误{err}")                    
-        else:
-            return '订阅内容解析错误'
-        #idid = ''
-    def transfer(sub_content): # 将 URL 内容转换为 YAML 格式
-        if '</b>' not in sub_content:
-            if 'proxies:' in sub_content: # 判断字符串是否在文本中，是，判断为YAML。https://cloud.tencent.com/developer/article/1699719
-                
-                url_content = sub_convert.format(sub_content)
-                return url_content
-                #return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
-            elif '://'  in sub_content: # 同上，是，判断为 Url 链接内容。
-               
-                url_content = sub_convert.yaml_encode(sub_convert.format(sub_content))
-                return url_content
-            else: # 判断 Base64.
+            if sub_content != '订阅内容解析错误': # 输出
                 try:
-                    
-                    url_content = sub_convert.base64_decode(sub_content)
-                    url_content = sub_convert.yaml_encode(sub_convert.format(url_content))
+                    dup_rm_enabled = custom_set['dup_rm_enabled']
+                    format_name_enabled = custom_set['format_name_enabled']
+                    final_content = sub_convert.makeup(sub_content,dup_rm_enabled,format_name_enabled)
+                    if output_type == 'YAML':
+                        return final_content
+                    elif output_type == 'Base64':
+                        return sub_convert.base64_encode(sub_convert.yaml_decode(final_content))
+                    elif output_type == 'url':
+                        return sub_convert.yaml_decode(final_content)
+                    else:
+                        print('Please define right output type.')
+                        return '订阅内容解析错误'
+                except Exception as err:
+                    print(f"订阅内容解析错误{err}")                    
+            else:
+                return '订阅内容解析错误'
+        except Exception as e:
+            print(f"🔴 全局捕获: {type(e).__name__}")  # 理论上不应执行到这里
+            return None
+
+
+    
+    def transfer(sub_content): # 将 URL 内容转换为 YAML 格式
+        try:
+            if '</b>' not in sub_content:
+                if 'proxies:' in sub_content: # 判断字符串是否在文本中，是，判断为YAML。https://cloud.tencent.com/developer/article/1699719
+                
+                    url_content = sub_convert.format(sub_content)
                     return url_content
-                except Exception: # 万能异常 https://blog.csdn.net/Candance_star/article/details/94135515
-                    print('订阅内容解析错误')
-                    return '订阅内容解析错误'
-        else:
-            print('订阅内容解析错误')
-            return '订阅内容解析错误'
+                    #return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
+                elif '://'  in sub_content: # 同上，是，判断为 Url 链接内容。
+               
+                    url_content = sub_convert.yaml_encode(sub_convert.format(sub_content))
+                    return url_content
+                else: # 判断 Base64.
+                    try:
+                    
+                        url_content = sub_convert.base64_decode(sub_content)
+                        url_content = sub_convert.yaml_encode(sub_convert.format(url_content))
+                        return url_content
+                    except Exception: # 万能异常 https://blog.csdn.net/Candance_star/article/details/94135515
+                        print('订阅内容解析错误')
+                        return '订阅内容解析错误'
+            else:
+                print('订阅内容解析错误')
+                return '订阅内容解析错误'
+        except yaml.YAMLError as e:
+            print(f"🟡 YAML解析失败（可能含特殊字符）: {str(e)[:100]}")  # 黄色警告
+            return None
+        except ValueError as e:
+            print(f"🟠 值格式错误: {str(e)[:100]}")  # 橙色警告
+            return None
+        except Exception as e:
+            print(f"🔴 未知解析错误: {type(e).__name__}")  # 红色错误
+            return None
         
     def format(sub_content, output=False):
         if 'proxies:' not in sub_content:
