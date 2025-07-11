@@ -1214,11 +1214,11 @@ class sub_convert():
 
             # 1. 先解码防止双重编码
             decoded_path = sub_convert.decode_url_path(clash_path)
-            print(f"解码后路径: {decoded_path}")  # 调试输出
+            #print(f"解码后路径: {decoded_path}")  # 调试输出
 
             
             encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
-            print(f"最终编码路径: {encoded_path}")  # 调试输出
+            #print(f"最终编码路径: {encoded_path}")  # 调试输出
             return encoded_path
         
         try:
@@ -1339,9 +1339,9 @@ class sub_convert():
                         if network == 'ws':
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
-                            print(f"原始路径: {raw_path}")  # 调试输出
+                            #print(f"原始路径: {raw_path}")  # 调试输出
                             encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
-                            print(f"编码后路径: {encoded_path}")  # 调试输出
+                            #print(f"编码后路径: {encoded_path}")  # 调试输出
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
                                 'path': encoded_path,
@@ -1409,7 +1409,7 @@ class sub_convert():
                         # === 构建最终URL ===
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(vless_url + '\n')
-                        print(f'已添加节点{vless_url}')
+                        #print(f'已添加节点{vless_url}')
 
                     except Exception as e:
                         print(f"❌ 处理VLess节点时发生错误: {e}")
