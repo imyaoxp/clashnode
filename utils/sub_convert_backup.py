@@ -44,6 +44,30 @@ class sub_convert():
             format --> makeup --> yaml_decode --> base64_encode --> convert
             base64_final
     """
+    #将URL编码的路径转换为Clash可读格式,自动处理多重编码（如%25252525）和Unicode转义
+    def decode_url_path(url_path, max_decode=5):
+        if not isinstance(url_path, str):
+            url_path = str(url_path)
+
+        # 循环解码多重编码（最多 5 次）
+        decoded_path = url_path
+        for _ in range(max_decode):
+            if '%' not in decoded_path:
+                break
+            decoded_path = urllib.parse.unquote(decoded_path)
+
+        # 处理可能的 UTF-8 编码错误（如双重编码的 Unicode）
+        #try:
+        #   decoded_path = decoded_path.encode('latin-1').decode('utf-8')
+        #except (UnicodeEncodeError, UnicodeDecodeError):
+        #    pass  # 如果已经是正常 Unicode，跳过
+
+        # 规范化路径（确保以 / 开头）
+        #if not decoded_path.startswith('/'):
+        #    decoded_path = '/' + decoded_path
+
+        return decoded_path
+
 
     def convert(raw_input, input_type='url', output_type='url', custom_set={'dup_rm_enabled': True, 'format_name_enabled': True}): # {'input_type': ['url', 'content'],'output_type': ['url', 'YAML', 'Base64']}
         # convert Url to YAML or Base64
@@ -520,29 +544,9 @@ class sub_convert():
         return yaml_content # 输出 YAML 格式文本
 
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
-        # ===== 内联路径处理器（与decode保持一致） =====
-        def process_path(raw_path):
-            """统一路径处理：解码Unicode转义并安全编码"""
-            if not isinstance(raw_path, str):
-                raw_path = str(raw_path)
         
-            # 处理\UXXXXXXXX和格式错误的UXXXXXXXX
-            if '\\U' in raw_path or ('U000' in raw_path and '\\' not in raw_path):
-                raw_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', raw_path)
-                try:
-                    raw_path = raw_path.encode('utf-8').decode('unicode-escape')
-                except:
-                    pass
         
-            # 规范化路径
-            if not raw_path.startswith('/'):
-                raw_path = '/' + raw_path
         
-            # 避免双重编码
-            if '%' in raw_path and '%25' not in raw_path:
-                return raw_path
-            return urllib.parse.quote(raw_path, safe="/?&=")
-        # ===== 结束路径处理器 =====
         
         
         url_list = []
@@ -717,7 +721,7 @@ class sub_convert():
                         raw_params.pop('sni', None)
                     if security_type == 'reality':
                         pbk = urllib.parse.unquote(get_param_priority('pbk', 'PublicKey', 'publicKey', default=''))
-                        sid = urllib.parse.unquote(get_param_priority('sid', 'ShortId', 'shortId', default='')) 
+                        sid = get_param_priority('sid', 'ShortId', 'shortId', default='')
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
                         if not pbk or not len(pbk) in (32,43, 44): 
                             raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
@@ -739,33 +743,29 @@ class sub_convert():
 
                     # 1. WebSocket处理
                     if network_type == 'ws':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
+                        
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         ws_host = (
-                            get_param_priority('host', 'Host', 'HOST') or
+                            get_param_priority('Host', 'host', 'HOST') or
                             sni or
                             server
                         )
                         yaml_node['ws-opts'] = {
-                            'path': urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/')),
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40'),
                             'headers': {'Host': ws_host}
                         }
                 
                     elif network_type == 'httpupgrade' or network_type == 'http' or network_type == 'xhttp' :
                         params = {}
                         http_opts = yaml_node.get('http-opts', {})
-                        path=urllib.parse.unquote(http_opts.get('path', '/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
+                        path = '/' + sub_convert.decode_url_path(http_opts.get('path', '')).lstrip('/')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         params['type'] = 'httpupgrade'
-                        params['path'] = urllib.parse.unquote(http_opts.get('path', '/'))
+                        params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
                         if 'host' in http_opts.get('headers', {}):
                             params['host'] = http_opts['headers']['host']
                         elif 'sni' in yaml_node:
@@ -778,10 +778,9 @@ class sub_convert():
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
-                        path=urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path
+
                         host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
+                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':','%3A').replace(',', '%2C').replace('@', '%40')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -792,7 +791,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host
                             if path:
-                                h2_opts['path'] = path
+                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
@@ -801,9 +800,7 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='')
-                        path = urllib.parse.unquote(get_param_priority('path', 'Path', 'PATH', default='/'))
-                        if not path.startswith('/'):
-                            path = '/' + path                        
+                        path = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                       
@@ -812,7 +809,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
-                                tcp_opts['path'] = path
+                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
@@ -1192,20 +1189,21 @@ class sub_convert():
         return base64_content
 
     def yaml_decode(url_content): # YAML 文本转换为 URL 链接内容
-        # ===== 复用相同的路径处理器 =====
-        def process_path(raw_path):
-            """与yaml_encode完全一致"""
-            if not isinstance(raw_path, str):
-                raw_path = str(raw_path)
-            if '\\U' in raw_path or ('U000' in raw_path and '\\' not in raw_path):
-                raw_path = re.sub(r'(?<!\\)U([0-9a-fA-F]{8})', '\\\\U\\1', raw_path)
-                try: raw_path = raw_path.encode('utf-8').decode('unicode-escape')
-                except: pass
-            if not raw_path.startswith('/'):
-                raw_path = '/' + raw_path
-            if '%' in raw_path and '%25' not in raw_path:
-                return raw_path
-            return urllib.parse.quote(raw_path, safe="/?&=")
+        
+        
+        #将Clash路径编码为URL安全格式，自动防止双重编码并保留特殊字符
+        def encode_clash_path(clash_path):
+            if not isinstance(clash_path, str):
+                clash_path = str(clash_path)
+
+            # 1. 先解码防止双重编码
+            decoded_path = sub_convert.decode_url_path(clash_path)
+            print(f"解码后路径: {decoded_path}")  # 调试输出
+
+            
+            encoded_path = urllib.parse.quote(decoded_path, safe="/?&=")
+            print(f"最终编码路径: {encoded_path}")  # 调试输出
+            return encoded_path
         
         try:
             
@@ -1314,20 +1312,7 @@ class sub_convert():
                         sni = get_any_case(proxy, ['sni', 'servername'], proxy['server'])
                         security = 'tls' if proxy.get('tls') else 'none'
                         port = str(proxy['port']).replace('/','')
-                        # === 路径处理（新增：强制以/开头） ===
-                        def process_path(raw_path):
-                            """处理路径：确保以/开头且避免双重编码"""
-                            if not isinstance(raw_path, str):
-                                raw_path = str(raw_path)
-                            # 确保以/开头
-                            if not raw_path.startswith('/'):
-                                raw_path = '/' + raw_path
-                            # 避免双重编码
-                            if '%' in raw_path and '%25' not in raw_path:
-                                return raw_path
-                            return urllib.parse.quote(raw_path, safe="/?&=")
 
-                        # === 各传输类型特殊处理 ===
                         params = {
                             'type': network,
                             'security': security,
@@ -1338,10 +1323,13 @@ class sub_convert():
                         if network == 'ws':
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
+                            print(f"原始路径: {raw_path}")  # 调试输出
+                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
+                            print(f"编码后路径: {encoded_path}")  # 调试输出
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
-                                'path': process_path(raw_path),  # 使用统一路径处理
-                                'host': get_any_case(headers, ['host'], sni)
+                                'path': encoded_path,
+                                'host': get_any_case(headers, ['Host'], sni)
                             })
 
                         # 2. HTTP/2 (h2)
@@ -1350,7 +1338,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = get_any_case(h2_opts, ['host'], [sni])
                             params.update({
-                                'path': process_path(raw_path),
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1368,18 +1356,20 @@ class sub_convert():
                                 params['header'] = {
                                     'type': 'http',
                                     'request': {
-                                        'path': process_path(raw_path),
+                                        'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                         'headers': {'Host': get_any_case(headers, ['host'], sni)}
                                     }
                                 }
 
                         # 5. HTTP Upgrade (httpupgrade)
                         elif network == 'httpupgrade' or network == 'http' or network == 'xhttp':
+                            
                             http_opts = get_any_case(proxy, ['http-opts'], {})
                             raw_path = get_any_case(http_opts, ['path'], '/')
                             headers = get_any_case(http_opts, ['headers'], {})
                             params.update({
-                                'path': process_path(raw_path),
+                                'type': 'httpupgrade',
+                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                 'host': get_any_case(headers, ['host'], sni)
                             })
 
@@ -1395,20 +1385,21 @@ class sub_convert():
 
                         # === 生成查询字符串 ===
                         query_str = '&'.join(
-                            f"{k}={urllib.parse.quote(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
+                            f"{k}={encode_clash_path(str(v))}" if not isinstance(v, dict) else f"{k}={json.dumps(v)}"
                             for k, v in params.items()
-                            if v not in (None, "", False, {})
+                            if v not in (None, "", False, {} ,"none")
                         )
 
                         # === 构建最终URL ===
                         vless_url = f"vless://{proxy['uuid']}@{proxy['server']}:{proxy['port']}?{query_str}#{urllib.parse.quote(proxy['name'])}"
                         protocol_url.append(vless_url + '\n')
+                        print(f'已添加节点{vless_url}')
 
                     except Exception as e:
-                        print(f"❌ VLESS 节点处理失败: {proxy.get('name', '未知')}")
-                        print(f"   错误类型: {type(e).__name__}")
-                        print(f"   错误详情: {str(e)}")
-                        print(f"   节点配置: {proxy}")
+                        print(f"❌ 处理VLess节点时发生错误: {e}")
+                        print(f"完整节点配置: {proxy}")
+                        import traceback
+                        traceback.print_exc()  # 打印完整堆栈
                         continue
                 
                 
