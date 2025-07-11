@@ -1121,7 +1121,7 @@ class sub_convert():
                 continue
                 
         yaml_content_dic = {'proxies': url_list}
-        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2, default_style='"')
+        yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2)
         yaml_content = sub_convert.format(yaml_content_raw)
         return yaml_content
     def base64_encode(url_content): # 将 URL 内容转换为 Base64
