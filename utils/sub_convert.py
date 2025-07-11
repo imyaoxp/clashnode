@@ -346,7 +346,7 @@ class sub_convert():
                     sort_keys=False,
                     allow_unicode=True,
                     width=750,
-                    indent=2
+                    indent=2,
                     default_style='"'
                 )
             
