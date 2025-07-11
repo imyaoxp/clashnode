@@ -712,7 +712,7 @@ class sub_convert():
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
-                            'grpc-service-name': sub_convert.decode_url_path(get_param_priority('serviceName', 'servicename', default='')).replace(':','%3A').replace(',', '%2C').replace('@', '')
+                            'grpc-service-name': sub_convert.decode_url_path(get_param_priority('serviceName', 'servicename', default='')).replace(':','%3A').replace(',', '%2C').replace('@', '%40')
                         }
 
                     # 3. HTTP/2处理
