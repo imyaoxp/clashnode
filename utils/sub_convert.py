@@ -768,8 +768,9 @@ class sub_convert():
                             sni or
                             server
                         )
+                        ws_host = sub_convert.decode_url_path(ws_host).replace(':', '%3A').replace(',', '%2C').replace('@', '%25%40')
                         yaml_node['ws-opts'] = {
-                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40'),
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%25%40'),
                             'headers': {'Host': ws_host}
                         }
                 
@@ -816,6 +817,8 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='')
+                        host = sub_convert.decode_url_path(host).replace(':', '%3A').replace(',', '%2C').replace('@', '%25%40')
+                    
                         path = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
