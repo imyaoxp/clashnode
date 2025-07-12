@@ -306,12 +306,12 @@ class sub_convert():
             # 处理YAML内容
             try:
                 # 尝试直接加载
-                loaded = yaml.safe_load(sub_content)
-                if output:
-                    return yaml.dump(loaded, default_flow_style=True, sort_keys=False, allow_unicode=True)
-                return loaded
+                #loaded = yaml.safe_load(sub_content)
+                #if output:
+                #    return yaml.dump(loaded, default_flow_style=True, sort_keys=False, allow_unicode=True)
+                #return loaded
             
-            except Exception:
+            #except Exception:
                 # 手动解析
                 proxies = []
                 lines = sub_content.split('\n')
