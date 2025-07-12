@@ -333,6 +333,8 @@ class sub_convert():
                                     proxy[key] = parse_nested(value[1:-1])
                                 except:
                                     pass
+            except Exception:
+                pass
 
                         #if 'alpn' in proxy:
                         #    if isinstance(proxy['alpn'], str):
