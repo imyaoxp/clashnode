@@ -306,12 +306,12 @@ class sub_convert():
             # 处理YAML内容
             try:
                 # 尝试直接加载
-                #loaded = yaml.safe_load(sub_content)
-                #if output:
-                #    return yaml.dump(loaded, default_flow_style=True, sort_keys=False, allow_unicode=True)
-                #return loaded
+                loaded = yaml.safe_load(sub_content)
+                if output:
+                    return yaml.dump(loaded, default_flow_style=True, sort_keys=False, allow_unicode=True)
+                return loaded
             
-            #except Exception:
+            except Exception:
                 # 手动解析
                 proxies = []
                 lines = sub_content.split('\n')
@@ -333,13 +333,16 @@ class sub_convert():
                                     proxy[key] = parse_nested(value[1:-1])
                                 except:
                                     pass
-                        proxies.append(proxy)
-            except Exception:
-                pass
 
-                         
-                                   
-                       # proxies.append(proxy)
+                        #if 'alpn' in proxy:
+                        #    if isinstance(proxy['alpn'], str):
+                        #        proxy['alpn'] = [x.strip() for x in proxy['alpn'].split(',')]
+                        #    elif not isinstance(proxy['alpn'], list):
+                        #        proxy['alpn'] = [str(proxy['alpn'])]
+                    
+                        
+                        
+                        proxies.append(proxy)
             
                 result = {'proxies': proxies}
                 # YAML生成（增加对alpn缩进的处理）
@@ -765,9 +768,8 @@ class sub_convert():
                             sni or
                             server
                         )
-                        ws_host = sub_convert.decode_url_path(ws_host).replace(':', '%3A').replace(',', '%2C').replace('@', '%25%40')
                         yaml_node['ws-opts'] = {
-                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%25%40'),
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40'),
                             'headers': {'Host': ws_host}
                         }
                 
@@ -814,8 +816,6 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='')
-                        host = sub_convert.decode_url_path(host).replace(':', '%3A').replace(',', '%2C').replace('@', '%25%40')
-                    
                         path = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
