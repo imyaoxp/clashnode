@@ -679,7 +679,8 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='').replace('@','').replace('%40','')
-                        path = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
+                        path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').lstrip('%40')
+                        print(f'path:{path}')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                       
@@ -687,8 +688,8 @@ class sub_convert():
                             tcp_opts = {}
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
-                            if path:
-                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').lstrip('%40')
+                            if path: 
+                                tcp_opts['path'] = path
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
