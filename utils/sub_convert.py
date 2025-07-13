@@ -134,7 +134,8 @@ class sub_convert():
                     url_content = sub_convert.yaml_encode(sub_convert.format(sub_content))
                     return url_content
                 else: # 判断 Base64.
-                    try:                                            url_content = sub_convert.base64_decode(sub_content)
+                    try: 
+                        url_content = sub_convert.base64_decode(sub_content)
                         url_content = sub_convert.yaml_encode(sub_convert.format(url_content))
                         return url_content
                     except Exception: # 万能异常 https://blog.csdn.net/Candance_star/article/details/94135515
