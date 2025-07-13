@@ -679,6 +679,7 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='').replace('@','').replace('%40','')
+                        print(f'host:{host}')
                         path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').lstrip('%40')
                         print(f'path:{path}')
                         #if path.count('@') >1 or path.count('%40') >1:
