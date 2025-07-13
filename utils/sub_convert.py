@@ -630,7 +630,7 @@ class sub_convert():
                             get_param_priority('Host', 'host', 'HOST') or
                             sni or
                             server
-                        ).lstrip('@')
+                        ).replace('@','')
                         yaml_node['ws-opts'] = {
                             'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@'),
                             'headers': {'Host': ws_host}
@@ -644,11 +644,11 @@ class sub_convert():
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         params['type'] = 'httpupgrade'
-                        params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
+                        params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@')
                         if 'host' in http_opts.get('headers', {}):
-                            params['host'] = http_opts['headers']['host'].lstrip('@')
+                            params['host'] = http_opts['headers']['host'].replace('@','')
                         elif 'sni' in yaml_node:
-                            params['host'] = yaml_node['sni'].lstrip('@')
+                            params['host'] = yaml_node['sni'].replace('@','')
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
@@ -658,7 +658,7 @@ class sub_convert():
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
 
-                        host=get_param_priority('host', 'Host', 'HOST', default='').split(',').lstrip('@')
+                        host=get_param_priority('host', 'Host', 'HOST', default='').replace('@','').split(',')
                         path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':','%3A').replace(',', '%2C').lstrip('@')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
@@ -668,7 +668,7 @@ class sub_convert():
                         if host or path:
                             h2_opts = {}
                             if host:
-                                h2_opts['host'] = host.lstrip('@')
+                                h2_opts['host'] = host.replace('@','')
                             if path:
                                 h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
@@ -678,7 +678,7 @@ class sub_convert():
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
-                        host = get_param_priority('Host', 'host', 'HOST', default='').lstrip('@')
+                        host = get_param_priority('Host', 'host', 'HOST', default='').replace('@','')
                         path = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
