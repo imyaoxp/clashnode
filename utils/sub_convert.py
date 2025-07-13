@@ -212,7 +212,7 @@ class sub_convert():
                         quote_char = char
                     elif char == quote_char and in_quotes:
                         in_quotes = False
-                       quote_char = None              
+                        quote_char = None              
                     if char == '{' and not in_quotes:
                         brace_level += 1
                     elif char == '}' and not in_quotes:
