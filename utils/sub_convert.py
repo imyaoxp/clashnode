@@ -55,19 +55,7 @@ class sub_convert():
             if '%' not in decoded_path:
                 break
             decoded_path = urllib.parse.unquote(decoded_path)
-
-        # 处理可能的 UTF-8 编码错误（如双重编码的 Unicode）
-        #try:
-        #   decoded_path = decoded_path.encode('latin-1').decode('utf-8')
-        #except (UnicodeEncodeError, UnicodeDecodeError):
-        #    pass  # 如果已经是正常 Unicode，跳过
-
-        # 规范化路径（确保以 / 开头）
-        #if not decoded_path.startswith('/'):
-        #    decoded_path = '/' + decoded_path
-
         return decoded_path
-
 
     def convert(raw_input, input_type='url', output_type='url', custom_set={'dup_rm_enabled': True, 'format_name_enabled': True}): # {'input_type': ['url', 'content'],'output_type': ['url', 'YAML', 'Base64']}
         try:
@@ -82,8 +70,7 @@ class sub_convert():
                         s.mount('http://', HTTPAdapter(max_retries=5))
                         s.mount('https://', HTTPAdapter(max_retries=5))
                         try:
-                            print('Downloading from:' + url)
-                        
+                            print('Downloading from:' + url)                       
                             idid = re.findall(r'#\d\d', url)[0]
                             idid = re.findall(r'\d\d',idid)[0]
                         
@@ -135,25 +122,19 @@ class sub_convert():
         except Exception as e:
             print(f"🔴 全局捕获: {type(e).__name__}")  # 理论上不应执行到这里
             return None
-
-
     
     def transfer(sub_content): # 将 URL 内容转换为 YAML 格式
         try:
             if '</b>' not in sub_content:
-                if 'proxies:' in sub_content: # 判断字符串是否在文本中，是，判断为YAML。https://cloud.tencent.com/developer/article/1699719
-                
+                if 'proxies:' in sub_content: # 判断字符串是否在文本中，是，判断为YAML。https://cloud.tencent.com/developer/article/1699719                
                     url_content = sub_convert.format(sub_content)
                     return url_content
                     #return self.url_content.replace('\r','') # 去除‘回车\r符’ https://blog.csdn.net/jerrygaoling/article/details/81051447
-                elif '://'  in sub_content: # 同上，是，判断为 Url 链接内容。
-               
+                elif '://'  in sub_content: # 同上，是，判断为 Url 链接内容。               
                     url_content = sub_convert.yaml_encode(sub_convert.format(sub_content))
                     return url_content
                 else: # 判断 Base64.
-                    try:
-                    
-                        url_content = sub_convert.base64_decode(sub_content)
+                    try:                                            url_content = sub_convert.base64_decode(sub_content)
                         url_content = sub_convert.yaml_encode(sub_convert.format(url_content))
                         return url_content
                     except Exception: # 万能异常 https://blog.csdn.net/Candance_star/article/details/94135515
@@ -179,9 +160,7 @@ class sub_convert():
             try:
                 if '://' not in sub_content:
                     sub_content = sub_convert.base64_encode(sub_content)
-
                 raw_url_list = re.split(r'[\r\n]+', sub_content)
-
                 for url in raw_url_list:
                     while len(re.split('ss://|ssr://|vmess://|trojan://|vless://|tuic://|hy://|hy2://', url)) > 2:
                         url_to_split = url[8:]
@@ -203,13 +182,11 @@ class sub_convert():
                             url_splited = url_to_split.replace('hy://', '\nhy://', 1)
                         elif '#' in url_to_split:
                             url_splited = url_to_split.replace('#', '\n#', 1)
-
                         url_split = url_splited.split('\n')
                         front_url = url[:8] + url_split[0]
                         url_list.append(front_url)
                         url = url_split[1]
                     url_list.append(url)
-
                 url_content = '\n'.join(url_list)
                 return url_content
             except:
@@ -234,8 +211,7 @@ class sub_convert():
                         quote_char = char
                     elif char == quote_char and in_quotes:
                         in_quotes = False
-                        quote_char = None
-                
+                       quote_char = None              
                     if char == '{' and not in_quotes:
                         brace_level += 1
                     elif char == '}' and not in_quotes:
@@ -244,7 +220,6 @@ class sub_convert():
                         bracket_level += 1
                     elif char == ']' and not in_quotes:
                         bracket_level -= 1
-                
                     if char == ',' and brace_level == 0 and bracket_level == 0 and not in_quotes:
                         items.append(''.join(current).strip())
                         current = []
@@ -332,18 +307,8 @@ class sub_convert():
                                 try:
                                     proxy[key] = parse_nested(value[1:-1])
                                 except:
-                                    pass
-
-                        #if 'alpn' in proxy:
-                        #    if isinstance(proxy['alpn'], str):
-                        #        proxy['alpn'] = [x.strip() for x in proxy['alpn'].split(',')]
-                        #    elif not isinstance(proxy['alpn'], list):
-                        #        proxy['alpn'] = [str(proxy['alpn'])]
-                    
-                        
-                        
-                        proxies.append(proxy)
-            
+                                    pass                                                
+                        proxies.append(proxy)            
                 result = {'proxies': proxies}
                 # YAML生成（增加对alpn缩进的处理）
                 yaml_content = yaml.dump(
@@ -362,8 +327,7 @@ class sub_convert():
                     yaml_content,
                     flags=re.MULTILINE
                 )
-
-                
+          
                 if output:
                     return yaml_content.replace('\'', '').replace('False', 'false').replace('True', 'true')
                 return result
@@ -410,80 +374,10 @@ class sub_convert():
                             #print(proxy_compared)
                     begin_2 += 1
                 begin += 1
-
         url_list = []
 
-        for proxy in proxies_list: # 改名
-            
+        for proxy in proxies_list: # 改名            
             if format_name_enabled:
-                emoji = {
-                    'AD': '🇦🇩', 'AE': '🇦🇪', 'AF': '🇦🇫', 'AG': '🇦🇬', 
-                    'AI': '🇦🇮', 'AL': '🇦🇱', 'AM': '🇦🇲', 'AO': '🇦🇴', 
-                    'AQ': '🇦🇶', 'AR': '🇦🇷', 'AS': '🇦🇸', 'AT': '🇦🇹', 
-                    'AU': '🇦🇺', 'AW': '🇦🇼', 'AX': '🇦🇽', 'AZ': '🇦🇿', 
-                    'BA': '🇧🇦', 'BB': '🇧🇧', 'BD': '🇧🇩', 'BE': '🇧🇪', 
-                    'BF': '🇧🇫', 'BG': '🇧🇬', 'BH': '🇧🇭', 'BI': '🇧🇮', 
-                    'BJ': '🇧🇯', 'BL': '🇧🇱', 'BM': '🇧🇲', 'BN': '🇧🇳', 
-                    'BO': '🇧🇴', 'BQ': '🇧🇶', 'BR': '🇧🇷', 'BS': '🇧🇸', 
-                    'BT': '🇧🇹', 'BV': '🇧🇻', 'BW': '🇧🇼', 'BY': '🇧🇾', 
-                    'BZ': '🇧🇿', 'CA': '🇨🇦', 'CC': '🇨🇨', 'CD': '🇨🇩', 
-                    'CF': '🇨🇫', 'CG': '🇨🇬', 'CH': '🇨🇭', 'CI': '🇨🇮', 
-                    'CK': '🇨🇰', 'CL': '🇨🇱', 'CM': '🇨🇲', 'CN': '🇨🇳', 
-                    'CO': '🇨🇴', 'CR': '🇨🇷', 'CU': '🇨🇺', 'CV': '🇨🇻', 
-                    'CW': '🇨🇼', 'CX': '🇨🇽', 'CY': '🇨🇾', 'CZ': '🇨🇿', 
-                    'DE': '🇩🇪', 'DJ': '🇩🇯', 'DK': '🇩🇰', 'DM': '🇩🇲', 
-                    'DO': '🇩🇴', 'DZ': '🇩🇿', 'EC': '🇪🇨', 'EE': '🇪🇪', 
-                    'EG': '🇪🇬', 'EH': '🇪🇭', 'ER': '🇪🇷', 'ES': '🇪🇸', 
-                    'ET': '🇪🇹', 'EU': '🇪🇺', 'FI': '🇫🇮', 'FJ': '🇫🇯', 
-                    'FK': '🇫🇰', 'FM': '🇫🇲', 'FO': '🇫🇴', 'FR': '🇫🇷', 
-                    'GA': '🇬🇦', 'GB': '🇬🇧', 'GD': '🇬🇩', 'GE': '🇬🇪', 
-                    'GF': '🇬🇫', 'GG': '🇬🇬', 'GH': '🇬🇭', 'GI': '🇬🇮', 
-                    'GL': '🇬🇱', 'GM': '🇬🇲', 'GN': '🇬🇳', 'GP': '🇬🇵', 
-                    'GQ': '🇬🇶', 'GR': '🇬🇷', 'GS': '🇬🇸', 'GT': '🇬🇹', 
-                    'GU': '🇬🇺', 'GW': '🇬🇼', 'GY': '🇬🇾', 'HK': '🇭🇰', 
-                    'HM': '🇭🇲', 'HN': '🇭🇳', 'HR': '🇭🇷', 'HT': '🇭🇹', 
-                    'HU': '🇭🇺', 'ID': '🇮🇩', 'IE': '🇮🇪', 'IL': '🇮🇱', 
-                    'IM': '🇮🇲', 'IN': '🇮🇳', 'IO': '🇮🇴', 'IQ': '🇮🇶', 
-                    'IR': '🇮🇷', 'IS': '🇮🇸', 'IT': '🇮🇹', 'JE': '🇯🇪', 
-                    'JM': '🇯🇲', 'JO': '🇯🇴', 'JP': '🇯🇵', 'KE': '🇰🇪', 
-                    'KG': '🇰🇬', 'KH': '🇰🇭', 'KI': '🇰🇮', 'KM': '🇰🇲', 
-                    'KN': '🇰🇳', 'KP': '🇰🇵', 'KR': '🇰🇷', 'KW': '🇰🇼', 
-                    'KY': '🇰🇾', 'KZ': '🇰🇿', 'LA': '🇱🇦', 'LB': '🇱🇧', 
-                    'LC': '🇱🇨', 'LI': '🇱🇮', 'LK': '🇱🇰', 'LR': '🇱🇷', 
-                    'LS': '🇱🇸', 'LT': '🇱🇹', 'LU': '🇱🇺', 'LV': '🇱🇻', 
-                    'LY': '🇱🇾', 'MA': '🇲🇦', 'MC': '🇲🇨', 'MD': '🇲🇩', 
-                    'ME': '🇲🇪', 'MF': '🇲🇫', 'MG': '🇲🇬', 'MH': '🇲🇭', 
-                    'MK': '🇲🇰', 'ML': '🇲🇱', 'MM': '🇲🇲', 'MN': '🇲🇳', 
-                    'MO': '🇲🇴', 'MP': '🇲🇵', 'MQ': '🇲🇶', 'MR': '🇲🇷', 
-                    'MS': '🇲🇸', 'MT': '🇲🇹', 'MU': '🇲🇺', 'MV': '🇲🇻', 
-                    'MW': '🇲🇼', 'MX': '🇲🇽', 'MY': '🇲🇾', 'MZ': '🇲🇿', 
-                    'NA': '🇳🇦', 'NC': '🇳🇨', 'NE': '🇳🇪', 'NF': '🇳🇫', 
-                    'NG': '🇳🇬', 'NI': '🇳🇮', 'NL': '🇳🇱', 'NO': '🇳🇴', 
-                    'NP': '🇳🇵', 'NR': '🇳🇷', 'NU': '🇳🇺', 'NZ': '🇳🇿', 
-                    'OM': '🇴🇲', 'PA': '🇵🇦', 'PE': '🇵🇪', 'PF': '🇵🇫', 
-                    'PG': '🇵🇬', 'PH': '🇵🇭', 'PK': '🇵🇰', 'PL': '🇵🇱', 
-                    'PM': '🇵🇲', 'PN': '🇵🇳', 'PR': '🇵🇷', 'PS': '🇵🇸', 
-                    'PT': '🇵🇹', 'PW': '🇵🇼', 'PY': '🇵🇾', 'QA': '🇶🇦', 
-                    'RE': '🇷🇪', 'RO': '🇷🇴', 'RS': '🇷🇸', 'RU': '🇷🇺', 
-                    'RW': '🇷🇼', 'SA': '🇸🇦', 'SB': '🇸🇧', 'SC': '🇸🇨', 
-                    'SD': '🇸🇩', 'SE': '🇸🇪', 'SG': '🇸🇬', 'SH': '🇸🇭', 
-                    'SI': '🇸🇮', 'SJ': '🇸🇯', 'SK': '🇸🇰', 'SL': '🇸🇱', 
-                    'SM': '🇸🇲', 'SN': '🇸🇳', 'SO': '🇸🇴', 'SR': '🇸🇷', 
-                    'SS': '🇸🇸', 'ST': '🇸🇹', 'SV': '🇸🇻', 'SX': '🇸🇽', 
-                    'SY': '🇸🇾', 'SZ': '🇸🇿', 'TC': '🇹🇨', 'TD': '🇹🇩', 
-                    'TF': '🇹🇫', 'TG': '🇹🇬', 'TH': '🇹🇭', 'TJ': '🇹🇯', 
-                    'TK': '🇹🇰', 'TL': '🇹🇱', 'TM': '🇹🇲', 'TN': '🇹🇳', 
-                    'TO': '🇹🇴', 'TR': '🇹🇷', 'TT': '🇹🇹', 'TV': '🇹🇻', 
-                    'TW': '🇹🇼', 'TZ': '🇹🇿', 'UA': '🇺🇦', 'UG': '🇺🇬', 
-                    'UM': '🇺🇲', 'US': '🇺🇸', 'UY': '🇺🇾', 'UZ': '🇺🇿', 
-                    'VA': '🇻🇦', 'VC': '🇻🇨', 'VE': '🇻🇪', 'VG': '🇻🇬', 
-                    'VI': '🇻🇮', 'VN': '🇻🇳', 'VU': '🇻🇺', 'WF': '🇼🇫', 
-                    'WS': '🇼🇸', 'XK': '🇽🇰', 'YE': '🇾🇪', 'YT': '🇾🇹', 
-                    'ZA': '🇿🇦', 'ZM': '🇿🇲', 'ZW': '🇿🇼', 
-                    'RELAY': '🏁',
-                    'NOWHERE': '🇦🇶',
-                }
-
                 server = proxy['server']
                 if server.replace('.','').isdigit():
                     ip = server
@@ -492,7 +386,6 @@ class sub_convert():
                         ip = socket.gethostbyname(server) # https://cloud.tencent.com/developer/article/1569841
                     except Exception:
                         ip = server
-
                 with geoip2.database.Reader('./utils/Country.mmdb') as ip_reader:
                     try:
                         response = ip_reader.country(ip)
@@ -500,32 +393,18 @@ class sub_convert():
                     except Exception:
                         ip = '0.0.0.0'
                         country_code = 'NOWHERE'
-
                 if country_code == 'CLOUDFLARE':
                     country_code = 'RELAY'
                 elif country_code == 'PRIVATE':
                     country_code = 'RELAY'
-
-                if country_code in emoji:
-                    name_emoji = emoji[country_code]
-                else:
-                    name_emoji = emoji['NOWHERE']
-
                 proxy_index = proxies_list.index(proxy)
-                proxyname= proxy['name']
-                
-                #print(idid)
-                
- 
-                
+                proxyname= proxy['name']       
                 if idid != '':
                     if re.findall(r'\d\d',idid)[0] == '99' :
-                        idid = ''
-                        
+                        idid = ''             
                     else :
                         idid = re.findall(r'\d\d',idid)[0]
-                        proxyname=str(idid)
-                
+                        proxyname=str(idid)              
                 proxyname=re.findall(r'^..',proxyname)[0]
                         
                 if len(proxies_list) >=1000:
@@ -533,8 +412,7 @@ class sub_convert():
                     proxy['name'] =f'{proxyname}-{proxy_index:0>4d}-{country_code}'
                 elif len(proxies_list) <= 999:
                     proxy['name'] =f'{proxyname}-{proxy_index:0>3d}-{country_code}'
-                
-                
+                                
                 if proxy['server'] != '127.0.0.1':
                     proxy_str = str(proxy)
                     url_list.append(proxy_str)
@@ -545,30 +423,14 @@ class sub_convert():
              
         yaml_content_dic = {'proxies': url_list}
         yaml_content_raw = yaml.dump(yaml_content_dic, default_flow_style=False, sort_keys=False, allow_unicode=True, width=750, indent=2) # yaml.dump 显示中文方法 https://blog.csdn.net/weixin_41548578/article/details/90651464 yaml.dump 各种参数 https://blog.csdn.net/swinfans/article/details/88770119
-        
-        #yaml_content_raw = re.sub(
-        #    r'^(\s*)alpn:\s*(\r?\n)(\s*)- ',
-        #    r'\1alpn:\2\1  - ',
-        #    yaml_content_raw,
-        #    flags=re.MULTILINE
-        #)
-            
         yaml_content = yaml_content_raw.replace('\'', '').replace('False', 'false').replace('True', 'true')
-
-        yaml_content = sub_convert.format(yaml_content,True)
-        
+        yaml_content = sub_convert.format(yaml_content,True)        
         return yaml_content # 输出 YAML 格式文本
 
     def yaml_encode(url_content): # 将 URL 内容转换为 YAML (输出默认 YAML 格式)
-        
-        
-        
-        
-        
+                
         url_list = []
-
         lines = re.split(r'\n+', url_content)
-
         for line in lines:
             yaml_url = {}
             
@@ -767,9 +629,9 @@ class sub_convert():
                             get_param_priority('Host', 'host', 'HOST') or
                             sni or
                             server
-                        )
+                        ).lstrip('@')
                         yaml_node['ws-opts'] = {
-                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40'),
+                            'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@'),
                             'headers': {'Host': ws_host}
                         }
                 
@@ -783,20 +645,20 @@ class sub_convert():
                         params['type'] = 'httpupgrade'
                         params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
                         if 'host' in http_opts.get('headers', {}):
-                            params['host'] = http_opts['headers']['host']
+                            params['host'] = http_opts['headers']['host'].lstrip('@')
                         elif 'sni' in yaml_node:
-                            params['host'] = yaml_node['sni']
+                            params['host'] = yaml_node['sni'].lstrip('@')
                     # 2. gRPC处理
                     elif network_type == 'grpc':
                         yaml_node['grpc-opts'] = {
-                            'grpc-service-name': urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default=''))
+                            'grpc-service-name': urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default='')).lstrip('@')
                         }
 
                     # 3. HTTP/2处理
                     elif network_type == 'h2':
 
-                        host=get_param_priority('host', 'Host', 'HOST', default='').split(',')
-                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':','%3A').replace(',', '%2C').replace('@', '%40')
+                        host=get_param_priority('host', 'Host', 'HOST', default='').split(',').lstrip('@')
+                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).lstrip('/').replace(':','%3A').replace(',', '%2C').lstrip('@')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -805,9 +667,9 @@ class sub_convert():
                         if host or path:
                             h2_opts = {}
                             if host:
-                                h2_opts['host'] = host
+                                h2_opts['host'] = host.lstrip('@')
                             if path:
-                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
+                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
@@ -815,7 +677,7 @@ class sub_convert():
                     # 4. TCP处理（含HTTP伪装）
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
-                        host = get_param_priority('Host', 'host', 'HOST', default='')
+                        host = get_param_priority('Host', 'host', 'HOST', default='').lstrip('@')
                         path = sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default=''))
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
@@ -825,7 +687,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host.split(',')}
                             if path:
-                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').replace('@', '%40')
+                                tcp_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@')
                             if tcp_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['tcp-opts'] = tcp_opts
                     else:
