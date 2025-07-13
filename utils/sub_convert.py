@@ -529,9 +529,9 @@ class sub_convert():
                     base_part = url_part[0].split('?', 1)
                 
                     # 提取UUID和服务端信息（安全处理@）
-                    auth_part = base_part[0].split('@')
+                    auth_part = base_part[0].split('@',1)
                     if len(auth_part) != 2:
-                        print(f"⚠️ 格式错误：只能有1个@符号 | {line}")
+                        print(f"⚠️ 格式错误：不存在@符号 | {line}")
                         continue
                 
                     uuid = auth_part[0]
