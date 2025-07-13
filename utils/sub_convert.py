@@ -1232,12 +1232,14 @@ class sub_convert():
                         elif network == 'tcp':
                             tcp_opts = get_any_case(proxy, ['tcp-opts'], {})
                             raw_path = get_any_case(tcp_opts, ['path'], '/')
+                            path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
+                            print(f'path:{path}')
                             headers = get_any_case(tcp_opts, ['headers'], {})
                             if raw_path or headers:
                                 params['header'] = {
                                     'type': 'http',
                                     'request': {
-                                        'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
+                                        'path': path,
                                         'headers': {'Host': get_any_case(headers, ['host'], sni)}
                                     }
                                 }
