@@ -1210,14 +1210,14 @@ class sub_convert():
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
                                 'path': encoded_path,
-                                'host': get_any_case(headers, ['Host'], sni)
+                                'host': encode_clash_path(get_any_case(headers, ['Host'], sni))
                             })
 
                         # 2. HTTP/2 (h2)
                         elif network == 'h2':
                             h2_opts = get_any_case(proxy, ['h2-opts'], {})
                             raw_path = get_any_case(h2_opts, ['path'], '/')
-                            hosts = get_any_case(h2_opts, ['host'], [sni])
+                            hosts = encode_clash_path(get_any_case(h2_opts, ['host'], [sni]))
                             params.update({
                                 'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
@@ -1232,29 +1232,29 @@ class sub_convert():
                         elif network == 'tcp':
                             tcp_opts = get_any_case(proxy, ['tcp-opts'], {})
                             raw_path = get_any_case(tcp_opts, ['path'], '/')
-                            path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
-                            print(f'path:{path}')
+                            path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
                             headers = get_any_case(tcp_opts, ['headers'], {})
+    
                             if raw_path or headers:
-                                params['header'] = {
-                                    'type': 'http',
-                                    'request': {
-                                        'path': path,
-                                        'headers': {'Host': get_any_case(headers, ['host'], sni)}
+                                # 1. 构建原始JSON字典（保持Clash格式）
+                                header_data = {
+                                    "type": "http",
+                                    "request": {
+                                        "path": path,
+                                        "headers": {
+                                            "Host": get_any_case(headers, ['host'], sni)
+                                        }
                                     }
                                 }
-
-                        # 5. HTTP Upgrade (httpupgrade)
-                        elif network == 'httpupgrade' or network == 'http' or network == 'xhttp':
-                            
-                            http_opts = get_any_case(proxy, ['http-opts'], {})
-                            raw_path = get_any_case(http_opts, ['path'], '/')
-                            headers = get_any_case(http_opts, ['headers'], {})
-                            params.update({
-                                'type': 'httpupgrade',
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
-                                'host': get_any_case(headers, ['host'], sni)
-                            })
+        
+                                # 2. 转换为紧凑JSON字符串（无空格）
+                                compact_json = json.dumps(header_data, separators=(',', ':'))
+        
+                                # 3. 整体URL编码（关键步骤！）
+                                encoded_header = urllib.parse.quote(compact_json)
+        
+                                # 4. 添加到参数
+                                params['header'] = encoded_header
 
                         # === Reality 支持 ===
                         reality_opts = get_any_case(proxy, ['reality-opts'], {})
