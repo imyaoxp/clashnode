@@ -71,37 +71,37 @@ proxies:
   udp: true
   skip-cert-verify: true
   tls: true
-  password: ca08df2d-fa81-3315-a82b-125eba728e16
+  password: 49f5efe1-141a-3a42-9e1d-6b372bb1c78e
   server: gz0slb.aliyuncdn.smp-paymentservices-apple.com
   port: 56323
-  sni: cloudsync-prod.s3.amazonaws.com
+  sni: fastly.cdn.steampipe.steamcontent.com
 - name: 04-006-CN
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: ca08df2d-fa81-3315-a82b-125eba728e16
+  password: 49f5efe1-141a-3a42-9e1d-6b372bb1c78e
   server: gz0slb.aliyuncdn.smp-paymentservices-apple.com
   port: 56432
-  sni: www.microsoft365.com
+  sni: edge.steam-dns.top.comcast.net
 - name: 04-007-CN
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: ca08df2d-fa81-3315-a82b-125eba728e16
+  password: 49f5efe1-141a-3a42-9e1d-6b372bb1c78e
   server: push04.endpoint.smp-paymentservices-apple.com
   port: 23452
-  sni: akamai.cdn.steampipe.steamcontent.com
+  sni: cloudsync-prod.s3.amazonaws.com
 - name: 04-008-CN
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: ca08df2d-fa81-3315-a82b-125eba728e16
+  password: 49f5efe1-141a-3a42-9e1d-6b372bb1c78e
   server: push04.endpoint.smp-paymentservices-apple.com
   port: 23453
-  sni: steampipe-partner.akamaized.net
+  sni: steamcdn-a.akamaihd.net
 - name: 04-009-HK
   server: drift.unclemanco.com
   port: 15558
@@ -1390,7 +1390,35 @@ proxies:
     skip-cert-verify: true
   udp: true
 - name: 04-108-RELAY
-  server: s1.db-link02.top
+  server: s3.db-link01.top
+  port: 2052
+  type: vmess
+  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s3.db-link01.top
+    path: /dabai.in172.64.9.122
+  tls: false
+- name: 04-109-RELAY
+  server: s3.db-link01.top
+  port: 8080
+  type: vmess
+  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s3.db-link01.top
+    path: /dabai.in172.64.57.108
+  tls: false
+- name: 04-110-RELAY
+  server: s4.db-link01.top
   port: 2086
   type: vmess
   uuid: bd54de43-5eea-38c5-926b-d335f80f876b
@@ -1400,39 +1428,11 @@ proxies:
   udp: true
   network: ws
   ws-opts:
-    host: s1.db-link02.top
-    path: /dabai.in104.19.233.126
-  tls: false
-- name: 04-109-RELAY
-  server: s2.cn-db.top
-  port: 80
-  type: vmess
-  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s2.cn-db.top
-    path: /dabai.in172.67.21.210
-  tls: false
-- name: 04-110-RELAY
-  server: s4.db-link02.top
-  port: 8080
-  type: vmess
-  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s4.db-link02.top
-    path: /dabai.in104.20.92.20
+    host: s4.db-link01.top
+    path: /dabai.in172.67.91.82
   tls: false
 - name: 04-111-RELAY
-  server: s3.cn-db.top
+  server: s2.db-link01.top
   port: 2082
   type: vmess
   uuid: bd54de43-5eea-38c5-926b-d335f80f876b
@@ -1442,40 +1442,12 @@ proxies:
   udp: true
   network: ws
   ws-opts:
-    host: s3.cn-db.top
-    path: /dabai.in172.64.37.120
+    host: s2.db-link01.top
+    path: /dabai.in104.21.131.190
   tls: false
 - name: 04-112-RELAY
-  server: s2.db-link02.top
-  port: 2082
-  type: vmess
-  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s2.db-link02.top
-    path: /dabai.in104.24.14.24
-  tls: false
-- name: 04-113-RELAY
-  server: s1.cn-db.top
-  port: 8880
-  type: vmess
-  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s1.cn-db.top
-    path: /dabai.in104.21.141.37
-  tls: false
-- name: 04-114-RELAY
   server: s4.cn-db.top
-  port: 8080
+  port: 2052
   type: vmess
   uuid: bd54de43-5eea-38c5-926b-d335f80f876b
   alterId: 0
@@ -1485,7 +1457,35 @@ proxies:
   network: ws
   ws-opts:
     host: s4.cn-db.top
-    path: /dabai.in172.64.3.40
+    path: /dabai.in104.20.163.65
+  tls: false
+- name: 04-113-RELAY
+  server: s3.db-link01.top
+  port: 2086
+  type: vmess
+  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s3.db-link01.top
+    path: /dabai.in104.25.121.78
+  tls: false
+- name: 04-114-RELAY
+  server: s2.cn-db.top
+  port: 8080
+  type: vmess
+  uuid: bd54de43-5eea-38c5-926b-d335f80f876b
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s2.cn-db.top
+    path: /dabai.in172.67.38.170
   tls: false
 - name: 04-115-NOWHERE
   server: 12.mamamajd.site
@@ -7924,19 +7924,6 @@ proxies:
   udp: true
 - name: 14-610-US
   type: hysteria
-  server: 108.181.24.77
-  port: 11512
-  auth-str: dongtaiwang.com
-  auth_str: dongtaiwang.com
-  up: 20 Mbps
-  down: 50 Mbps
-  protocol: udp
-  udp: true
-  skip-cert-verify: true
-  alpn:
-    - h3
-- name: 14-611-US
-  type: hysteria
   server: 208.87.243.151
   port: 17549
   auth-str: 
@@ -7948,14 +7935,20 @@ proxies:
   skip-cert-verify: true
   alpn:
     - h3
-- name: 14-612-MD
-  server: 185.153.197.5
-  port: 989
-  type: ss
-  cipher: aes-256-cfb
-  password: f8f7aCzcPKbsF8p3
+- name: 14-611-US
+  type: hysteria
+  server: 108.181.24.77
+  port: 11512
+  auth-str: dongtaiwang.com
+  auth_str: dongtaiwang.com
+  up: 20 Mbps
+  down: 50 Mbps
+  protocol: udp
   udp: true
-- name: 14-613-NL
+  skip-cert-verify: true
+  alpn:
+    - h3
+- name: 14-612-NL
   server: 83.149.84.145
   port: 15709
   type: vmess
@@ -7969,7 +7962,21 @@ proxies:
     headers:
       host: 83.149.84.145
   tls: false
-- name: 14-614-RELAY
+- name: 14-613-DE
+  server: 147.45.178.200
+  port: 57456
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: a58fa62b4944ddbf
+  udp: true
+- name: 14-614-MD
+  server: 185.153.197.5
+  port: 989
+  type: ss
+  cipher: aes-256-cfb
+  password: f8f7aCzcPKbsF8p3
+  udp: true
+- name: 14-615-RELAY
   server: 104.26.7.89
   port: 8443
   type: vless
@@ -7982,14 +7989,27 @@ proxies:
     path: /proxy_mtm---proxy_mtm---proxy_mtm---proxy_mtm---proxy_mtm---proxy_mtm---proxy_mtm?ed=2560
     headers:
       Host: brmahasang.ahaysiahzangi.dpdns.org
-- name: 14-615-US
-  server: 154.3.8.151
-  port: 30067
+- name: 14-616-AM
+  server: 85.90.207.130
+  port: 15260
+  type: vless
+  uuid: c4b79a93-2e16-4cd1-ae04-15fe9c4a8bba
+  servername: 85.90.207.130
+  tls: false
+  network: ws
+  udp: true
+  ws-opts:
+    path: /
+    headers:
+      Host: 85.90.207.130
+- name: 14-617-KR
+  server: 203.32.26.81
+  port: 19028
   type: ss
   cipher: aes-256-gcm
-  password: iUB0923RBA
+  password: 1928aa4d6e3c8df3
   udp: true
-- name: 14-616-CN
+- name: 14-618-CN
   server: 120.237.79.157
   port: 42174
   type: vmess
@@ -8003,7 +8023,33 @@ proxies:
     headers:
       host: 120.237.79.157
   tls: false
-- name: 14-617-US
+- name: 14-619-RELAY
+  server: web.xhamster.biz.id
+  port: 443
+  type: vless
+  uuid: aaaaaaa1-bbbb-4ccc-accc-eeeeeeeeeee1
+  servername: web.xhamster.biz.id
+  tls: true
+  network: ws
+  udp: true
+  ws-opts:
+    path: /Free-CF-Proxy-AT4
+    headers:
+      Host: web.xhamster.biz.id
+- name: 14-620-RELAY
+  server: 172.67.135.195
+  port: 2052
+  type: vless
+  uuid: 0d710c53-876d-401f-97f0-6bd1a8db941a
+  servername: 172.67.135.195
+  tls: false
+  network: ws
+  udp: true
+  ws-opts:
+    path: /J61hhknxUXEwJZLq/MTU5LjY5LjE1My4xMTQ=?ed=2560
+    headers:
+      Host: sWEeT-DIsK-b69d.TUdTudtrUHtRU.wOrkERS.dev
+- name: 14-621-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -8017,7 +8063,7 @@ proxies:
     path: /
     headers:
       Host: torjan.xn--xhq44j.eu.org
-- name: 14-618-KZ
+- name: 14-622-KZ
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -8031,19 +8077,23 @@ proxies:
     path: /
     headers:
       Host: torjan.xn--xhq44j.eu.org
-- name: 14-619-JP
-  server: 137.220.191.40
-  port: 636
+- name: 14-623-RELAY
+  server: 172.67.181.173
+  port: 80
+  type: vless
+  uuid: 05e6ff19-7c2f-42ce-9e66-f45bec9e8b0f
+  servername: PamcHalL.coM
+  tls: false
+  network: ws
+  udp: true
+  ws-opts:
+    path: /Telegram%3A%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG%2C%40ConfingV2RaayNG?ed=2560
+    headers:
+      Host: PamcHalL.coM
+- name: 14-624-US
+  server: 154.3.8.151
+  port: 30067
   type: ss
   cipher: aes-256-gcm
-  password: 823e135ed103
-  plugin: v2ray-plugin
-  plugin-opts:
-    mode: websocket
-    host: jp7v1.lingjfjkm002.com
-    path: /dchlbvrbbotc
-    tls: true
-    mux: true
-    skip-cert-verify: true
-    restls: false
+  password: iUB0923RBA
   udp: true
