@@ -71,37 +71,37 @@ proxies:
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 2925f535-87c6-337c-9979-a6df291d1b16
+  password: 548d3e11-f330-30ff-bfd2-ed3fb1095f7c
   server: gz0slb.aliyuncdn.smp-paymentservices-apple.com
   port: 56323
-  sni: steampipe.akamaized.net
+  sni: origin-a.akamaihd.net
 - name: 04-006-NOWHERE
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 2925f535-87c6-337c-9979-a6df291d1b16
+  password: 548d3e11-f330-30ff-bfd2-ed3fb1095f7c
   server: gz0slb.aliyuncdn.smp-paymentservices-apple.com
   port: 56432
-  sni: akamai.cdn.steampipe.steamcontent.com
+  sni: cloudsync-prod.s3.amazonaws.com
 - name: 04-007-CN
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 2925f535-87c6-337c-9979-a6df291d1b16
+  password: 548d3e11-f330-30ff-bfd2-ed3fb1095f7c
   server: push04.endpoint.smp-paymentservices-apple.com
   port: 23452
-  sni: fastly.cdn.steampipe.steamcontent.com
+  sni: steampipe.akamaized.net
 - name: 04-008-CN
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 2925f535-87c6-337c-9979-a6df291d1b16
+  password: 548d3e11-f330-30ff-bfd2-ed3fb1095f7c
   server: push04.endpoint.smp-paymentservices-apple.com
   port: 23453
-  sni: fastly.cdn.steampipe.steamcontent.com
+  sni: steampipe-kr.akamaized.net
 - name: 04-009-HK
   server: driftsdds.unclemanco.com
   port: 15558
@@ -1390,8 +1390,8 @@ proxies:
     skip-cert-verify: true
   udp: true
 - name: 04-108-RELAY
-  server: s3.db-link01.top
-  port: 8880
+  server: s1.cn-db.top
+  port: 8080
   type: vmess
   uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
   alterId: 0
@@ -1400,81 +1400,11 @@ proxies:
   udp: true
   network: ws
   ws-opts:
-    host: s3.db-link01.top
-    path: /dabai.in104.19.190.242
+    host: s1.cn-db.top
+    path: /dabai.in104.21.231.253
   tls: false
 - name: 04-109-RELAY
-  server: s3.cn-db.top
-  port: 8880
-  type: vmess
-  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s3.cn-db.top
-    path: /dabai.in104.19.31.147
-  tls: false
-- name: 04-110-RELAY
-  server: s1.db-link02.top
-  port: 2086
-  type: vmess
-  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s1.db-link02.top
-    path: /dabai.in172.67.104.64
-  tls: false
-- name: 04-111-RELAY
-  server: s3.cn-db.top
-  port: 2052
-  type: vmess
-  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s3.cn-db.top
-    path: /dabai.in104.18.80.105
-  tls: false
-- name: 04-112-RELAY
-  server: s2.cn-db.top
-  port: 2086
-  type: vmess
-  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s2.cn-db.top
-    path: /dabai.in172.67.48.228
-  tls: false
-- name: 04-113-RELAY
-  server: s4.db-link01.top
-  port: 8880
-  type: vmess
-  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: s4.db-link01.top
-    path: /dabai.in172.67.15.239
-  tls: false
-- name: 04-114-RELAY
-  server: s2.db-link01.top
+  server: s5.db-link02.top
   port: 80
   type: vmess
   uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
@@ -1484,8 +1414,78 @@ proxies:
   udp: true
   network: ws
   ws-opts:
-    host: s2.db-link01.top
-    path: /dabai.in172.67.118.14
+    host: s5.db-link02.top
+    path: /dabai.in104.25.196.199
+  tls: false
+- name: 04-110-RELAY
+  server: s1.db-link02.top
+  port: 8080
+  type: vmess
+  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s1.db-link02.top
+    path: /dabai.in172.64.55.138
+  tls: false
+- name: 04-111-RELAY
+  server: s4.db-link01.top
+  port: 2052
+  type: vmess
+  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s4.db-link01.top
+    path: /dabai.in104.20.192.252
+  tls: false
+- name: 04-112-RELAY
+  server: s5.db-link02.top
+  port: 2095
+  type: vmess
+  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s5.db-link02.top
+    path: /dabai.in172.64.52.125
+  tls: false
+- name: 04-113-RELAY
+  server: s2.cn-db.top
+  port: 80
+  type: vmess
+  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s2.cn-db.top
+    path: /dabai.in172.67.56.177
+  tls: false
+- name: 04-114-RELAY
+  server: s5.cn-db.top
+  port: 8880
+  type: vmess
+  uuid: c025a206-25af-35d7-ac9f-144f2d7c6a23
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: s5.cn-db.top
+    path: /dabai.in172.67.48.101
   tls: false
 - name: 04-115-NOWHERE
   server: 12.mamamajd.site
@@ -6821,19 +6821,6 @@ proxies:
       Host: ip.langmanshanxi.top
 - name: 14-526-US
   type: hysteria
-  server: 108.181.24.77
-  port: 11512
-  auth-str: dongtaiwang.com
-  auth_str: dongtaiwang.com
-  up: 20 Mbps
-  down: 50 Mbps
-  protocol: udp
-  udp: true
-  skip-cert-verify: true
-  alpn:
-    - h3
-- name: 14-527-US
-  type: hysteria
   server: 208.87.243.151
   port: 17549
   auth-str: 
@@ -6845,19 +6832,33 @@ proxies:
   skip-cert-verify: true
   alpn:
     - h3
-- name: 14-528-DE
-  server: be.kimjo.ir
-  port: 8080
-  type: vless
-  uuid: e6b4d1ee-871c-4fab-8aae-5033093480b6
-  servername: be.kimjo.ir
-  tls: false
-  network: ws
+- name: 14-527-US
+  type: hysteria
+  server: 108.181.24.77
+  port: 11512
+  auth-str: dongtaiwang.com
+  auth_str: dongtaiwang.com
+  up: 20 Mbps
+  down: 50 Mbps
+  protocol: udp
   udp: true
+  skip-cert-verify: true
+  alpn:
+    - h3
+- name: 14-528-CN
+  server: 47.104.186.133
+  port: 50002
+  type: vmess
+  uuid: 418048af-a293-4b99-9b0c-98ca3580dd24
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
   ws-opts:
+    host: 47.104.186.133
     path: /
-    headers:
-      Host: be.kimjo.ir
+  tls: false
 - name: 14-529-RELAY
   type: trojan
   udp: true
