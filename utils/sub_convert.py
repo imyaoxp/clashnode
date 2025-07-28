@@ -619,6 +619,7 @@ class sub_convert():
 
                     # 根据network类型处理特殊参数
                     network_type = yaml_node['network']
+                    print(f"network_type:{network_type}")
 
                     # 1. WebSocket处理
                     if network_type == 'ws':
