@@ -631,6 +631,7 @@ class sub_convert():
                             sni or
                             server
                         ).replace('@','').replace('%40','')
+                        print(f"clash host: {ws_host}")
                         yaml_node['ws-opts'] = {
                             'path': '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40'),
                             'headers': {'Host': ws_host}
@@ -1204,13 +1205,15 @@ class sub_convert():
                         if network == 'ws':
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
-                            #print(f"原始路径: {raw_path}")  # 调试输出
+                            print(f"clash path: {raw_path}")  # 调试输出
                             encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
-                            #print(f"编码后路径: {encoded_path}")  # 调试输出
+                            print(f"url path: {encoded_path}")  # 调试输出
+                            host = encode_clash_path(get_any_case(headers, ['Host'], sni))\
+                            print(f"host: {host}")
                             headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
                                 'path': encoded_path,
-                                'host': encode_clash_path(get_any_case(headers, ['Host'], sni))
+                                'host': host
                             })
 
                         # 2. HTTP/2 (h2)
@@ -1233,8 +1236,10 @@ class sub_convert():
                             tcp_opts = get_any_case(proxy, ['tcp-opts'], {})
                             raw_path = get_any_case(tcp_opts, ['path'], '/')
                             path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
+                            
                             headers = get_any_case(tcp_opts, ['headers'], {})
-    
+                            host = get_any_case(headers, ['host'], sni)
+                            
                             if raw_path or headers:
                                 # 1. 构建原始JSON字典（保持Clash格式）
                                 header_data = {
@@ -1242,7 +1247,7 @@ class sub_convert():
                                     "request": {
                                         "path": path,
                                         "headers": {
-                                            "Host": get_any_case(headers, ['host'], sni)
+                                            "Host": host
                                         }
                                     }
                                 }
