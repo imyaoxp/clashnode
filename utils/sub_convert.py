@@ -1233,7 +1233,7 @@ class sub_convert():
                             params['serviceName'] = get_any_case(grpc_opts, ['grpc-service-name'], '')
 
                         # 4. TCP (tcp)
-                        elif network_type == 'tcp':
+                        elif network == 'tcp':
                             tcp_opts = proxy.get('tcp-opts', {})
                             if 'headers' in tcp_opts and 'Host' in tcp_opts['headers']:
                                 params['headerType'] = 'http'
