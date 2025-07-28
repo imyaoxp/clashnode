@@ -681,9 +681,9 @@ class sub_convert():
                     elif network_type == 'tcp':
                         header_type = get_param_priority('headerType', 'headertype', default='')
                         host = get_param_priority('Host', 'host', 'HOST', default='').replace('@','').replace('%40','')
-                        print(f'host:{host}')
+                        print(f'clash host:{host}')
                         path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').lstrip('%40').replace('@','%40')
-                        print(f'path:{path}')
+                        print(f'clash path:{path}')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                       
@@ -1237,10 +1237,10 @@ class sub_convert():
                             tcp_opts = get_any_case(proxy, ['tcp-opts'], {})
                             raw_path = get_any_case(tcp_opts, ['path'], '/')
                             path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
-                            
+                            print(f"url path:{path}")
                             headers = get_any_case(tcp_opts, ['headers'], {})
                             host = get_any_case(headers, ['host'], sni)
-                            
+                            print(f"url host:{host}")
                             if raw_path or headers:
                                 # 1. 构建原始JSON字典（保持Clash格式）
                                 header_data = {
