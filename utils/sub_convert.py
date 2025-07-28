@@ -434,7 +434,7 @@ class sub_convert():
         lines = re.split(r'\n+', url_content)
         for line in lines:
             yaml_url = {}
-            
+            line = line.replace("\r\n", "").replace("\r", "").replace("\n", "")
             if 'vmess://' in line:
                 try:
                     vmess_json_config = json.loads(sub_convert.base64_decode(line.replace('vmess://', '')))
