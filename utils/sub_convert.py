@@ -678,27 +678,43 @@ class sub_convert():
                         
 
                     # 4. TCP处理（含HTTP伪装）
-                    elif network_type == 'tcp':
+                    elif network_type == 'tcp':         
+                        # 获取headerType（默认为空）
                         header_type = get_param_priority('headerType', 'headertype', default='')
-                        host = get_param_priority('Host', 'host', 'HOST', default='').replace('@','').replace('%40','')
-                        print(f'clash host:{host}')
-                        path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).lstrip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').lstrip('%40').replace('@','%40')
-                        print(f'clash path:{path}')
-                        #if path.count('@') >1 or path.count('%40') >1:
-                        #    print(f'vless节点格式错误，line:{line}')
-                        #    continue                       
+            
+                        # 获取Host（兼容大小写）
+                        host = (
+                            get_param_priority('host', 'Host', 'HOST') or 
+                            get_param_priority('sni', 'SNI') or
+                            server
+                        ).replace('@','').replace('%40','')
+            
+                        # 获取并解码Path（防止多重编码）
+                        raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
+                        path = '/' + sub_convert.decode_url_path(raw_path).lstrip('/')
+            
+                        print(f'clash host:{host}')  # 调试输出
+                        print(f'clash path:{path}')  # 调试输出
+
+                        # 构造TCP参数（仅在host或path存在时添加）
                         if host or path:
                             tcp_opts = {}
                             if host:
-                                tcp_opts['headers'] = {'Host': host.split(',')}
+                                tcp_opts['headers'] = {'Host': host}
                             if path: 
-                                tcp_opts['path'] = path
-                            if tcp_opts:  # 仅在 tcp_opts 非空时添加
+                                tcp_opts['path'] = path.replace(':', '%3A').replace(',', '%2C')
+                            if tcp_opts:
                                 yaml_node['tcp-opts'] = tcp_opts
+                
+                            # 如果存在headerType，显式声明
+                            if header_type:
+                                yaml_node['headerType'] = header_type
+
                     else:
                         print(f'vless不支持的network_type:{network_type}')
                         print(line)
                         continue
+
 
                     url_list.append(yaml_node)
                     #print(f'添加vless节点{yaml_node}')
