@@ -1380,7 +1380,7 @@ class sub_convert():
 
                     try:
                         password = proxy['password']
-                        if any(char in password for char in ['{', '}', '%', ' ', '`', '\']):
+                        if any(char in password for char in ['{', '}', '%', ' ', '`', '\\']):
                             print(f"⚠️ 跳过节点：密码含禁止符号")
                             continue
                         
