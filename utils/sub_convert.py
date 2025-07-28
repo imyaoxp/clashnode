@@ -1209,9 +1209,10 @@ class sub_convert():
                             print(f"clash path: {raw_path}")  # 调试输出
                             encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
                             print(f"url path: {encoded_path}")  # 调试输出
+                            
+                            headers = get_any_case(ws_opts, ['headers'], {})
                             host = encode_clash_path(get_any_case(headers, ['Host'], sni))
                             print(f"url host: {host}")
-                            headers = get_any_case(ws_opts, ['headers'], {})
                             params.update({
                                 'path': encoded_path,
                                 'host': host
