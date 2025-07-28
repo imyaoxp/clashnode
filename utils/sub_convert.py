@@ -1233,34 +1233,15 @@ class sub_convert():
                             params['serviceName'] = get_any_case(grpc_opts, ['grpc-service-name'], '')
 
                         # 4. TCP (tcp)
-                        elif network == 'tcp':
-                            tcp_opts = get_any_case(proxy, ['tcp-opts'], {})
-                            raw_path = get_any_case(tcp_opts, ['path'], '/')
-                            path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
-                            print(f"url path:{path}")
-                            headers = get_any_case(tcp_opts, ['headers'], {})
-                            host = get_any_case(headers, ['host'], sni)
-                            print(f"url host:{host}")
-                            if raw_path or headers:
-                                # 1. 构建原始JSON字典（保持Clash格式）
-                                header_data = {
-                                    "type": "http",
-                                    "request": {
-                                        "path": path,
-                                        "headers": {
-                                            "Host": host
-                                        }
-                                    }
-                                }
-        
-                                # 2. 转换为紧凑JSON字符串（无空格）
-                                compact_json = json.dumps(header_data, separators=(',', ':'))
-        
-                                # 3. 整体URL编码（关键步骤！）
-                                encoded_header = urllib.parse.quote(compact_json)
-        
-                                # 4. 添加到参数
-                                params['header'] = encoded_header
+                        elif network_type == 'tcp':
+                            tcp_opts = proxy.get('tcp-opts', {})
+                            if 'headers' in tcp_opts and 'Host' in tcp_opts['headers']:
+                                params['headerType'] = 'http'
+                                host = tcp_opts['headers']['Host']
+                                params['host'] = host[0] if isinstance(host, list) else host
+                                if 'path' in tcp_opts:
+                                    params['path'] = tcp_opts['path']
+
 
                         # === Reality 支持 ===
                         reality_opts = get_any_case(proxy, ['reality-opts'], {})
