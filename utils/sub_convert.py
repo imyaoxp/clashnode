@@ -1223,7 +1223,7 @@ class sub_convert():
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             print(f"clash path: {raw_path}")  # 调试输出
-                            encoded_path = '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A')
+                            encoded_path = '/' + encode_clash_path(raw_path).strip('/').replace(':', '%3A')
                             print(f"url path: {encoded_path}")  # 调试输出
                             
                             headers = get_any_case(ws_opts, ['headers'], {})
@@ -1240,7 +1240,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = encode_clash_path(get_any_case(h2_opts, ['host'], [sni]))
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).lstrip('/').replace(':', '%3A'),
+                                'path': '/' + encode_clash_path(raw_path).strip('/').replace(':', '%3A'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1251,13 +1251,28 @@ class sub_convert():
 
                         # 4. TCP (tcp)
                         elif network == 'tcp':
+                            params = {
+                                'type': 'tcp',
+                                'security': 'tls' if proxy.get('tls', False) else 'none'
+                            }
+
+                            # 1. 处理 headerType（显式传递）
+                            if 'headerType' in proxy:
+                                params['headerType'] = proxy['headerType']
+                            elif 'tcp-opts' in proxy and 'headers' in proxy['tcp-opts']:
+                                params['headerType'] = 'http'  # 隐式推断
+
+                            # 2. 处理 Host（兼容列表类型）
                             tcp_opts = proxy.get('tcp-opts', {})
                             if 'headers' in tcp_opts and 'Host' in tcp_opts['headers']:
-                                params['headerType'] = 'http'
                                 host = tcp_opts['headers']['Host']
                                 params['host'] = host[0] if isinstance(host, list) else host
-                                if 'path' in tcp_opts:
-                                    params['path'] = tcp_opts['path']
+
+                            # 3. 处理 Path（防止双重编码）
+                            if 'path' in tcp_opts:
+                                raw_path = tcp_opts['path']
+                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').replace(':', '%3A')  # 先解码
+                                
 
 
                         # === Reality 支持 ===
