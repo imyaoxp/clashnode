@@ -631,7 +631,7 @@ class sub_convert():
                             get_param_priority('Host', 'host', 'HOST') or
                             sni or
                             server
-                        ).replace('@','').replace('%40','')
+                        ).replace('@','').replace('%40','').replace(' ','').replace('%20','')
                         print(f"clash host: {ws_host}")
                         path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
                         
