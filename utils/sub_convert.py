@@ -634,7 +634,7 @@ class sub_convert():
                         ).replace('@','').replace('%40','')
                         print(f"clash host: {ws_host}")
                         path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
-                        path = path.rstrip('/')
+                        
                         print(f"clash path: {path}")
                         yaml_node['ws-opts'] = {
                             'path': path,
