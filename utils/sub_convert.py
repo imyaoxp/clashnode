@@ -1379,6 +1379,11 @@ class sub_convert():
                 elif proxy['type'] == 'trojan': # Trojan 节点提取, 由 trojan_proxy 中参数再加上 # 加注释(URL_encode) # trojan Go https://p4gefau1t.github.io/trojan-go/developer/url/
 
                     try:
+                        password = proxy['password']
+                        if any(char in password for char in ['{', '}', '%', ' ', '`', '\']):
+                            print(f"⚠️ 跳过节点：密码含禁止符号")
+                            continue
+                        
                         # 基础参数
                         base_url = f"trojan://{proxy['password']}@{proxy['server']}:{proxy['port']}"
                         params = []
