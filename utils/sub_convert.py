@@ -358,7 +358,7 @@ class sub_convert():
                 yaml_content_raw = sub_convert.convert(input, 'content', 'YAML')
                 sub_content = yaml.safe_load(yaml_content_raw)
         proxies_list = sub_content['proxies']
-        if dup_rm_enabled #and (idid=='' or idid=='99'): # 去重
+        if dup_rm_enabled : #and (idid=='' or idid=='99'): # 去重
             begin = 0
             raw_length = len(proxies_list)
             length = len(proxies_list)
