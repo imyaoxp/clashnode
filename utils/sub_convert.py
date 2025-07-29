@@ -656,8 +656,12 @@ class sub_convert():
                             params['host'] = yaml_node['sni'].replace('@','').replace('%40','')
                     # 2. gRPC处理
                     elif network_type == 'grpc':
+                        grpcservername = urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default='')).lstrip('@').lstrip('%40').replace('@','%40')
+                        if grpcservername == '' or grpcservername is None :
+                            print(f'缺少grpcservername')
+                            continue
                         yaml_node['grpc-opts'] = {
-                            'grpc-service-name': urllib.parse.unquote(get_param_priority('serviceName', 'servicename', default='')).lstrip('@').lstrip('%40').replace('@','%40')
+                            'grpc-service-name': grpcservername
                         }
 
                     # 3. HTTP/2处理
