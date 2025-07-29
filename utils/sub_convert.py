@@ -1122,7 +1122,7 @@ class sub_convert():
             
             protocol_url = []
             for index in range(len(proxies_list)): # 不同节点订阅链接内容 https://github.com/hoochanlon/fq-book/blob/master/docs/append/srvurl.md
-                
+                proxy = proxies_list[index]
                 #proxy = str(proxy)
                 #proxy = proxy.replace('"',''')
                 #proxy = (proxy)
