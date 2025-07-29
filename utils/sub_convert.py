@@ -1126,15 +1126,15 @@ class sub_convert():
                 # 遍历第一层字典
                 for key, value in proxy.items():
                     if isinstance(value, str):
-                        proxy[key] = value.strip()
+                        proxy[key] = value.strip().replace('[','').replace(']','')
                     elif isinstance(value, dict):  # 处理嵌套字典（如 ws-opts）
                         for sub_key, sub_value in value.items():
                             if isinstance(sub_value, str):
-                                value[sub_key] = sub_value.strip()
+                                value[sub_key] = sub_value.strip().replace('[','').replace(']','')
                             elif isinstance(sub_value, dict):  # 处理更深层的嵌套（如 headers）
                                 for header_key, header_value in sub_value.items():
                                     if isinstance(header_value, str):
-                                        sub_value[header_key] = header_value.strip()
+                                        sub_value[header_key] = header_value.strip().replace('[','').replace(']','')
 
                 
                 #proxy = str(proxy)
