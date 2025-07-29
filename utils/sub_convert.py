@@ -47,7 +47,7 @@ class sub_convert():
     # check_port_socket.py
 
 
-    def is_port_open(host, port, timeout=3):
+    def is_port_open(host, port, timeout=2):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(timeout)
