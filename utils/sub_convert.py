@@ -44,6 +44,20 @@ class sub_convert():
             format --> makeup --> yaml_decode --> base64_encode --> convert
             base64_final
     """
+    # check_port_socket.py
+
+
+    def is_port_open(host, port, timeout=3):
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(timeout)
+            sock.connect((host, port))
+            sock.close()
+            return True
+        except (socket.timeout, ConnectionRefusedError, OSError):
+            return False
+
+
     #将URL编码的路径转换为Clash可读格式,自动处理多重编码（如%25252525）和Unicode转义
     def decode_url_path(url_path, max_decode=5):
         if not isinstance(url_path, str):
@@ -408,11 +422,11 @@ class sub_convert():
                         proxyname=str(idid)              
                 proxyname=re.findall(r'^..',proxyname)[0]
                         
-                if len(proxies_list) >=1000:
+                #if len(proxies_list) >=1000:
                     
-                    proxy['name'] =f'{proxyname}-{proxy_index:0>4d}-{country_code}'
-                elif len(proxies_list) <= 999:
-                    proxy['name'] =f'{proxyname}-{proxy_index:0>3d}-{country_code}'
+                proxy['name'] =f'{proxyname}-{proxy_index:0>4d}-{country_code}'
+                #elif len(proxies_list) <= 999:
+                    #proxy['name'] =f'{proxyname}-{proxy_index:0>3d}-{country_code}'
                                 
                 if proxy['server'] != '127.0.0.1':
                     proxy_str = str(proxy)
