@@ -1154,10 +1154,10 @@ class sub_convert():
                                     if isinstance(header_value, str):
                                         sub_value[header_key] = header_value.strip().replace('[','').replace(']','')
 
-                if re.match(r'^\d{2}-\d{4}-', proxy['name']):
-                    if not sub_convert.is_port_open(proxy['server'],proxy['port']):
-                        print(f"连接失败:{proxy}")
-                        continue
+                #if re.match(r'^\d{2}-\d{4}-', proxy['name']):
+                #    if not sub_convert.is_port_open(proxy['server'],proxy['port']):
+                #        print(f"连接失败:{proxy}")
+                #        continue
                     
                 #proxy = str(proxy)
                 #proxy = proxy.replace('"',''')
