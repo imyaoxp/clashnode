@@ -423,9 +423,8 @@ class sub_convert():
                 proxyname=re.findall(r'^..',proxyname)[0]
                 if re.match(r'^\d{2}-\d{4}-', proxy['name']):
                     proxyname=re.findall(r'^..',proxy['name'])[0]
-                    back=f'-back'
-                else:
-                    back=''
+                    
+                    
                 #if len(proxies_list) >=1000:
                     
                 proxy['name'] =f'{proxyname}-{proxy_index:0>4d}-{country_code}{back}'
