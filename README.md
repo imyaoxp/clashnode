@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `725`
+当前合并节点总数: `722`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `3`
-- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `121`
+- [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `123`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `54`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `368`
 - [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `32`
