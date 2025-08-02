@@ -715,7 +715,7 @@ class sub_convert():
             
                         # 获取并解码Path（防止多重编码）
                         raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
-                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('@').lstrip('%40')
+                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('@').lstrip('%40').replace(':', '%3A').replace(',', '%2C').replace('@','%40')
             
                         print(f'clash host:{host}')  # 调试输出
                         print(f'clash path:{path}')  # 调试输出
@@ -726,7 +726,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host}
                             if path: 
-                                tcp_opts['path'] = path.replace(':', '%3A').replace(',', '%2C').replace('@','%40')
+                                tcp_opts['path'] = path
                             if tcp_opts:
                                 yaml_node['tcp-opts'] = tcp_opts
                 
