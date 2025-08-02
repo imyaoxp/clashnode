@@ -1314,7 +1314,7 @@ class sub_convert():
                             # 3. 处理 Path（防止双重编码）
                             if 'path' in tcp_opts:
                                 raw_path = tcp_opts['path']
-                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').strip('?').replace(':', '%3A').replace('@', '%40')  # 先解码
+                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').replace(':', '%3A').replace('@', '%40')  # 先解码
                                 
 
 
