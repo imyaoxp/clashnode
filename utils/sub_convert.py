@@ -696,7 +696,7 @@ class sub_convert():
                             if host:
                                 h2_opts['host'] = host.replace('@','').replace('%40','')
                             if path:
-                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@')..lstrip('?')lstrip('%40').replace('@','%40')
+                                h2_opts['path'] = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').lstrip('?')lstrip('%40').replace('@','%40')
                             if h2_opts:  # 仅在 tcp_opts 非空时添加
                                 yaml_node['h2-opts'] = h2_opts
                         
