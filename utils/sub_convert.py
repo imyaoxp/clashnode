@@ -650,7 +650,7 @@ class sub_convert():
                             server
                         ).replace('@','').replace('%40','').replace(' ','').replace('%20','')
                         print(f"clash host: {ws_host}")
-                        path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').strip('?').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
+                        path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
                         
                         print(f"clash path: {path}")
                         yaml_node['ws-opts'] = {
@@ -666,7 +666,7 @@ class sub_convert():
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue
                         params['type'] = 'httpupgrade'
-                        params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).strip('/').strip('?').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
+                        params['path'] = '/' + sub_convert.decode_url_path(http_opts.get('path', '/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
                         if 'host' in http_opts.get('headers', {}):
                             params['host'] = http_opts['headers']['host'].replace('@','').replace('%40','')
                         elif 'sni' in yaml_node:
@@ -685,7 +685,7 @@ class sub_convert():
                     elif network_type == 'h2':
 
                         host=get_param_priority('host', 'Host', 'HOST', default='').replace('@','').replace('%40','').split(',')
-                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).strip('/').strip('?').replace(':','%3A').replace(',', '%2C').lstrip('@').lstrip('%40').replace('@','%40')
+                        path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).strip('/').replace(':','%3A').replace(',', '%2C').lstrip('@').lstrip('%40').replace('@','%40')
                         #if path.count('@') >1 or path.count('%40') >1:
                         #    print(f'vless节点格式错误，line:{line}')
                         #    continue                
@@ -715,7 +715,7 @@ class sub_convert():
             
                         # 获取并解码Path（防止多重编码）
                         raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
-                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').strip('?').lstrip('@').lstrip('%40').replace(':', '%3A').replace(',', '%2C').replace('@','%40')
+                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('@').lstrip('%40')
             
                         print(f'clash host:{host}')  # 调试输出
                         print(f'clash path:{path}')  # 调试输出
@@ -726,7 +726,7 @@ class sub_convert():
                             if host:
                                 tcp_opts['headers'] = {'Host': host}
                             if path: 
-                                tcp_opts['path'] = path
+                                tcp_opts['path'] = path.replace(':', '%3A').replace(',', '%2C').replace('@','%40')
                             if tcp_opts:
                                 yaml_node['tcp-opts'] = tcp_opts
                 
@@ -1266,7 +1266,7 @@ class sub_convert():
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             print(f"clash path: {raw_path}")  # 调试输出
-                            encoded_path = '/' + encode_clash_path(raw_path).strip('/').strip('?').replace(':', '%3A')
+                            encoded_path = '/' + encode_clash_path(raw_path).strip('/').replace(':', '%3A')
                             print(f"url path: {encoded_path}")  # 调试输出
                             
                             headers = get_any_case(ws_opts, ['headers'], {})
@@ -1283,7 +1283,7 @@ class sub_convert():
                             raw_path = get_any_case(h2_opts, ['path'], '/')
                             hosts = encode_clash_path(get_any_case(h2_opts, ['host'], [sni]))
                             params.update({
-                                'path': '/' + encode_clash_path(raw_path).strip('/').strip('?').replace(':', '%3A'),
+                                'path': '/' + encode_clash_path(raw_path).strip('/').replace(':', '%3A'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
                             })
 
@@ -1314,7 +1314,7 @@ class sub_convert():
                             # 3. 处理 Path（防止双重编码）
                             if 'path' in tcp_opts:
                                 raw_path = tcp_opts['path']
-                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').strip('?').replace(':', '%3A').replace('@', '%40')  # 先解码
+                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').replace(':', '%3A').replace('@', '%40')  # 先解码
                                 
 
 
