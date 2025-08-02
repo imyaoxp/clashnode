@@ -715,7 +715,7 @@ class sub_convert():
             
                         # 获取并解码Path（防止多重编码）
                         raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
-                        path = '/' + sub_convert.decode_url_path(raw_path).strip('%2F').lstrip('@').lstrip('%40')
+                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('@').lstrip('%40')
             
                         print(f'clash host:{host}')  # 调试输出
                         print(f'clash path:{path}')  # 调试输出
