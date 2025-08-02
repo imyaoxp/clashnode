@@ -651,10 +651,10 @@ class sub_convert():
                         ).replace('@','').replace('%40','').replace(' ','').replace('%20','')
                         # 检查域名或IPv4格式
                         if not (re.fullmatch(r'^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?$', host) or re.fullmatch(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(:\d+)?$', host)):
-                            print("host格式错误{host}")
+                            print(f"host格式错误{host}")
                             continue
                                              
-                        print(f"clash host: {ws_host}")
+                        print(f"clash host: {host}")
                         path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
                         if path.count('@') >1 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
                             print(f'vless节点格式错误，line:{line}')
@@ -680,7 +680,7 @@ class sub_convert():
                             params['host'] = yaml_node['sni'].replace('@','').replace('%40','')
                         # 检查域名或IPv4格式
                         if not (re.fullmatch(r'^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?$', host) or re.fullmatch(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(:\d+)?$', host)):
-                            print("host格式错误{host}")
+                            print(f"host格式错误{host}")
                             continue
 
                     # 2. gRPC处理
@@ -699,7 +699,7 @@ class sub_convert():
                         host=get_param_priority('host', 'Host', 'HOST', default='').replace('@','').replace('%40','').split(',')
                         # 检查域名或IPv4格式
                         if not (re.fullmatch(r'^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?$', host) or re.fullmatch(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(:\d+)?$', host)):
-                            print("host格式错误{host}")
+                            print(f"host格式错误{host}")
                             continue
                         path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).strip('/').replace(':','%3A').replace(',', '%2C').lstrip('@').lstrip('%40').replace('@','%40')
                         if path.count('@') >1 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
@@ -729,7 +729,7 @@ class sub_convert():
                         ).replace('@','').replace('%40','')
                         # 检查域名或IPv4格式
                         if not (re.fullmatch(r'^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?$', host) or re.fullmatch(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(:\d+)?$', host)):
-                            print("host格式错误{host}")
+                            print(f"host格式错误{host}")
                             continue
                         # 获取并解码Path（防止多重编码）
                         raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
