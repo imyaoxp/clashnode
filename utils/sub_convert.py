@@ -715,7 +715,7 @@ class sub_convert():
             
                         # 获取并解码Path（防止多重编码）
                         raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
-                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('?').lstrip('@').lstrip('%40')
+                        path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('@').lstrip('%40')
             
                         print(f'clash host:{host}')  # 调试输出
                         print(f'clash path:{path}')  # 调试输出
@@ -1314,7 +1314,7 @@ class sub_convert():
                             # 3. 处理 Path（防止双重编码）
                             if 'path' in tcp_opts:
                                 raw_path = tcp_opts['path']
-                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').replace(':', '%3A').replace('@', '%40')  # 先解码
+                                params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').strip('?').replace(':', '%3A').replace('@', '%40')  # 先解码
                                 
 
 
