@@ -13,10 +13,10 @@
 当前合并节点总数: `515`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `50`
-- [6/miladtahanian/V2RayCFGDumper](https://github.com/miladtahanian/V2RayCFGDumper), 节点数量: `38`
+- [6/miladtahanian/V2RayCFGDumper](https://github.com/miladtahanian/V2RayCFGDumper), 节点数量: `41`
 - [9snakem982/proxypool/](https://github.com/snakem982/proxypool/), 节点数量: `52`
 - [11penhandev/AutoAiVPN](https://github.com/penhandev/AutoAiVPN), 节点数量: `67`
-- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `16`
+- [14PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `12`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `24`
 - [19zzr2002314/aggregator](https://github.com/zzr2002314/aggregator), 节点数量: `72`
 - [21yebekhe/V2Hub](https://github.com/yebekhe/V2Hub), 节点数量: `124`
