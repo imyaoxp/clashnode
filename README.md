@@ -10,17 +10,16 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1272`
+当前合并节点总数: `1168`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `58`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `52`
 - [7hamed1124/port-based-v2ray-configs](https://github.com/hamed1124/port-based-v2ray-configs), 节点数量: `135`
 - [8PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `4`
 - [9busymilk/clash_config_auto_build/](https://github.com/busymilk/clash_config_auto_build/), 节点数量: `752`
-- [10Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `54`
 - [11Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `264`
 - [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `0`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `513`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `526`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
