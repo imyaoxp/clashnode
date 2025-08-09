@@ -17,8 +17,8 @@
 - [7hamed1124/port-based-v2ray-configs](https://github.com/hamed1124/port-based-v2ray-configs), 节点数量: `97`
 - [8PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `6`
 - [9busymilk/clash_config_auto_build/](https://github.com/busymilk/clash_config_auto_build/), 节点数量: `1152`
-- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `65`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1139`
+- [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `67`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `1134`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
