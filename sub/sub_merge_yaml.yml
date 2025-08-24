@@ -535,19 +535,6 @@ proxies:
       Host: yd.laoyoutiao.link
 - name: 08-0041-US
   type: hysteria
-  server: 208.87.243.151
-  port: 38845
-  auth-str: 
-  auth_str: 
-  up: 20 Mbps
-  down: 50 Mbps
-  protocol: udp
-  udp: true
-  skip-cert-verify: true
-  alpn:
-    - h3
-- name: 08-0042-US
-  type: hysteria
   server: 108.181.24.77
   port: 37872
   auth-str: dongtaiwang.com
@@ -559,34 +546,47 @@ proxies:
   skip-cert-verify: true
   alpn:
     - h3
-- name: 08-0043-CN
-  server: awes35lesl.blhao0o.dpdns.org
-  port: 12011
-  type: ss
-  cipher: aes-128-gcm
-  password: 01721e43-5389-4f97-b21c-900abb2bda9e
-  udp: true
-- name: 08-0044-US
-  type: trojan
+- name: 08-0042-US
+  type: hysteria
+  server: 208.87.243.151
+  port: 38845
+  auth-str: 
+  auth_str: 
+  up: 20 Mbps
+  down: 50 Mbps
+  protocol: udp
   udp: true
   skip-cert-verify: true
-  tls: true
-  password: ttfang
-  server: 45.40.146.194
-  port: 2096
-  sni: ttfang.fange.me
+  alpn:
+    - h3
+- name: 08-0043-HK
+  server: 1e426046-t0fds0-t12cnj-1ol97.hk.p5pv.com
+  port: 80
+  type: vmess
+  uuid: 93fb69fc-77cf-11ee-85ee-f23c91369f2d
+  alterId: 2
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
   network: ws
   ws-opts:
-    path: Telegram🇨🇳
-    headers:
-      Host: ttfang.fange.me
-- name: 08-0045-US
+    host: 1e426046-t0fds0-t12cnj-1ol97.hk.p5pv.com
+    path: /
+  tls: false
+- name: 08-0044-US
+  type: hysteria2
+  server: rb.dimoyun.top
+  port: 40001
+  password: 66975a45-dd40-4854-ba7b-80157a38dd64
+  skip-cert-verify: true
+  sni: rb.dimoyun.top
+- name: 08-0045-RU
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 50.62.172.194
+  server: 45.67.215.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -600,7 +600,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.40.150.194
+  server: 50.62.172.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -614,7 +614,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.40.149.194
+  server: 45.40.146.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -628,7 +628,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 72.167.230.194
+  server: 45.40.149.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -642,7 +642,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 72.167.242.194
+  server: 45.40.147.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -656,7 +656,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.40.147.194
+  server: 45.40.144.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -670,7 +670,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 50.62.175.194
+  server: 45.40.150.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -684,7 +684,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.40.155.194
+  server: 72.167.241.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -692,35 +692,7 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ttfang.fange.me
-- name: 08-0053-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: ttfang
-  server: 66.81.247.194
-  port: 2096
-  sni: ttfang.fange.me
-  network: ws
-  ws-opts:
-    path: Telegram🇨🇳
-    headers:
-      Host: ttfang.fange.me
-- name: 08-0054-US
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: ttfang
-  server: 50.62.174.194
-  port: 2096
-  sni: ttfang.fange.me
-  network: ws
-  ws-opts:
-    path: Telegram🇨🇳
-    headers:
-      Host: ttfang.fange.me
-- name: 08-0055-US
+- name: 08-0053-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -734,7 +706,21 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ttfang.fange.me
-- name: 08-0056-US
+- name: 08-0054-US
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: ttfang
+  server: 45.40.155.194
+  port: 2096
+  sni: ttfang.fange.me
+  network: ws
+  ws-opts:
+    path: Telegram🇨🇳
+    headers:
+      Host: ttfang.fange.me
+- name: 08-0055-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -748,13 +734,27 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ttfang.fange.me
-- name: 08-0057-US
+- name: 08-0056-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.40.153.194
+  server: 72.167.230.194
+  port: 2096
+  sni: ttfang.fange.me
+  network: ws
+  ws-opts:
+    path: Telegram🇨🇳
+    headers:
+      Host: ttfang.fange.me
+- name: 08-0057-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: ttfang
+  server: 66.81.247.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -768,7 +768,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 69.84.182.194
+  server: 50.62.198.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -782,7 +782,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 72.167.241.194
+  server: 45.40.154.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -790,13 +790,13 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ttfang.fange.me
-- name: 08-0060-RELAY
+- name: 08-0060-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 5.10.246.194
+  server: 50.62.89.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -810,7 +810,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 89.117.112.194
+  server: 103.116.7.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -818,13 +818,13 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ttfang.fange.me
-- name: 08-0062-RELAY
+- name: 08-0062-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.12.31.194
+  server: 45.40.153.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -838,7 +838,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 92.53.190.194
+  server: 14.102.229.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -852,7 +852,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 89.116.180.194
+  server: 92.53.189.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -866,7 +866,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 45.80.108.194
+  server: 77.105.163.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
