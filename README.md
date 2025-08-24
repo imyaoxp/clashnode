@@ -10,9 +10,9 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `105`
+当前合并节点总数: `80`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
-- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `51`
+- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `25`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `26`
 - [7hamed1124/port-based-v2ray-configs](https://github.com/hamed1124/port-based-v2ray-configs), 节点数量: `0`
 - [8PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `32`
