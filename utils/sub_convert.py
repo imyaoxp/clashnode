@@ -656,7 +656,7 @@ class sub_convert():
                                              
                         print(f"clash host: {host}")
                         path = '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='/')).strip('/').replace(':', '%3A').replace(',', '%2C').lstrip('@').replace('@','%40')
-                        if path.count('@') >1 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
+                        if path.count('@') >1 or path.count('&') > 0 or path.count('%26') >0 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
                             print(f'vless节点格式错误，line:{line}')
                             continue
                         print(f"clash path: {path}")
@@ -669,7 +669,7 @@ class sub_convert():
                         params = {}
                         http_opts = yaml_node.get('http-opts', {})
                         path = '/' + sub_convert.decode_url_path(http_opts.get('path', '')).strip('/')
-                        if path.count('@') >1 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
+                        if path.count('@') >1 or path.count('&') > 0 or path.count('%26') >0 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
                             print(f'vless节点格式错误，line:{line}')
                             continue
                         params['type'] = 'httpupgrade'
@@ -702,7 +702,7 @@ class sub_convert():
                             print(f"host格式错误{host}")
                             continue
                         path= '/' + sub_convert.decode_url_path(get_param_priority('path', 'Path', 'PATH', default='')).strip('/').replace(':','%3A').replace(',', '%2C').lstrip('@').lstrip('%40').replace('@','%40')
-                        if path.count('@') >1 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
+                        if path.count('@') >1 or path.count('&') > 0 or path.count('%26') >0 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
                             print(f'vless节点格式错误，line:{line}')
                             continue            
 
@@ -734,7 +734,7 @@ class sub_convert():
                         # 获取并解码Path（防止多重编码）
                         raw_path = get_param_priority('path', 'Path', 'PATH', default='/')
                         path = '/' + sub_convert.decode_url_path(raw_path).strip('/').lstrip('@').lstrip('%40')
-                        if path.count('@') >1 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
+                        if path.count('@') >1 or path.count('&') > 0 or path.count('%26') >0 or path.count('%40') >1 or path.startswith('?') or path.endswith('?'):
                             print(f'vless节点格式错误，line:{line}')
                             continue
                         print(f'clash host:{host}')  # 调试输出
