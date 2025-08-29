@@ -769,19 +769,6 @@ proxies:
       Host: torjan.xn--xhq44j.eu.org
 - name: 08-0059-US
   type: hysteria
-  server: 108.181.24.77
-  port: 37872
-  auth-str: dongtaiwang.com
-  auth_str: dongtaiwang.com
-  up: 20 Mbps
-  down: 50 Mbps
-  protocol: udp
-  udp: true
-  skip-cert-verify: true
-  alpn:
-    - h3
-- name: 08-0060-US
-  type: hysteria
   server: 208.87.243.151
   port: 38845
   auth-str: 
@@ -793,27 +780,35 @@ proxies:
   skip-cert-verify: true
   alpn:
     - h3
-- name: 08-0061-PY
-  server: 38.165.233.93
-  port: 989
-  type: ss
-  cipher: aes-256-cfb
-  password: f8f7aCzcPKbsF8p3
+- name: 08-0060-US
+  type: hysteria
+  server: 108.181.24.77
+  port: 37872
+  auth-str: dongtaiwang.com
+  auth_str: dongtaiwang.com
+  up: 20 Mbps
+  down: 50 Mbps
+  protocol: udp
   udp: true
-- name: 08-0062-CN
-  server: v9.heduian.link
-  port: 30809
-  type: vmess
-  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
-  alterId: 2
-  cipher: auto
   skip-cert-verify: true
+  alpn:
+    - h3
+- name: 08-0061-NL
+  type: hysteria2
+  server: yapc-1.adamhayward.co.uk
+  port: 35200
+  password: Yet-Another-Public-Config-1
+  skip-cert-verify: true
+  sni: YAPC-1.afshin.ir
+  obfs: salamander
+  obfs-password: Yet-Another-Public-Config-1
+- name: 08-0062-VN
+  server: arxfw2b78fi2q9hzylhn.freesocks.work
+  port: 443
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: Nk9asglDzHzjktVzTkvhaA
   udp: true
-  network: ws
-  ws-opts:
-    host: v9.heduian.link
-    path: /oooo
-  tls: false
 - name: 08-0063-CN
   server: v4.heduian.link
   port: 30804
@@ -828,14 +823,7 @@ proxies:
     host: v4.heduian.link
     path: /oooo
   tls: false
-- name: 08-0064-NL
-  server: switcher-nick-croquet.freesocks.work
-  port: 443
-  type: ss
-  cipher: chacha20-ietf-poly1305
-  password: 9tqhMdIrTkgQ46PvhyAtMH
-  udp: true
-- name: 08-0065-RELAY
+- name: 08-0064-RELAY
   server: b62a948c-faa2-4e8a-bf8a-3ff3121c875a.asoul-ava.top
   port: 443
   type: vmess
@@ -849,14 +837,14 @@ proxies:
     host: b62a948c-faa2-4e8a-bf8a-3ff3121c875a.asoul-ava.top
     path: /azumase.ren
   tls: true
+- name: 08-0065-UA
+  type: hysteria2
+  server: 185.126.255.78
+  port: 43429
+  password: 1fdb6b30-5371-4ff8-a001-efdc4b43d79b
+  skip-cert-verify: true
+  sni: real.getafreenode.sbs
 - name: 08-0066-CN
-  server: awes35lesl.blhao0o.dpdns.org
-  port: 12023
-  type: ss
-  cipher: aes-128-gcm
-  password: 01721e43-5389-4f97-b21c-900abb2bda9e
-  udp: true
-- name: 08-0067-CN
   server: v8.heduian.link
   port: 30808
   type: vmess
@@ -870,45 +858,134 @@ proxies:
     host: v8.heduian.link
     path: /oooo
   tls: false
-- name: 08-0068-NL
-  server: 51.15.23.63
+- name: 08-0067-HR
+  server: 46.183.184.60
   port: 989
   type: ss
   cipher: aes-256-cfb
   password: f8f7aCzcPKbsF8p3
   udp: true
-- name: 08-0069-NO
-  server: 185.213.23.226
-  port: 989
-  type: ss
-  cipher: aes-256-cfb
-  password: f8f7aCzcPKbsF8p3
+- name: 08-0068-CN
+  server: v24.heduian.link
+  port: 30824
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
+  cipher: auto
+  skip-cert-verify: true
   udp: true
-- name: 08-0070-CO
-  server: 181.119.30.20
-  port: 990
+  network: ws
+  ws-opts:
+    host: v24.heduian.link
+    path: /oooo
+  tls: false
+- name: 08-0069-CN
+  server: 47.104.186.133
+  port: 50002
+  type: vmess
+  uuid: 418048af-a293-4b99-9b0c-98ca3580dd24
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: 47.104.186.133
+    path: /
+  tls: false
+- name: 08-0070-NL
+  server: switcher-nick-croquet.freesocks.work
+  port: 443
   type: ss
   cipher: chacha20-ietf-poly1305
+  password: 9tqhMdIrTkgQ46PvhyAtMH
+  udp: true
+- name: 08-0071-CN
+  server: v36.heduian.link
+  port: 30836
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: v36.heduian.link
+    path: /oooo
+  tls: false
+- name: 08-0072-CN
+  server: v35.heduian.link
+  port: 30835
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: v35.heduian.link
+    path: /oooo
+  tls: false
+- name: 08-0073-RELAY
+  server: rak1ding.89060004.xyz
+  port: 2083
+  type: vmess
+  uuid: 75d96365-1229-4fc4-dbda-855717f876cf
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: rak1ding.89060004.xyz
+    path: /
+  tls: true
+- name: 08-0074-KR
+  server: p141.panda001.net
+  port: 4652
+  type: ss
+  cipher: aes-256-cfb
+  password: qwerREWQ%2540%2540
+  udp: true
+- name: 08-0075-PY
+  server: 38.165.233.93
+  port: 989
+  type: ss
+  cipher: aes-256-cfb
   password: f8f7aCzcPKbsF8p3
   udp: true
-- name: 08-0071-FR
-  type: trojan
-  udp: true
+- name: 08-0076-CN
+  server: v9.heduian.link
+  port: 30809
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
+  cipher: auto
   skip-cert-verify: true
-  tls: true
-  password: 1ce1df7962f71c6f
-  server: uk-03.allhubb.info
-  port: 8443
-  sni: uk-03.allhubb.info
-- name: 08-0072-NL
-  server: 193.29.139.138
+  udp: true
+  network: ws
+  ws-opts:
+    host: v9.heduian.link
+    path: /oooo
+  tls: false
+- name: 08-0077-US
+  server: 23.251.121.242
   port: 8080
   type: ss
-  cipher: chacha20-ietf-poly1305
-  password: QCXDxuDlTTMD7jtgHUjIoj
+  cipher: rc4-md5
+  password: 14fFPrbezE3HDZzsMOr6
   udp: true
-- name: 08-0073-RELAY
-  server: 104.19.42.196
+- name: 08-0078-CA
+  server: ca225.vpnbook.com
+  port: 80
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: JIhN6rBKkaEboLNXVSv5rq
+  udp: true
+- name: 08-0079-RELAY
+  server: 104.16.40.154
   port: 2082
   type: vmess
   uuid: 37d8c992-6170-40e9-89dd-e9a2647223f8
@@ -918,51 +995,44 @@ proxies:
   udp: true
   network: ws
   ws-opts:
-    host: 104.19.42.196
+    host: 104.16.40.154
     path: /ws?ed=2048
   tls: false
-- name: 08-0074-RELAY
-  server: 104.19.45.232
-  port: 2095
-  type: vmess
-  uuid: 7a737f41-b792-4260-94ff-3d864da67b80
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: 104.19.45.232
-    path: /
-  tls: false
-- name: 08-0075-US
-  server: 23.134.94.175
-  port: 8119
+- name: 08-0080-KR
+  server: 43.201.24.53
+  port: 443
   type: ss
-  cipher: aes-256-gcm
-  password: cdBIDV42DCwnfIN
+  cipher: aes-256-cfb
+  password: amazonskr05
   udp: true
-- name: 08-0076-NL
-  server: 46.182.107.23
-  port: 41000
-  type: vmess
-  uuid: 418048af-a293-4b99-9b0c-98ca3580dd24
-  alterId: 64
-  cipher: auto
+- name: 08-0081-KR
+  server: 43.201.56.52
+  port: 443
+  type: ss
+  cipher: aes-256-cfb
+  password: amazonskr05
+  udp: true
+- name: 08-0082-US
+  server: shct.pkyun.xyz
+  port: 51706
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: ba89b12a-b50b-45a1-ba6b-0181f24fd68b
+  udp: true
+- name: 08-0083-JP
+  type: hysteria2
+  server: 52.193.71.150
+  port: 18219
+  password: oATw4IRtuUOozpOLFflGnWjtg
   skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: 46.182.107.23
-    path: /path/153428133302
-  tls: true
-- name: 08-0077-US
+  sni: bing.com
+- name: 08-0084-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: ttfang
-  server: 198.71.189.194
+  server: 199.34.228.194
   port: 2096
   sni: ttfang.fange.me
   network: ws
@@ -970,64 +1040,36 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ttfang.fange.me
-- name: 08-0078-RELAY
-  server: 104.19.42.120
-  port: 2082
-  type: vmess
-  uuid: 37d8c992-6170-40e9-89dd-e9a2647223f8
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: 104.19.42.120
-    path: /ws?ed=2048
-  tls: false
-- name: 08-0079-CN
-  server: hk.lianjianode.cc
-  port: 21032
-  type: vmess
-  uuid: 2e009a5a-5329-46cc-a69e-097b94323328
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: hk.lianjianode.cc
-    path: /hongkong
-  tls: false
-- name: 08-0080-JP
-  server: cm5hi-g05.jp04-3771-vm0.entry.fr0307a.art
-  port: 448
-  type: vmess
-  uuid: 4b991d1c-f7a2-348e-b785-8daf386b6864
-  alterId: 1
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: cm5hi-g05.jp04-3771-vm0.entry.fr0307a.art
-    path: /
-  tls: false
-- name: 08-0081-RELAY
-  server: 172.67.71.160
+- name: 08-0085-RELAY
+  server: 172.66.45.34
   port: 443
   type: vmess
-  uuid: 05641cf5-58d2-4ba4-a9f1-b3cda0b1fb1d
+  uuid: c2e7a0c6-6034-49c2-8e25-4aa592afd719
   alterId: 0
   cipher: auto
   skip-cert-verify: true
   udp: true
   network: ws
   ws-opts:
-    host: 172.67.71.160
-    path: /linkws
+    host: 172.66.45.34
+    path: /9iqvy4a0bZ
   tls: true
-- name: 08-0082-RELAY
-  server: 104.21.225.94
+- name: 08-0086-SG
+  server: 159.223.94.156
+  port: 80
+  type: vmess
+  uuid: 533724ad-58ef-4147-88dc-9da523c15fc4
+  alterId: 64
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: 159.223.94.156
+    path: /anti13.zingfast.vn
+  tls: false
+- name: 08-0087-RELAY
+  server: 104.21.225.193
   port: 80
   type: vmess
   uuid: 7022982f-da4c-48c9-c660-b2315abdcf7e
@@ -1037,64 +1079,50 @@ proxies:
   udp: true
   network: ws
   ws-opts:
-    host: 104.21.225.94
+    host: 104.21.225.193
     path: /
   tls: false
-- name: 08-0083-CN
-  server: hk2.fgmcx.top
-  port: 41049
+- name: 08-0088-HK
+  server: 1.65.223.223
+  port: 443
   type: ss
-  cipher: chacha20-ietf-poly1305
-  password: be443689-bc64-49ff-85a5-8eecaa2235d3
+  cipher: aes-128-gcm
+  password: a-wym4ovY4Yw
+  plugin: v2ray-plugin
+  plugin-opts:
+    mode: websocket
+    host: 1.65.223.223
+    path: /
+    tls: true
+    mux: true
+    skip-cert-verify: true
+    restls: false
   udp: true
-- name: 08-0084-CN
+- name: 08-0089-RELAY
+  server: 104.16.60.8
+  port: 2095
+  type: vmess
+  uuid: 05641cf5-58d2-4ba4-a9f1-b3cda0b1fb1d
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: ws
+  ws-opts:
+    host: 104.16.60.8
+    path: /obdii.cfd/linkws
+  tls: false
+- name: 08-0090-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 277E0712-F3F1-0435-CEC5-9177070F30FF
-  server: bepshbgp01.004837963.xyz
-  port: 14423
-  sni: mpvideo.qpic.cn
-- name: 08-0085-RELAY
-  server: 104.19.45.78
-  port: 2095
-  type: vmess
-  uuid: 7a737f41-b792-4260-94ff-3d864da67b80
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
+  password: ttfang
+  server: 185.207.197.194
+  port: 2096
+  sni: ttfang.fange.me
   network: ws
   ws-opts:
-    host: 104.19.45.78
-    path: /
-  tls: false
-- name: 08-0086-RELAY
-  server: 104.19.45.222
-  port: 2095
-  type: vmess
-  uuid: 7a737f41-b792-4260-94ff-3d864da67b80
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: 104.19.45.222
-    path: /
-  tls: false
-- name: 08-0087-RELAY
-  server: 104.16.40.34
-  port: 2082
-  type: vmess
-  uuid: 37d8c992-6170-40e9-89dd-e9a2647223f8
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  udp: true
-  network: ws
-  ws-opts:
-    host: 104.16.40.34
-    path: /ws?ed=2048
-  tls: false
+    path: Telegram🇨🇳
+    headers:
+      Host: ttfang.fange.me
