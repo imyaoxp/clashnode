@@ -1286,6 +1286,9 @@ class sub_convert():
                             ws_opts = get_any_case(proxy, ['ws-opts'], {})
                             raw_path = get_any_case(ws_opts, ['path'], '/')
                             print(f"clash path: {raw_path}")  # 调试输出
+                            if raw_path.count('@') >1 or raw_path.count('&') > 0 or raw_path.count('%26') >0 or raw_path.count('%40') >1 or raw_path.startswith('?') or raw_path.endswith('?'):
+                                print(f'vless节点格式错误，line:{line}')
+                                continue
                             encoded_path = '/' + encode_clash_path(raw_path).strip('/').replace(':', '%3A')
                             print(f"url path: {encoded_path}")  # 调试输出
                             
@@ -1301,7 +1304,11 @@ class sub_convert():
                         elif network == 'h2':
                             h2_opts = get_any_case(proxy, ['h2-opts'], {})
                             raw_path = get_any_case(h2_opts, ['path'], '/')
+                            if raw_path.count('@') >1 or raw_path.count('&') > 0 or raw_path.count('%26') >0 or raw_path.count('%40') >1 or raw_path.startswith('?') or raw_path.endswith('?'):
+                                print(f'vless节点格式错误，line:{line}')
+                                continue
                             hosts = encode_clash_path(get_any_case(h2_opts, ['host'], [sni]))
+                            
                             params.update({
                                 'path': '/' + encode_clash_path(raw_path).strip('/').replace(':', '%3A'),
                                 'host': ','.join(hosts) if isinstance(hosts, list) else hosts
@@ -1335,6 +1342,9 @@ class sub_convert():
                             if 'path' in tcp_opts:
                                 raw_path = tcp_opts['path']
                                 params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').replace(':', '%3A').replace('@', '%40')  # 先解码
+                                if raw_path.count('@') >1 or raw_path.count('&') > 0 or raw_path.count('%26') >0 or raw_path.count('%40') >1 or raw_path.startswith('?') or raw_path.endswith('?'):
+                                print(f'vless节点格式错误，line:{line}')
+                                continue
                                 
 
 
