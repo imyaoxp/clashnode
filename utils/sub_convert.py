@@ -1343,8 +1343,8 @@ class sub_convert():
                                 raw_path = tcp_opts['path']
                                 params['path'] = '/' + sub_convert.decode_url_path(raw_path).strip('/').replace(':', '%3A').replace('@', '%40')  # 先解码
                                 if raw_path.count('@') >1 or raw_path.count('&') > 0 or raw_path.count('%26') >0 or raw_path.count('%40') >1 or raw_path.startswith('?') or raw_path.endswith('?'):
-                                print(f'vless节点格式错误，line:{line}')
-                                continue
+                                    print(f'vless节点格式错误，line:{line}')
+                                    continue
                                 
 
 
