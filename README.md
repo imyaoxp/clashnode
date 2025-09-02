@@ -18,7 +18,7 @@
 - [8PuddinCat/BestClash](https://github.com/PuddinCat/BestClash), 节点数量: `32`
 - [9busymilk/clash_config_auto_build/](https://github.com/busymilk/clash_config_auto_build/), 节点数量: `316`
 - [23dora-admin001/aggregator-](https://github.com/dora-admin001/aggregator-), 节点数量: `0`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `288`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `284`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
