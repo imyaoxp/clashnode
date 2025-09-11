@@ -1,68 +1,107 @@
 proxies:
-- name: 05-0000-US
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: a1a37563-3bd9-45d0-b6a5-be921b623391
-  server: hk2.8b1c7c70-ecf1-6891-9fa7-68a86662f902.9d8f269f96b25232-759cbb36d6548597.kaufen
-  port: 443
-  sni: 829D7BDE-64B9-E759-C661-78BC73E582A0.1c2871ba-6025-61e2-e87f-a5c9e0ac8c1d.9d8f269f96b25232-759cbb36d6548597.kaufen
-- name: 05-0001-KZ
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 194.76.18.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /Telegram🇨🇳
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 05-0002-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 185.148.106.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /Telegram
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 05-0003-RU
-  server: ss.80808.sbs
-  port: 20
+- name: 05-0000-TW
+  server: 118.170.222.48
+  port: 10021
   type: ss
-  cipher: aes-256-gcm
-  password: a4VtqRwhj6gWbHwL4Jt26w
+  cipher: chacha20-ietf-poly1305
+  password: 8220c028-6220-4bf2-b430-48dee74b2c7d
   udp: true
-- name: 05-0004-RELAY
+- name: 05-0001-FR
+  type: hysteria
+  server: 195.154.200.40
+  port: 15010
+  auth-str: dongtaiwang.com
+  auth_str: dongtaiwang.com
+  up: 20 Mbps
+  down: 50 Mbps
+  protocol: udp
+  udp: true
+  skip-cert-verify: true
+  alpn:
+    - h3
+- name: 05-0002-US
+  type: hysteria2
+  server: 1.daka778.top
+  port: 33657
+  password: c1c2848e-332b-40af-a903-d998873b8bc0
+  skip-cert-verify: true
+  sni: 1.daka778.top
+- name: 05-0003-RELAY
   server: whatismyipaddress.com
   port: 443
   type: vless
   uuid: c83014e0-ad3e-4ebd-9e8f-8f7a1f6088d6
-  servername: yhimm.amazon-funder.info
+  servername: vnjfe.apple-funder.info
   tls: true
   network: ws
   udp: true
   ws-opts:
     path: /majara
     headers:
-      Host: yhimm.amazon-funder.info
-- name: 05-0005-RELAY
+      Host: vnjfe.apple-funder.info
+- name: 05-0004-IT
+  server: 38.180.22.152
+  port: 33000
+  type: vless
+  uuid: 944476f2-45d5-4a62-a707-e62df5cebdec
+  servername: 38.180.22.152
+  tls: true
+  network: tcp
+  udp: true
+  reality-opts:
+    public-key: K0NksAju4WP-RWV_zyE5E6lcOIGTsOnpCVtjFprFHX8
+    short-id: 210fb560
+  tcp-opts:
+    headers:
+      Host: 38.180.22.152
+    path: /
+  headerType: http
+- name: 05-0005-DE
+  server: 38.244.163.100
+  port: 35048
+  type: vless
+  uuid: 5690f021-86a7-4712-b143-7944c7380436
+  servername: 38.244.163.100
+  tls: false
+  network: tcp
+  udp: true
+  tcp-opts:
+    headers:
+      Host: 38.244.163.100
+    path: /
+  headerType: http
+- name: 05-0006-GB
+  server: looutintl.outline360bot.com
+  port: 80
+  type: ss
+  cipher: 2022-blake3-aes-256-gcm
+  password: 7YGEcbGc73cA2AOeS5i9O/Z9nBwePRcDOcwmz8iFYTM%253D%253A3MYSHBnuHYRAicSpQRoB9FG8%252BUD3Av03p1SRsGrk3Iw%253D
+  udp: true
+- name: 05-0007-NL
+  server: 51.158.205.183
+  port: 443
+  type: vless
+  uuid: 6035325d-399a-5148-9126-29cedfd5966a
+  servername: 51.158.205.183
+  tls: true
+  network: tcp
+  udp: true
+  reality-opts:
+    public-key: OHDOdOV5Zdi-bSFlXCstXXdunYLtxZ-6quyX0bA6MFQ
+    short-id: 8aa41f71
+  flow: xtls-rprx-vision
+  tcp-opts:
+    headers:
+      Host: 51.158.205.183
+    path: /
+  headerType: http
+- name: 05-0008-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: slch2024
-  server: 194.36.55.195
+  server: 209.94.90.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
@@ -70,21 +109,216 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0006-RELAY
-  server: 104.21.69.41
-  port: 443
+- name: 05-0009-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 195.85.23.87
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0010-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 190.93.244.87
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0011-HK
+  server: awes35lesl.blhao0o.dpdns.org
+  port: 12008
+  type: ss
+  cipher: aes-128-gcm
+  password: 01721e43-5389-4f97-b21c-900abb2bda9e
+  udp: true
+- name: 05-0012-VN
+  server: 103.186.154.27
+  port: 38388
+  type: ss
+  cipher: aes-256-cfb
+  password: Xn8jKdmDM00IeO%2525%2523%2524%2523fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  udp: true
+- name: 05-0013-VN
+  server: 103.186.155.21
+  port: 38388
+  type: ss
+  cipher: aes-256-cfb
+  password: Xn8jKdmDM00IeO%2525%2523%2524%2523fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  udp: true
+- name: 05-0014-SE
+  type: hysteria2
+  server: 70.34.215.221
+  port: 20335
+  password: 80747420-96c4-4a2f-83e6-eea4e46beb09
+  skip-cert-verify: true
+  sni: drhystuichdfy.samanidempire.org
+  obfs: salamander
+  obfs-password: U1wBrYQyFm
+- name: 05-0015-US
+  type: hysteria2
+  server: yg.foldjc.top
+  port: 37011
+  password: c1a4fe4e-fad8-4cbc-9d3b-db0d5757545b
+  skip-cert-verify: true
+  sni: yg.foldjc.top
+- name: 05-0016-TW
+  server: 1.165.109.41
+  port: 10031
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: 35606e17-e312-43fd-bc04-1ea719df026f
+  udp: true
+- name: 05-0017-TW
+  server: 125.230.1.45
+  port: 10061
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: 76b24d63-f572-442e-ade7-1792738303e7
+  udp: true
+- name: 05-0018-CN
+  server: gw.liangyuandianwan.com
+  port: 35603
+  type: ss
+  cipher: chacha20-ietf-poly1305
+  password: 177101d3-4c95-4a8f-938c-709a56f25752
+  udp: true
+- name: 05-0019-FR
+  server: paisaoutt.outline360bot.com
+  port: 80
+  type: ss
+  cipher: 2022-blake3-aes-256-gcm
+  password: 7YGEcbGc73cA2AOeS5i9O/Z9nBwePRcDOcwmz8iFYTM%253D%253AhDji5B1JvLAFdcrY13qzBCKQwygK84t7R1q14U6vSjg%253D
+  udp: true
+- name: 05-0020-CN
+  server: yd-02.paofunlink.com
+  port: 1054
+  type: ssr
+  cipher: chacha20-ietf
+  password: bxsnucrgk6hfish
+  obfs: plain
+  protocol: auth_aes128_sha1
+  protocol-param: 222545:TIvS2C
+  obfs-param: 45672222545.microsoft.com
+  group: SSRProvider
+- name: 05-0021-CN
+  server: v8.heduian.link
+  port: 30808
   type: vmess
-  uuid: 6bebd1fe-0ca7-49ac-b260-cc7829411d76
-  alterId: 0
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
   cipher: auto
   skip-cert-verify: true
   udp: true
   network: ws
   ws-opts:
-    host: 104.21.69.41
-    path: /98iwPrGvFHYv5l
+    host: v8.heduian.link
+    path: /oooo
+  tls: false
+- name: 05-0022-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
   tls: true
-- name: 06-0007-AT
+  password: slch2024
+  server: 185.207.197.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0023-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 204.93.210.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0024-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 213.241.198.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0025-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 213.182.199.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0026-SC
+  server: 146.19.90.10
+  port: 1443
+  type: vless
+  uuid: 3c7a1227-5383-3a19-7084-76624ec8f84f
+  servername: 146.19.90.10
+  tls: true
+  network: tcp
+  udp: true
+  reality-opts:
+    public-key: oE7ZEghzkaOUiw1q3PqBtpllP1NlPHLY8ydJRuICtko
+    short-id: 
+  flow: xtls-rprx-vision
+  tcp-opts:
+    headers:
+      Host: 146.19.90.10
+    path: /
+  headerType: http
+- name: 05-0027-US
+  server: 172.233.153.209
+  port: 10001
+  type: vless
+  uuid: e4412006-94f2-4f3c-b568-22a3e31dc264
+  servername: 172.233.153.209
+  tls: true
+  network: tcp
+  udp: true
+  reality-opts:
+    public-key: 1ltSdo2K6D9EEwebaDQPCb5ypbURcXyO9HsX4RUbbUo
+    short-id: 1a24af87
+  tcp-opts:
+    headers:
+      Host: 172.233.153.209
+    path: /
+  headerType: http
+- name: 06-0028-AT
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -98,7 +332,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0008-RELAY
+- name: 06-0029-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -112,7 +346,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0009-RELAY
+- name: 06-0030-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -126,7 +360,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0010-RELAY
+- name: 06-0031-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -140,7 +374,7 @@ proxies:
     path: /TelegramU0001F1E8U0001F1F3
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0011-RELAY
+- name: 06-0032-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -154,7 +388,7 @@ proxies:
     path: /TelegramU0001F1E8U0001F1F3
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0012-RELAY
+- name: 06-0033-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -168,7 +402,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0013-RELAY
+- name: 06-0034-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -182,7 +416,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0014-RELAY
+- name: 06-0035-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -196,7 +430,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0015-RELAY
+- name: 06-0036-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -210,7 +444,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0016-RELAY
+- name: 06-0037-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -224,7 +458,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0017-RELAY
+- name: 06-0038-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -238,7 +472,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0018-RELAY
+- name: 06-0039-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -252,7 +486,7 @@ proxies:
     path: /Telegram@ShadowProxy66
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0019-FR
+- name: 06-0040-FR
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -266,7 +500,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0020-RELAY
+- name: 06-0041-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -280,7 +514,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0021-GR
+- name: 06-0042-GR
   server: 185.39.207.121
   port: 443
   type: vless
@@ -298,7 +532,7 @@ proxies:
       Host: 185.39.207.121
     path: /
   headerType: http
-- name: 06-0022-KZ
+- name: 06-0043-KZ
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -312,7 +546,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0023-RELAY
+- name: 06-0044-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -326,7 +560,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0024-RELAY
+- name: 06-0045-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -340,7 +574,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0025-RELAY
+- name: 06-0046-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -354,7 +588,7 @@ proxies:
     path: /TelegramU0001F1E8U0001F1F3
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0026-RELAY
+- name: 06-0047-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -368,7 +602,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0027-RELAY
+- name: 06-0048-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -382,7 +616,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0028-RELAY
+- name: 06-0049-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -396,7 +630,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0029-RU
+- name: 06-0050-RU
   server: 185.152.94.10
   port: 443
   type: vless
@@ -414,7 +648,7 @@ proxies:
       Host: 185.152.94.10
     path: /
   headerType: http
-- name: 06-0030-RU
+- name: 06-0051-RU
   server: 185.152.94.10
   port: 1443
   type: vless
@@ -432,7 +666,7 @@ proxies:
       Host: 185.152.94.10
     path: /
   headerType: http
-- name: 06-0031-RU
+- name: 06-0052-RU
   server: 213.232.120.10
   port: 1443
   type: vless
@@ -450,7 +684,7 @@ proxies:
       Host: 213.232.120.10
     path: /
   headerType: http
-- name: 06-0032-RELAY
+- name: 06-0053-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -464,7 +698,7 @@ proxies:
     path: /TelegramU0001F1E8U0001F1F3
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0033-RU
+- name: 06-0054-RU
   server: 147.78.180.10
   port: 1443
   type: vless
@@ -482,7 +716,7 @@ proxies:
       Host: 147.78.180.10
     path: /
   headerType: http
-- name: 06-0034-RU
+- name: 06-0055-RU
   server: 147.78.180.10
   port: 443
   type: vless
@@ -500,7 +734,7 @@ proxies:
       Host: 147.78.180.10
     path: /
   headerType: http
-- name: 06-0035-RELAY
+- name: 06-0056-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -514,7 +748,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0036-RELAY
+- name: 06-0057-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -528,7 +762,7 @@ proxies:
     path: /TelegramU0001F1E8U0001F1F3
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0037-RELAY
+- name: 06-0058-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -542,7 +776,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0038-RELAY
+- name: 06-0059-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -556,7 +790,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0039-RU
+- name: 06-0060-RU
   server: 213.232.123.10
   port: 1443
   type: vless
@@ -574,7 +808,7 @@ proxies:
       Host: 213.232.123.10
     path: /
   headerType: http
-- name: 06-0040-RU
+- name: 06-0061-RU
   server: 213.232.123.10
   port: 443
   type: vless
@@ -592,7 +826,7 @@ proxies:
       Host: 213.232.123.10
     path: /
   headerType: http
-- name: 06-0041-US
+- name: 06-0062-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -606,7 +840,7 @@ proxies:
     path: /Telegram🇮🇷ShadowProxy66
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0042-US
+- name: 06-0063-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -620,7 +854,7 @@ proxies:
     path: /Telegram🇮🇷ShadowProxy66
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0043-US
+- name: 06-0064-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -634,7 +868,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0044-RELAY
+- name: 06-0065-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -648,7 +882,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0045-US
+- name: 06-0066-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -662,7 +896,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0046-US
+- name: 06-0067-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -676,7 +910,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0047-US
+- name: 06-0068-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -690,7 +924,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0048-US
+- name: 06-0069-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -704,7 +938,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0049-RELAY
+- name: 06-0070-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -718,7 +952,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0050-US
+- name: 06-0071-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -732,7 +966,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0051-US
+- name: 06-0072-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -746,7 +980,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0052-US
+- name: 06-0073-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -760,7 +994,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0053-RELAY
+- name: 06-0074-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -774,7 +1008,7 @@ proxies:
     path: /Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0054-US
+- name: 06-0075-US
   server: 92.118.112.83
   port: 443
   type: vless
@@ -792,7 +1026,7 @@ proxies:
       Host: 92.118.112.83
     path: /
   headerType: http
-- name: 06-0055-RU
+- name: 06-0076-RU
   server: 85.239.56.10
   port: 443
   type: vless
@@ -810,7 +1044,7 @@ proxies:
       Host: 85.239.56.10
     path: /
   headerType: http
-- name: 06-0056-RELAY
+- name: 06-0077-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -824,7 +1058,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0057-US
+- name: 06-0078-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -838,7 +1072,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0058-RELAY
+- name: 06-0079-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -852,7 +1086,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0059-RELAY
+- name: 06-0080-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -866,7 +1100,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0060-RELAY
+- name: 06-0081-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -880,7 +1114,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0061-RELAY
+- name: 06-0082-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -894,7 +1128,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0062-RELAY
+- name: 06-0083-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -908,7 +1142,7 @@ proxies:
     path: /由零开始
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0063-US
+- name: 06-0084-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -922,7 +1156,7 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 06-0064-US
+- name: 06-0085-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -936,21 +1170,21 @@ proxies:
     path: /Telegram
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0065-RELAY
-  type: trojan
-  udp: true
+- name: 08-0086-CN
+  server: v4.heduian.link
+  port: 30804
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+  alterId: 2
+  cipher: auto
   skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 190.93.247.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
+  udp: true
   network: ws
   ws-opts:
-    path: Telegram🇨🇳
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0066-US
+    host: v4.heduian.link
+    path: /oooo
+  tls: false
+- name: 08-0087-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -964,13 +1198,13 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0067-US
+- name: 08-0088-KZ
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: slch2024
-  server: 199.34.229.87
+  server: 194.76.18.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
@@ -978,21 +1212,7 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0068-US
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 209.94.90.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: Telegram🇨🇳
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0069-US
+- name: 08-0089-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1006,7 +1226,21 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0070-AT
+- name: 08-0090-US
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 199.34.230.87
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 08-0091-AT
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1020,13 +1254,13 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0071-RELAY
+- name: 08-0092-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: slch2024
-  server: 194.36.55.87
+  server: 199.34.229.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
@@ -1034,13 +1268,13 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0072-RELAY
+- name: 08-0093-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: slch2024
-  server: 209.46.30.87
+  server: 193.9.49.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
@@ -1048,13 +1282,13 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 08-0073-RELAY
+- name: 08-0094-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: slch2024
-  server: 193.124.224.87
+  server: 188.244.122.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
@@ -1062,21 +1296,35 @@ proxies:
     path: Telegram🇨🇳
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 23-0074-AT
+- name: 08-0095-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 195.85.59.87
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: Telegram🇨🇳
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 23-0096-AT
   server: 77.110.110.240
   port: 443
   type: ss
   cipher: aes-256-gcm
   password: 0a914e9a-3e3b-470f-a267-7ea7083c45bb
   udp: true
-- name: 23-0075-AT
+- name: 23-0097-AT
   server: 77.110.110.240
   port: 443
   type: ss
   cipher: aes-256-gcm
   password: a7f082c1-0d12-4609-b6bf-e760b668cf23
   udp: true
-- name: 23-0076-DE
+- name: 23-0098-DE
   server: de.vipdatacloud.com
   port: 47193
   type: vless
@@ -1093,35 +1341,35 @@ proxies:
       Host: www.pcmag.com
     path: /
   headerType: http
-- name: 23-0077-AT
+- name: 23-0099-AT
   server: 77.110.110.240
   port: 443
   type: ss
   cipher: aes-256-gcm
   password: 102ad3da-2d55-49d6-b8c8-2d7e04df33ca
   udp: true
-- name: 23-0078-AT
+- name: 23-0100-AT
   server: 77.110.110.240
   port: 443
   type: ss
   cipher: aes-256-gcm
   password: 3f40bf3d-2f1e-4f43-bf54-e5fe742a3b4e
   udp: true
-- name: 23-0079-AT
+- name: 23-0101-AT
   server: 77.110.110.240
   port: 443
   type: ss
   cipher: aes-256-gcm
   password: d70ef8b5-6048-4c0d-be4d-fc60399b0f45
   udp: true
-- name: 23-0080-FR
+- name: 23-0102-FR
   server: 62.133.62.109
   port: 443
   type: ss
   cipher: chacha20-ietf-poly1305
   password: jifuR2NTM0Yt
   udp: true
-- name: 23-0081-DE
+- name: 23-0103-DE
   server: fina.iranbuildings.com
   port: 8444
   type: vless
@@ -1135,7 +1383,7 @@ proxies:
       Host: speedtest.net
     path: /
   headerType: http
-- name: 23-0082-CA
+- name: 23-0104-CA
   server: amazon-15.cristiano.name.ng
   port: 443
   type: vless
@@ -1153,7 +1401,7 @@ proxies:
       Host: store.steampowered.com
     path: /
   headerType: http
-- name: 23-0083-DE
+- name: 23-0105-DE
   server: 57.129.24.125
   port: 443
   type: vmess
@@ -1167,7 +1415,7 @@ proxies:
     host: wrmelmwxlf.gktevlrqznwqqozy.fabpfs66gizmnojhcvqxwl.kytrcfzqla87gvgvs6c7kjnrubuh.cc
     path: /linkvws?ed=2048@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN
   tls: tls
-- name: 23-0084-JP
+- name: 23-0106-JP
   server: amazon-13.cristiano.name.ng
   port: 443
   type: vless
@@ -1185,14 +1433,14 @@ proxies:
       Host: store.steampowered.com
     path: /
   headerType: http
-- name: 23-0085-JP
+- name: 23-0107-JP
   server: 160.16.123.124
   port: 10087
   type: ss
   cipher: aes-128-gcm
   password: 10086
   udp: true
-- name: 23-0086-RELAY
+- name: 23-0108-RELAY
   server: 45.131.4.85
   port: 80
   type: vless
@@ -1205,7 +1453,7 @@ proxies:
     path: /193.123.81.105=443
     headers:
       Host: zoomgov.vipren.biz.id
-- name: 23-0087-DE
+- name: 23-0109-DE
   server: 91.107.241.250
   port: 6000
   type: vless
@@ -1217,7 +1465,7 @@ proxies:
   reality-opts:
     public-key: aNK-4Lg53CF9JKVv7LFTAGP9Bmha0HxY6ms1emd57nQ
     short-id: 243e
-- name: 23-0088-IR
+- name: 23-0110-IR
   server: cdn.azkhaktakhane.ir
   port: 2070
   type: vless
@@ -1231,14 +1479,14 @@ proxies:
       Host: cdn.azkhaktakhane.ir
     path: /
   headerType: http
-- name: 23-0089-CH
+- name: 23-0111-CH
   server: 45.95.232.236
   port: 4248
   type: ss
   cipher: chacha20-ietf-poly1305
   password: PtHv4bO4jPtBsHWSl1n5Qd
   udp: true
-- name: 23-0090-RELAY
+- name: 23-0112-RELAY
   server: www.speedtest.net
   port: 2053
   type: vless
@@ -1251,14 +1499,14 @@ proxies:
     path: /
     headers:
       Host: dl1-de1-cdn.easy-upload.org
-- name: 23-0091-US
+- name: 23-0113-US
   server: 104.192.226.106
   port: 989
   type: ss
   cipher: aes-256-cfb
   password: f8f7aCzcPKbsF8p3
   udp: true
-- name: 23-0092-DE
+- name: 23-0114-DE
   server: 212.95.34.32
   port: 443
   type: vless
@@ -1271,7 +1519,7 @@ proxies:
     path: /
     headers:
       Host: 212.95.34.32
-- name: 23-0093-IR
+- name: 23-0115-IR
   server: tun3.fastlink.cfd
   port: 43562
   type: vless
@@ -1285,7 +1533,7 @@ proxies:
       Host: www.sayad.top
     path: /
   headerType: http
-- name: 23-0094-RELAY
+- name: 23-0116-RELAY
   server: 172.66.44.171
   port: 8443
   type: vless
@@ -1298,7 +1546,7 @@ proxies:
     path: /EhIalQMxsqPtP5wo/MTguMTg0LjU1LjI0OSwyMTIuMzQuMTQyLjEwMCwxODguMTE2LjQwLjM3?ed=2560
     headers:
       Host: gerkr1dlsujtpy4c4xi8lotul76mgjxn-we.pages.dev
-- name: 23-0095-RELAY
+- name: 23-0117-RELAY
   server: www.speedtest.net
   port: 8443
   type: vless
@@ -1311,7 +1559,7 @@ proxies:
     path: /
     headers:
       Host: server13.coin.name.ng
-- name: 23-0096-RELAY
+- name: 23-0118-RELAY
   server: www.speedtest.net
   port: 8443
   type: vless
@@ -1324,7 +1572,7 @@ proxies:
     path: /
     headers:
       Host: iphoster-quran-iran-4.coin.name.ng
-- name: 23-0097-RELAY
+- name: 23-0119-RELAY
   server: 172.66.47.85
   port: 8443
   type: vless
@@ -1337,7 +1585,7 @@ proxies:
     path: /9utAxbNadloyESg7/MTguMTg0LjU1LjI0OSwyMTIuMzQuMTQyLjEwMCwxODguMTE2LjQwLjM3?ed=2560
     headers:
       Host: gerkr1dlsujtpy4c4xi8lotul76mgjxn-we.pages.dev
-- name: 23-0098-RELAY
+- name: 23-0120-RELAY
   server: 172.66.47.140
   port: 8443
   type: vless
@@ -1350,7 +1598,7 @@ proxies:
     path: /WwPEDup8yShFB1Wp/NzguNDYuNzMuNDk=?ed=2560
     headers:
       Host: v2rayminer.pages.dev
-- name: 23-0099-RELAY
+- name: 23-0121-RELAY
   server: www.speedtest.net
   port: 8443
   type: vless
@@ -1363,7 +1611,7 @@ proxies:
     path: /cB2VtcDN4ZBlL8fB/MTguMTg0LjU1LjI0OSwyMTIuMzQuMTQyLjEwMCwxODguMTE2LjQwLjM3?ed=2560
     headers:
       Host: gerkr1dlsujtpy4c4xi8lotul76mgjxn-we.pages.dev
-- name: 23-0100-RELAY
+- name: 23-0122-RELAY
   server: 104.18.36.24
   port: 443
   type: vless
@@ -1376,7 +1624,7 @@ proxies:
     path: /proxyip=zani.yaemiko.ggff.net/?JOKERRVPN_BIA_CHANEL%40JOKERRVPN
     headers:
       Host: carlotta.shoorekeeper.cloudns.org
-- name: 23-0101-NOWHERE
+- name: 23-0123-NOWHERE
   server: wild-bird.seotoolsforyou.co.uk
   port: 80
   type: vless
@@ -1389,7 +1637,7 @@ proxies:
     path: /
     headers:
       Host: wild-bird.seotoolsforyou.co.uk
-- name: 23-0102-RELAY
+- name: 23-0124-RELAY
   server: 104.21.80.1
   port: 443
   type: vless
@@ -1402,7 +1650,7 @@ proxies:
     path: /8fyir2diSmB8lAKc/NDQuMjI0LjI0LjkxLDE4LjE4My4xNTguMjEx
     headers:
       Host: schqqn0yhrrs34qn3a2k4i6g9xap1tph.pages.dev
-- name: 23-0103-FASTLY
+- name: 23-0125-FASTLY
   server: vpconnect.ahadbala.ir
   port: 80
   type: vless
@@ -1411,7 +1659,7 @@ proxies:
   tls: false
   network: xhttp
   udp: true
-- name: 23-0104-DE
+- name: 23-0126-DE
   server: 91.98.35.181
   port: 2222
   type: vless
@@ -1423,7 +1671,7 @@ proxies:
   reality-opts:
     public-key: hVdqTCOU_RnpET66_cj-Cr84e2VGwx-c3MgKwrTLhjk
     short-id: c96c4bf5d8
-- name: 23-0105-RELAY
+- name: 23-0127-RELAY
   server: www.speedtest.net
   port: 443
   type: vless
@@ -1436,7 +1684,7 @@ proxies:
     path: /
     headers:
       Host: v2rayminer.pages.dev
-- name: 23-0106-RELAY
+- name: 23-0128-RELAY
   server: azizisearch.com
   port: 2095
   type: vless
@@ -1445,7 +1693,7 @@ proxies:
   tls: false
   network: httpupgrade
   udp: true
-- name: 23-0107-DE
+- name: 23-0129-DE
   server: 188.245.75.235
   port: 443
   type: vless
@@ -1459,28 +1707,28 @@ proxies:
       Host: 188.245.75.235
     path: /
   headerType: http
-- name: 23-0108-NL
+- name: 23-0130-NL
   server: 92.112.126.90
   port: 443
   type: ss
   cipher: chacha20-ietf-poly1305
   password: 9tqhMdIrTkgQ46PvhyAtMH
   udp: true
-- name: 23-0109-AT
+- name: 23-0131-AT
   server: 212.113.106.76
   port: 29149
   type: ss
   cipher: chacha20-ietf-poly1305
   password: 9lcCvzNxpNsnINyaYfzc8e
   udp: true
-- name: 23-0110-TR
+- name: 23-0132-TR
   server: 62.60.233.21
   port: 443
   type: ss
   cipher: chacha20-ietf-poly1305
   password: 9dVLaccGBqFx
   udp: true
-- name: 23-0111-RELAY
+- name: 23-0133-RELAY
   server: 104.17.1.197
   port: 8880
   type: vless
@@ -1493,14 +1741,14 @@ proxies:
     path: /1ycR2zb3KeELWRha?ed=2560
     headers:
       Host: VngSuPpLY.IP-Ddns.com
-- name: 23-0112-NL
+- name: 23-0134-NL
   server: macintosh.outlinekeys.net
   port: 19609
   type: ss
   cipher: chacha20-ietf-poly1305
   password: UKvyixKRdTSw28Qp87keER
   udp: true
-- name: 23-0113-RELAY
+- name: 23-0135-RELAY
   server: 104.16.197.103
   port: 2052
   type: vless
@@ -1513,7 +1761,7 @@ proxies:
     path: /8usnxvehvhlly7ix?ed=2560
     headers:
       Host: error404bin.3fe3d28598.workers.dev
-- name: 23-0114-RELAY
+- name: 23-0136-RELAY
   server: fierce-data.seotoolsforyou.co.uk
   port: 80
   type: vless
@@ -1526,7 +1774,7 @@ proxies:
     path: /
     headers:
       Host: fierce-data.seotoolsforyou.co.uk
-- name: 23-0115-FASTLY
+- name: 23-0137-FASTLY
   server: filmnet.filimnet.com
   port: 80
   type: vless
@@ -1535,7 +1783,7 @@ proxies:
   tls: false
   network: xhttp
   udp: true
-- name: 23-0116-RELAY
+- name: 23-0138-RELAY
   server: 104.21.4.56
   port: 2053
   type: vless
@@ -1548,7 +1796,7 @@ proxies:
     path: /?---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---
     headers:
       Host: uciran-uciran-uciran-uciran-uciran-uciran-uciran-uciran.gijih70892.workers.dev
-- name: 23-0117-RELAY
+- name: 23-0139-RELAY
   server: sweeT-coMBInATIOn.SeOtooLsFORyOU.co.Uk
   port: 80
   type: vless
@@ -1561,7 +1809,7 @@ proxies:
     path: /
     headers:
       Host: sweeT-coMBInATIOn.SeOtooLsFORyOU.co.Uk
-- name: 23-0118-RELAY
+- name: 23-0140-RELAY
   server: BeWilDerED-poEM.SEOtooLsfOrYOu.cO.uk
   port: 80
   type: vless
@@ -1574,7 +1822,7 @@ proxies:
     path: /
     headers:
       Host: BeWilDerED-poEM.SEOtooLsfOrYOu.cO.uk
-- name: 23-0119-RELAY
+- name: 23-0141-RELAY
   server: 162.159.129.67
   port: 8443
   type: vless
@@ -1587,7 +1835,7 @@ proxies:
     path: /?ed=2560
     headers:
       Host: vle.amclubsdns.dpdns.org
-- name: 23-0120-US
+- name: 23-0142-US
   server: 45.82.161.120
   port: 19011
   type: vless
@@ -1601,7 +1849,7 @@ proxies:
       Host: 45.82.161.120
     path: /
   headerType: http
-- name: 23-0121-RELAY
+- name: 23-0143-RELAY
   server: cdnjs.com
   port: 443
   type: vless
@@ -1614,7 +1862,7 @@ proxies:
     path: /?ed=2560
     headers:
       Host: rayan-roof.atena.dpdns.org
-- name: 23-0122-RELAY
+- name: 23-0144-RELAY
   server: 104.19.144.33
   port: 8443
   type: vless
@@ -1627,14 +1875,14 @@ proxies:
     path: /?Join---MARAMBASHI---Join---MARAMBASHI---Join---MARAMBASHI---Join---MARAMBASHI?ed=2560
     headers:
       Host: PmQ1cCsP9x.GhEiChI.oRg
-- name: 23-0123-LT
+- name: 23-0145-LT
   server: 45.87.175.171
   port: 8080
   type: ss
   cipher: chacha20-ietf-poly1305
   password: 4a2rfixophdjffa8KVA4Aa
   udp: true
-- name: 23-0124-IN
+- name: 23-0146-IN
   server: 45.88.183.164
   port: 49355
   type: vless
@@ -1648,7 +1896,7 @@ proxies:
       Host: 45.88.183.164
     path: /
   headerType: http
-- name: 23-0125-RELAY
+- name: 23-0147-RELAY
   server: www.speedtest.net
   port: 443
   type: vless
@@ -1661,7 +1909,7 @@ proxies:
     path: /MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN?ed=2560
     headers:
       Host: 09sp38aey76eabnpj79orvawf-0ssxts.pages.dev
-- name: 23-0126-NOWHERE
+- name: 23-0148-NOWHERE
   server: bakrie.ac.id.servpn.my.id
   port: 443
   type: vless
@@ -1674,7 +1922,7 @@ proxies:
     path: /id5?--MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN
     headers:
       Host: bakrie.ac.id.servpn.my.id
-- name: 23-0127-DE
+- name: 23-0149-DE
   server: 150.241.108.219
   port: 43386
   type: vless
@@ -1691,7 +1939,7 @@ proxies:
       Host: www.latimes.com
     path: /
   headerType: http
-- name: 23-0128-DE
+- name: 23-0150-DE
   server: sss71534.tas-bazi.com
   port: 443
   type: vless
@@ -1700,7 +1948,7 @@ proxies:
   tls: false
   network: xhttp
   udp: true
-- name: 23-0129-RELAY
+- name: 23-0151-RELAY
   server: 104.17.41.52
   port: 8080
   type: vless
@@ -1713,7 +1961,7 @@ proxies:
     path: /ijiDwDw8BcM9ieHc?ed=2560
     headers:
       Host: v2ngsupply2.ip-ddns.com
-- name: 23-0130-RELAY
+- name: 23-0152-RELAY
   server: 104.26.6.18
   port: 443
   type: vless
@@ -1726,7 +1974,7 @@ proxies:
     path: /?ShadowProxy66
     headers:
       Host: albedoalbedochan.violetchaan.ip-ddns.com
-- name: 23-0131-DE
+- name: 23-0153-DE
   server: 164.92.139.18
   port: 443
   type: vless
@@ -1739,7 +1987,42 @@ proxies:
     path: /TG%40wxgqlfx?ed=2560
     headers:
       Host: vxh.wxgqlfx.cn
-- name: 05-0132-RELAY
+- name: 05-0154-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 185.148.106.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0155-RU
+  server: ss.80808.sbs
+  port: 20
+  type: ss
+  cipher: aes-256-gcm
+  password: a4VtqRwhj6gWbHwL4Jt26w
+  udp: true
+- name: 05-0156-RELAY
+  type: trojan
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 194.36.55.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: ocost-dy.wmlefl.cc
+- name: 05-0157-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1753,7 +2036,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0133-RELAY
+- name: 05-0158-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1767,7 +2050,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0134-BR
+- name: 05-0159-BR
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1781,7 +2064,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0135-RELAY
+- name: 05-0160-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1795,7 +2078,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0136-RELAY
+- name: 05-0161-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1809,49 +2092,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0137-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 204.93.210.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 05-0138-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 213.182.199.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 05-0139-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 213.241.198.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 05-0140-RELAY
+- name: 05-0162-RELAY
   server: www.speedtest.net
   port: 443
   type: vless
@@ -1864,7 +2105,7 @@ proxies:
     path: /
     headers:
       Host: 6389113402676776506.rtxiran.info
-- name: 05-0141-RELAY
+- name: 05-0163-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1878,7 +2119,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0142-RELAY
+- name: 05-0164-RELAY
   server: pubg.ac
   port: 8080
   type: vless
@@ -1891,7 +2132,7 @@ proxies:
     path: /profile/telegram%40ssrsub
     headers:
       Host: cdn-node-oss-98.paofu.de
-- name: 05-0143-RELAY
+- name: 05-0165-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1905,7 +2146,7 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0144-US
+- name: 05-0166-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1919,14 +2160,14 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0145-NL
+- name: 05-0167-NL
   server: 193.29.139.144
   port: 8080
   type: ss
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
   udp: true
-- name: 05-0146-US
+- name: 05-0168-US
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -1940,250 +2181,20 @@ proxies:
     path: /
     headers:
       Host: ocost-dy.wmlefl.cc
-- name: 05-0147-FR
-  type: hysteria
-  server: 195.154.200.40
-  port: 15010
-  auth-str: dongtaiwang.com
-  auth_str: dongtaiwang.com
-  up: 20 Mbps
-  down: 50 Mbps
-  protocol: udp
-  udp: true
-  skip-cert-verify: true
-  alpn:
-    - h3
-- name: 05-0148-AT
+- name: 05-0169-AT
   type: hysteria2
   server: hyleet.fitness
   port: 27015
   password: 1c90ba9c-05ec-4fc1-9d2c-3d5459bef2af
   skip-cert-verify: true
   sni: hyleet.fitness
-- name: 05-0149-RELAY
+- name: 05-0170-RELAY
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
   password: slch2024
   server: 194.53.53.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 06-0150-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 188.164.158.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 06-0151-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 188.164.159.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0152-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 190.93.246.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0153-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 192.65.217.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0154-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 205.233.181.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0155-US
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 199.34.230.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0156-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 199.181.197.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0157-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 193.9.49.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0158-MD
-  server: 185.153.197.5
-  port: 989
-  type: ss
-  cipher: aes-256-cfb
-  password: f8f7aCzcPKbsF8p3
-  udp: true
-- name: 08-0159-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 188.244.122.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0160-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 195.13.45.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0161-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 190.93.245.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0162-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 195.85.23.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0163-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 195.85.59.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0164-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 194.53.53.87
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 08-0165-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 190.93.244.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
