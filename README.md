@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `153`
+当前合并节点总数: `154`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `27`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `70`
