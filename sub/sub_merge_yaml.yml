@@ -1207,13 +1207,20 @@ proxies:
   cipher: chacha20-ietf-poly1305
   password: XUMTygEM1jVYIvysXKqA5T
   udp: true
-- name: 08-0085-MD
-  server: 185.153.197.5
-  port: 989
-  type: ss
-  cipher: aes-256-cfb
-  password: f8f7aCzcPKbsF8p3
+- name: 08-0085-RELAY
+  type: trojan
   udp: true
+  skip-cert-verify: true
+  tls: true
+  password: slch2024
+  server: 194.36.55.195
+  port: 2096
+  sni: ocost-dy.wmlefl.cc
+  network: ws
+  ws-opts:
+    path: /Telegram
+    headers:
+      Host: ocost-dy.wmlefl.cc
 - name: 23-0086-AT
   server: 77.110.110.240
   port: 443
@@ -2193,20 +2200,6 @@ proxies:
   tls: true
   password: slch2024
   server: 185.135.9.195
-  port: 2096
-  sni: ocost-dy.wmlefl.cc
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: ocost-dy.wmlefl.cc
-- name: 05-0167-RELAY
-  type: trojan
-  udp: true
-  skip-cert-verify: true
-  tls: true
-  password: slch2024
-  server: 205.233.181.87
   port: 2096
   sni: ocost-dy.wmlefl.cc
   network: ws
