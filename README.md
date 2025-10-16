@@ -10,14 +10,14 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `1273`
+当前合并节点总数: `1370`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `132`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `27`
-- [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `84`
+- [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `164`
 - [7sdfwch/clash-config](https://github.com/sdfwch/clash-config), 节点数量: `0`
-- [8ember-01/Clash-Aggregator](https://github.com/ember-01/Clash-Aggregator), 节点数量: `283`
-- [9xiaoji235/airport-free](https://github.com/xiaoji235/airport-free), 节点数量: `16`
+- [8ember-01/Clash-Aggregator](https://github.com/ember-01/Clash-Aggregator), 节点数量: `316`
+- [9xiaoji235/airport-free](https://github.com/xiaoji235/airport-free), 节点数量: `0`
 - [10xrym135/clash_config](https://github.com/xrym135/clash_config), 节点数量: `17`
 - [11yanjianyecao/clash-sub](https://github.com/yanjianyecao/clash-sub), 节点数量: `36`
 - [13chengaopan/zhangkaiitugithub/passcro/](https://github.com/zhangkaiitugithub/passcro/), 节点数量: `6`
