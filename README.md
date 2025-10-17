@@ -10,15 +10,15 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `704`
+当前合并节点总数: `720`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `5`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `26`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `172`
-- [8ember-01/Clash-Aggregator](https://github.com/ember-01/Clash-Aggregator), 节点数量: `313`
-- [8shuaidaoya/FreeNodes](https://github.com/shuaidaoya/FreeNodes), 节点数量: `75`
+- [8ember-01/Clash-Aggregator](https://github.com/ember-01/Clash-Aggregator), 节点数量: `310`
+- [8shuaidaoya/FreeNodes](https://github.com/shuaidaoya/FreeNodes), 节点数量: `46`
 - [9shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `26`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `443`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `461`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
