@@ -10,12 +10,12 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `743`
+当前合并节点总数: `751`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [40xJins/x.sub](https://github.com/0xJins/x.sub), 节点数量: `5`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `12`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `171`
-- [7ember-01/Clash-Aggregator](https://github.com/ember-01/Clash-Aggregator), 节点数量: `282`
+- [7ember-01/Clash-Aggregator](https://github.com/ember-01/Clash-Aggregator), 节点数量: `283`
 - [8shuaidaoya/FreeNodes](https://github.com/shuaidaoya/FreeNodes), 节点数量: `68`
 - [9shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `12`
 - [10ovmvo/SubShare](https://github.com/ovmvo/SubShare), 节点数量: `24`
