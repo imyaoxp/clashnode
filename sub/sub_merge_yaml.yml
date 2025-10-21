@@ -4,46 +4,46 @@ proxies:
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 9aa0127e-ff71-31b2-98ef-6e6defac2bb6
+  password: b87163d2-10f4-3cf4-80b0-41415d47d2c3
   server: 103.219.195.237
   port: 443
-  sni: fastly.cdn.steampipe.steamcontent.com
+  sni: steampipe-kr.akamaized.net
 - name: 04-0001-JP
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 9aa0127e-ff71-31b2-98ef-6e6defac2bb6
+  password: b87163d2-10f4-3cf4-80b0-41415d47d2c3
   server: 178.239.125.119
   port: 443
-  sni: steampipe.akamaized.net
+  sni: origin-a.akamaihd.net
 - name: 04-0002-SG
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 9aa0127e-ff71-31b2-98ef-6e6defac2bb6
+  password: b87163d2-10f4-3cf4-80b0-41415d47d2c3
   server: 43.160.203.70
   port: 443
-  sni: steamcdn-a.akamaihd.net
+  sni: www.microsoft365.com
 - name: 04-0003-SG
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 9aa0127e-ff71-31b2-98ef-6e6defac2bb6
+  password: b87163d2-10f4-3cf4-80b0-41415d47d2c3
   server: vd0ee3cg.cs53rvhb.aliyunglsb.com
   port: 443
-  sni: fastly.cdn.steampipe.steamcontent.com
+  sni: steampipe-kr.akamaized.net
 - name: 04-0004-US
   type: trojan
   udp: true
   skip-cert-verify: true
   tls: true
-  password: 9aa0127e-ff71-31b2-98ef-6e6defac2bb6
+  password: b87163d2-10f4-3cf4-80b0-41415d47d2c3
   server: 178.208.190.99
   port: 443
-  sni: upos-hz-mirrorakam.akamaized.net
+  sni: fastly.cdn.steampipe.steamcontent.com
 - name: 05-0005-RELAY
   server: 104.20.2.221
   port: 8443
@@ -4961,7 +4961,7 @@ proxies:
     host: 94.136.185.230
     path: /
   tls: false
-- name: 07-0507-AE
+- name: 07-0507-TR
   server: tr.vpnsparta.pro
   port: 57456
   type: ss
@@ -6218,20 +6218,21 @@ proxies:
   server: 178.208.190.99
   port: 443
   sni: steamcdn-a.akamaihd.net
-- name: 06-0635-TW
-  server: 60.249.114.181
-  port: 32003
-  type: vless
-  uuid: f61a4285-7264-4d07-9408-7b9ba1922c26
-  servername: gaosir.unfeeling.sbs
-  tls: true
-  network: ws
-  udp: true
-  ws-opts:
-    path: /x %40节点狂魔 /?ed=2560
-    headers:
-      Host: gaosir.unfeeling.sbs
-- name: 06-0636-KR
+- name: 06-0635-DE
+  type: hysteria2
+  server: banmabanmabanmabanmabanmabanma2.wanlidag.top
+  port: 54265
+  password: 1b085501-6e52-4658-b16b-ae6cb197be4a
+  skip-cert-verify: true
+  sni: banmabanmabanmabanmabanmabanma2.wanlidag.top
+- name: 06-0636-DE
+  type: hysteria2
+  server: banmabanmabanmabanmabanmabanma2.wanlidag.top
+  port: 54265
+  password: c4537e11-a78c-42de-9812-5634feea90e3
+  skip-cert-verify: true
+  sni: banmabanmabanmabanmabanmabanma2.wanlidag.top
+- name: 06-0637-KR
   server: 220.118.153.222
   port: 11443
   type: vless
@@ -6244,7 +6245,14 @@ proxies:
     path: /x %40节点狂魔 /?ed=2560
     headers:
       Host: gaosir.unfeeling.sbs
-- name: 07-0637-JP
+- name: 06-0638-US
+  type: hysteria2
+  server: banmabanmabanmabanmabanmabanma1.wanlidag.top
+  port: 54265
+  password: 6b902cba-6591-41df-94e8-88df86052810
+  skip-cert-verify: true
+  sni: banmabanmabanmabanmabanmabanma1.wanlidag.top
+- name: 07-0639-JP
   type: trojan
   udp: true
   skip-cert-verify: true
@@ -6253,14 +6261,28 @@ proxies:
   server: 202.181.103.246
   port: 2283
   sni: www.nintendogames.net
-- name: 07-0638-US
+- name: 07-0640-US
   server: 156.146.38.169
   port: 443
   type: ss
   cipher: aes-128-gcm
   password: shadowsocks
   udp: true
-- name: 07-0639-HK
+- name: 07-0641-US
+  server: 103.124.107.144
+  port: 29800
+  type: vmess
+  uuid: cc31ddfc-d92e-4dab-cd06-00dfb84af8ac
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  udp: true
+  network: tcp
+  tcp-opts:
+    headers:
+      host: 103.124.107.144
+  tls: false
+- name: 07-0642-HK
   server: 8.218.175.64
   port: 9754
   type: vmess
@@ -6274,7 +6296,7 @@ proxies:
     host: 8.218.175.64
     path: /arki?ed=2048
   tls: false
-- name: 07-0640-JP
+- name: 07-0643-JP
   server: 172.111.146.64
   port: 80
   type: vmess
@@ -6288,7 +6310,7 @@ proxies:
     host: 172.111.146.64
     path: /vmess/
   tls: false
-- name: 07-0641-MY
+- name: 07-0644-MY
   server: 38.60.195.254
   port: 1037
   type: vmess
@@ -6302,10 +6324,3 @@ proxies:
     headers:
       host: 38.60.195.254
   tls: true
-- name: 07-0642-MT
-  server: 171.22.254.17
-  port: 989
-  type: ss
-  cipher: aes-256-cfb
-  password: f8f7aCzcPKbsF8p3
-  udp: true
