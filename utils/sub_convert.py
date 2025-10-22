@@ -621,7 +621,7 @@ class sub_convert():
                         # 内联验证 Reality 公钥格式（标准 Base64，长度 43 或 44）
                         if not pbk or not len(pbk) in (32,43, 44): 
                             raise ValueError(f"Invalid Reality public-key: {pbk}")  # 触发异常处理
-                        if sid and not (
+                        if not sid or not (
                             1 <= len(sid) <= 16 and 
                             all(c.lower() in '0123456789abcdefABCDEF' for c in sid)
                         ):
