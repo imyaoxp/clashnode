@@ -10,7 +10,7 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `695`
+当前合并节点总数: `698`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `0`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `168`
@@ -24,7 +24,7 @@
 - [15V2RayRoot/JanuaryEleX/clash](https://github.com/JanuaryEleX/clash), 节点数量: `1`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `6`
 - [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `92`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `189`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `199`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
