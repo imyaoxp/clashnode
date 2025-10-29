@@ -10,12 +10,12 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `475`
+当前合并节点总数: `486`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
 - [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `18`
 - [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `164`
 - [7Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `87`
-- [8shuaidaoya/FreeNodes](https://github.com/shuaidaoya/FreeNodes), 节点数量: `40`
+- [8shuaidaoya/FreeNodes](https://github.com/shuaidaoya/FreeNodes), 节点数量: `63`
 - [9Vanic24/VPN](https://github.com/Vanic24/VPN), 节点数量: `45`
 - [10ovmvo/SubShare](https://github.com/ovmvo/SubShare), 节点数量: `27`
 - [11yanjianyecao/clash-sub](https://github.com/yanjianyecao/clash-sub), 节点数量: `0`
@@ -24,7 +24,7 @@
 - [15V2RayRoot/JanuaryEleX/clash](https://github.com/JanuaryEleX/clash), 节点数量: `1`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `13`
 - [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `104`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `118`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `111`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
