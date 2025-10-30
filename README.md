@@ -24,7 +24,7 @@
 - [15V2RayRoot/JanuaryEleX/clash](https://github.com/JanuaryEleX/clash), 节点数量: `1`
 - [16polarxy/aggregator](https://github.com/polarxy/aggregator), 节点数量: `11`
 - [17PangTouY00/aggregator](https://github.com/xnic888/aggregator), 节点数量: `103`
-- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `116`
+- [98back](https://github.com/firefoxmmx2/v2rayshare_subcription), 节点数量: `114`
 - [99电报群分享1](https://github.com/cdddbc/getAirport), 节点数量: `0`
 
 
