@@ -10,13 +10,13 @@
 </details>
 
 ### 鸣谢名单
-当前合并节点总数: `677`
+当前合并节点总数: `667`
 - [3kSLAWIASCA/actions](https://github.com/kSLAWIASCA/actions), 节点数量: `0`
-- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `26`
-- [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `174`
+- [5/shaoyouvip/free](https://github.com/shaoyouvip/free), 节点数量: `20`
+- [6/snakem982/proxypool](https://github.com/snakem982/proxypool), 节点数量: `185`
 - [7Ruk1ng001/freeSub](https://github.com/Ruk1ng001/freeSub), 节点数量: `78`
 - [8shuaidaoya/FreeNodes](https://github.com/shuaidaoya/FreeNodes), 节点数量: `108`
-- [9Vanic24/VPN](https://github.com/Vanic24/VPN), 节点数量: `54`
+- [9Vanic24/VPN](https://github.com/Vanic24/VPN), 节点数量: `57`
 - [10ovmvo/SubShare](https://github.com/ovmvo/SubShare), 节点数量: `68`
 - [11yanjianyecao/clash-sub](https://github.com/yanjianyecao/clash-sub), 节点数量: `0`
 - [13chengaopan/zhangkaiitugithub/passcro/](https://github.com/zhangkaiitugithub/passcro/), 节点数量: `35`
